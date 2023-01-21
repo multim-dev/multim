@@ -38,7 +38,6 @@ kotlin {
                 useKarma {
                     useFirefox()
                     useChrome()
-                    useSafari()
                 }
             }
         }
