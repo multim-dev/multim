@@ -1,7 +1,11 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     kotlin("multiplatform") version "1.7.10"
     kotlin("plugin.serialization") version "1.7.10"
     id("com.android.library") version "7.4.0"
+    id("com.codingfeline.buildkonfig") version "0.13.3"
 //    kotlin("android") version "1.8.0"
 }
 
@@ -58,6 +62,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
                 implementation("io.ktor:ktor-client-mock:$ktor_version")
             }
@@ -122,4 +128,23 @@ android {
 
 configurations { // Seems to be a hack for a gradle bug.
 //    compileClasspath
+}
+
+buildkonfig {
+
+    val props = Properties()
+
+    props.load(file("local.properties").inputStream())
+
+    packageName = "dev.usbharu.multim.secret"
+
+    defaultConfigs {
+        buildConfigField(STRING, "token", props["multim_misskey_token"].toString())
+    }
+
+//    targetConfigs {
+//        create("commoonTest") {
+//            buildConfigField(STRING,"token",props["multim_misskey_token"].toString() )
+//        }
+//    }
 }

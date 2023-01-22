@@ -5,8 +5,6 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
@@ -26,9 +24,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     ): R {
         val post = client.post(baseUrl + path) {
             contentType(ContentType.Application.Json)
-            val body1 = Json.encodeToString(content)
-            println(body1)
-            setBody(body1)
+            setBody(content)
         }
         println(post.status.value)
         return post.body()

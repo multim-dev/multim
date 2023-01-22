@@ -5,6 +5,6 @@ import dev.usbharu.multim.model.misskey.v12.ApShowResponse
 
 class Ap(val client: MisskeyApiClient) {
     suspend fun show(apShowRequest: ApShowRequest): ApShowResponse {
-        return client.post(apShowRequest, "/ap/show")
+        return client.post(apShowRequest, "api/ap/show")
     }
 }

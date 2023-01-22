@@ -1,5 +1,6 @@
 package dev.usbharu.multim.model.misskey.v12
 
+import dev.usbharu.multim.model.misskey.v12.components.MisskeyNeedAuth
 import dev.usbharu.multim.model.misskey.v12.components.Note
 import dev.usbharu.multim.model.misskey.v12.components.UserDetailedNotMe
 import kotlinx.serialization.SerialName
@@ -8,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ApShowRequest(
     val uri: String
-)
+) : MisskeyNeedAuth()
 
 
 @Serializable

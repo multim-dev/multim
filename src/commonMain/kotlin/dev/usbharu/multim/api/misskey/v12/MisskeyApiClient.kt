@@ -9,11 +9,8 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.*
-import io.ktor.utils.io.*
 import kotlinx.serialization.json.Json
 
-@OptIn(InternalAPI::class)
 class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
         install(WebSockets) {
