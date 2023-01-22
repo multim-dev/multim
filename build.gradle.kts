@@ -134,12 +134,18 @@ buildkonfig {
 
     val props = Properties()
 
-    props.load(file("local.properties").inputStream())
+    val token: String = try {
+        props.load(file("local.properties").inputStream())
+        props["multim_misskey_token"].toString()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        System.getenv("multim_misskey_token")
+    }
 
     packageName = "dev.usbharu.multim.secret"
 
     defaultConfigs {
-        buildConfigField(STRING, "token", props["multim_misskey_token"].toString())
+        buildConfigField(STRING, "token", token)
     }
 
 //    targetConfigs {
