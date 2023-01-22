@@ -34,12 +34,7 @@ kotlin {
     js(IR) {
         useCommonJs()
         browser {
-            testTask {
-                useKarma {
-                    useFirefox()
-                    useChrome()
-                }
-            }
+
         }
         nodejs {
 
