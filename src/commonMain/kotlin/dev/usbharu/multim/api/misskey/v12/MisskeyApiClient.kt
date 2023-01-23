@@ -9,8 +9,10 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.*
 import kotlinx.serialization.json.Json
 
+@OptIn(InternalAPI::class)
 class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
         install(WebSockets) {
@@ -18,6 +20,7 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
         }
         install(createClientPlugin("MisskeyAuthPlugin") {
             onRequest { request, content ->
+                println(request.body.toString())
                 println("request type is :${content::class}")
                 if (content is MisskeyNeedAuth) {
                     println("injection token")
@@ -27,6 +30,9 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
                     "Content-Type",
                     ContentType.Application.Json
                 )
+            }
+            onResponse {
+                println(it.content.toByteArray().toString())
             }
         })
         install(Logging) {

@@ -5,6 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 
 abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
@@ -17,6 +18,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         return post.body()
     }
 
+    @OptIn(InternalAPI::class)
     suspend inline fun <reified T, reified R> post(
         content: T,
         path: String,
@@ -26,7 +28,10 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             contentType(ContentType.Application.Json)
             setBody(content)
         }
+        println("post = $post")
+        println(post.toString())
         println(post.status.value)
+        println(post.content.toByteArray().toString())
         return post.body()
     }
 
