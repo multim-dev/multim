@@ -29,10 +29,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             contentType(ContentType.Application.Json)
             setBody(content)
         }
-        println("post = $post")
-        println(post.toString())
-        println(post.status.value)
-        println(post.content.toByteArray().toString())
+
         return post.body()
     }
 

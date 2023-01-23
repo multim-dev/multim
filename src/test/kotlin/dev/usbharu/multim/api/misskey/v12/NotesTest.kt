@@ -7,6 +7,7 @@ import dev.usbharu.multim.api.common.createHttpClient
 import dev.usbharu.multim.model.misskey.v12.*
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
+import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,6 +16,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesTest {
@@ -25,7 +27,10 @@ class NotesTest {
             MisskeyApiClient(
                 "aaaa",
                 "",
-                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectNoteArray))
+                TestUtil.createMockHttpClient(
+                    checkAuth = false,
+                    content = json.encodeToString(expectNoteArray)
+                )
             )
         )
         val globalTimeline =
@@ -52,7 +57,10 @@ class NotesTest {
             MisskeyApiClient(
                 "aaa",
                 "",
-                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectNoteArray))
+                TestUtil.createMockHttpClient(
+                    checkAuth = false,
+                    content = json.encodeToString(expectNoteArray)
+                )
             )
         )
         val localTimeline = notes.localTimeline(NotesLocalTimelineRequest())
@@ -66,7 +74,10 @@ class NotesTest {
             MisskeyApiClient(
                 "aaa",
                 "",
-                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectedNote))
+                TestUtil.createMockHttpClient(
+                    checkAuth = false,
+                    content = json.encodeToString(expectedNote)
+                )
             )
         )
         val note = notes.show(NotesShowRequest("mLvakn"))
@@ -166,7 +177,13 @@ class NotesTest {
 
 class NotesTestE2E {
 
-    val notes = Notes(MisskeyApiClient(System.getProperty("multim_misskey_token"), "https://misskey.usbharu.dev/", createHttpClient()))
+    val notes = Notes(
+        MisskeyApiClient(
+            System.getProperty("multim_misskey_token"),
+            "https://misskey.usbharu.dev/",
+            createHttpClient()
+        )
+    )
 
     @Test
     fun globalTimeline() = runTest {
@@ -212,14 +229,16 @@ class NotesTestE2E {
             )
         )
         notes.delete(NotesDeleteRequest(deleteNote.createdNote.id))
-        notes.show(NotesShowRequest(deleteNote.createdNote.id)) //消せていたら失敗する
+        assertThrows<ClientRequestException> {
+            notes.show(NotesShowRequest(deleteNote.createdNote.id)) //消せていたら失敗する
+        }
+        }
+
+        @Test
+        fun featured() = runTest {
+            val featured = notes.featured()
+            println(featured)
+        }
+
+
     }
-
-    @Test
-    fun featured() = runTest {
-        val featured = notes.featured()
-        println(featured)
-    }
-
-
-}
