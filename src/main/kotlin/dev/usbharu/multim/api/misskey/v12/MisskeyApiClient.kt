@@ -15,6 +15,7 @@ import kotlinx.serialization.json.Json
 @OptIn(InternalAPI::class)
 class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
+        expectSuccess = true
         install(WebSockets) {
             pingInterval = 20_000
         }
