@@ -11,7 +11,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import kotlin.test.fail
+import org.assertj.core.api.Fail.fail
+
 
 object TestUtil {
     val json = Json { ignoreUnknownKeys = true;isLenient = true }
@@ -74,6 +75,7 @@ object TestUtil {
                 respond(respond, status, headers)
             } else {
                 fail("Not authed")
+                respondBadRequest()
             }
         }
     }

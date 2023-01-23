@@ -7,21 +7,23 @@ import dev.usbharu.multim.api.common.TestUtil.createFakeNoteToString
 import dev.usbharu.multim.api.common.TestUtil.json
 import dev.usbharu.multim.api.common.createHttpClient
 import dev.usbharu.multim.model.misskey.v12.ApShowRequest
-import dev.usbharu.multim.secret.BuildKonfig
+import dev.usbharu.multim.model.misskey.v12.ApShowResponse
+import dev.usbharu.multim.model.misskey.v12.components.Note
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.decodeFromString
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Test
 
 
 class ApTest {
 
     val misskeyApiClient = MisskeyApiClient(
-        BuildKonfig.token, "https://misskey.usbharu.dev/",
+        System.getProperty("multim_misskey_token"), "https://misskey.usbharu.dev/",
         createHttpClient()
     )
 
@@ -50,7 +52,7 @@ class ApTest {
             )
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/IN7OFhht"))
-        assertEquals(json.decodeFromString(typeUser), show)
+        assertEquals(json.decodeFromString<ApShowResponse.TypeUser>(typeUser), show)
     }
 
 
@@ -73,6 +75,26 @@ class ApTest {
             )
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/C56WI"))
-        assertEquals(json.decodeFromString(typeNote), show)
+        assertEquals(json.decodeFromString<ApShowResponse.TypeNote>(typeNote), show)
+    }
+}
+
+class ApTestE2E {
+
+    val misskeyApiClient = MisskeyApiClient(
+        System.getProperty("multim_misskey_token"), "https://misskey.usbharu.dev/",
+        createHttpClient()
+    )
+
+    @Test
+    fun show_showUserRequest_respondTypeUser() = runTest {
+        val show = Ap(misskeyApiClient).show(ApShowRequest("https://pawoo.net/web/accounts/1593472"))
+        assertInstanceOf(ApShowResponse.TypeUser::class.java,show)
+    }
+
+    @Test
+    fun show_showNoteRequest_respondTypeNote() = runTest {
+        val show = Ap(misskeyApiClient).show(ApShowRequest("https://misskey.usbharu.dev/notes/9aaw20p6w4"))
+        assertInstanceOf(ApShowResponse.TypeNote::class.java,show)
     }
 }

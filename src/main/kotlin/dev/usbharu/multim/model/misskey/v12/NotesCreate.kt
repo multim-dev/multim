@@ -2,6 +2,7 @@ package dev.usbharu.multim.model.misskey.v12
 
 import dev.usbharu.multim.model.misskey.v12.components.MisskeyNeedAuth
 import dev.usbharu.multim.model.misskey.v12.components.Note
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -44,11 +45,16 @@ data class NotesCreateRequest(
     val poll: Poll? = null,
 
     ) : MisskeyNeedAuth() {
-    enum class Visibility(val string: String) {
-        PUBLIC("public"),
-        HOME("home"),
-        FOLLOWERS("followers"),
-        SPECIFIED("SPECIFIED")
+    @Serializable
+    enum class Visibility {
+        @SerialName("public")
+        PUBLIC,
+        @SerialName("home")
+        HOME,
+        @SerialName("followers")
+        FOLLOWERS,
+        @SerialName("specified")
+        SPECIFIED
     }
 
     @Serializable

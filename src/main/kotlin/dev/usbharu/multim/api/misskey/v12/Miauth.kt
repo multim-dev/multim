@@ -2,15 +2,15 @@ package dev.usbharu.multim.api.misskey.v12
 
 import dev.usbharu.multim.model.misskey.v12.MiauthCheckRequest
 import dev.usbharu.multim.model.misskey.v12.MiauthCheckResponse
-import dev.usbharu.multim.utils.UUID
 import io.ktor.client.statement.*
+import java.util.*
 
 
 class Miauth(val client: MisskeyApiClient) {
 
     suspend fun auth(): String {
 
-        val body = client.get(baseUrl + "/miauth/" + UUID.generateUUID() + "/") {
+        val body = client.get(baseUrl + "/miauth/" + UUID.randomUUID() + "/") {
             url {
 
                 parameters.append("name", "multim-test")

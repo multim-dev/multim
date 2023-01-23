@@ -2,7 +2,7 @@ package dev.usbharu.multim.api.misskey.v12
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MiauthTest {

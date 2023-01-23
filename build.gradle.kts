@@ -1,26 +1,97 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Properties
+
+
 plugins {
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.serialization") version "1.7.10"
+    kotlin("jvm") version "1.8.0"
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
-group = "dev.usbharu"
+group = "org.example"
 version = "1.0-SNAPSHOT"
-
-val ktor_version = "2.2.2"
 
 repositories {
     mavenCentral()
-    google()
-//    gradlePluginPortal()
 }
 
+
+tasks.test {
+    val props = Properties()
+//
+    try {
+        props.load(file("local.properties").inputStream())
+        systemProperties("multim_misskey_token" to props["multim_misskey_token"])
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    useJUnitPlatform()
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+//import org.jetbrains.kotlin.konan.properties.Properties
+//
+//plugins {
+//    kotlin("jvm") version "1.8.0"
+//    kotlin("plugin.serialization") version "1.8.0"
+//    id("application")
+//}
+//
+//group = "dev.usbharu"
+//version = "1.0-SNAPSHOT"
+//
+val ktor_version = "2.2.2"
+//
+//repositories {
+//    mavenCentral()
+//}
+//
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation("io.ktor:ktor-client-websockets:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
+    testImplementation("org.assertj:assertj-core:3.2.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+//    implementation(kotlin("stdlib"))
+    testImplementation("org.slf4j:slf4j-simple:2.0.4")
 }
+//
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+//    kotlinOptions.jvmTarget = "11"
+//}
+//
+//tasks.test {
+//    val props = Properties()
+//
+//    val token: String = try {
+//        props.load(file("local.properties").inputStream())
+//        props["multim_misskey_token"].toString()
+//    } catch (e: Exception) {
+//        e.printStackTrace()
+//        System.getenv("multim_misskey_token")
+//    }
+//    System.setProperties(props)
+//
+//    useJUnitPlatform()
+//}
+
+//tasks.register("generateBuildKonfig")
 
 
 //

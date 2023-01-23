@@ -20,7 +20,7 @@ object NoteConverter {
         )
     }
 
-    fun Note.Companion.fromStatus(status: Status): Note {
+    fun Note.fromStatus(status: Status): Note {
         if (status is MisskeyStatus) {
             return Note(
                 id = status.id.id,

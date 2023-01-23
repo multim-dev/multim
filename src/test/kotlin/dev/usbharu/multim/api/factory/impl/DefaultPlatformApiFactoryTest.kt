@@ -1,6 +1,6 @@
 package dev.usbharu.multim.api.factory.impl
 
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class DefaultPlatformApiFactoryTest {
     @Test

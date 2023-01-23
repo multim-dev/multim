@@ -2,7 +2,7 @@ package dev.usbharu.multim.model.misskey.v12
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class ApShowTest {
 
