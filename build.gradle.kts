@@ -6,7 +6,6 @@ plugins {
     kotlin("plugin.serialization") version "1.7.10"
     id("com.android.library") version "7.4.0"
     id("com.codingfeline.buildkonfig") version "0.13.3"
-//    kotlin("android") version "1.8.0"
 }
 
 group = "dev.usbharu"
@@ -124,10 +123,6 @@ android {
             }
     }
 
-}
-
-configurations { // Seems to be a hack for a gradle bug.
-//    compileClasspath
 }
 
 buildkonfig {

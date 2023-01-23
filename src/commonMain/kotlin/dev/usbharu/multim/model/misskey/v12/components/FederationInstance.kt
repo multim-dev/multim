@@ -1,19 +1,19 @@
 package dev.usbharu.multim.model.misskey.v12.components
 
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class FederationInstance(
     val id: String,
-    val caughtAt: LocalDateTime,
+    val caughtAt: Instant,
     val host: String,
     val usersCount: Int,
     val noteCount: Int,
     val followingCount: Int,
     val followersCount: Int,
-    val latestRequestSentAt: LocalDateTime?,
-    val lastCommunicatedAt: LocalDateTime,
+    val latestRequestSentAt: Instant?,
+    val lastCommunicatedAt: Instant,
     val isNotResponding: Boolean,
     val isSuspended: Boolean,
     val isBlocked: Boolean,
@@ -27,5 +27,5 @@ data class FederationInstance(
     val iconUrl: String?,
     val faviconUrl: String?,
     val themeColor: String?,
-    val infoUpdatedAt: LocalDateTime?
+    val infoUpdatedAt: Instant?
 )

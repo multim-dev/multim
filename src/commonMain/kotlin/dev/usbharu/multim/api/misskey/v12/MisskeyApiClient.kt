@@ -18,7 +18,9 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
         }
         install(createClientPlugin("MisskeyAuthPlugin") {
             onRequest { request, content ->
+                println("request type is :${content::class}")
                 if (content is MisskeyNeedAuth) {
+                    println("injection token")
                     content.i = token
                 }
                 request.headers.append(

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDetailedNotMe(
     val id: String,
-    val name: String,
+    val name: String?,
     val username: String,
     val host: String? = null,
     val avatarUrl: String? = null,

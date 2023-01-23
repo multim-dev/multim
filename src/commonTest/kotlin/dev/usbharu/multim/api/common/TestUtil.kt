@@ -19,7 +19,15 @@ object TestUtil {
         content: String = "",
         contentType: String = "application/json",
         statusCode: HttpStatusCode = HttpStatusCode.OK,
+        checkAuth: Boolean = true,
         respond: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = {
+            if (checkAuth) {
+                if ("i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
+
+                } else {
+                    fail("No auth")
+                }
+            }
             respond(
                 content = content,
                 status = statusCode,
@@ -45,7 +53,7 @@ object TestUtil {
         return Note(
             id = id,
             userId = userId,
-            user = UserLite(id = userId, name = username),
+            user = UserLite(id = userId, name = username, username = username),
             text = text
         )
     }

@@ -1,12 +1,12 @@
 package dev.usbharu.multim.model.misskey.v12.components
 
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Antenna(
     val id: String,
-    val createdAt: LocalDateTime,
+    val createdAt: Instant,
     val name: String,
     val keywords: List<List<String>>,
     val excludeKeywords: List<List<String>>,

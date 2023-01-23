@@ -1,13 +1,14 @@
 package dev.usbharu.multim.model.misskey.v12.components
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Channel(
     val id: String,
-    val createdAt: LocalDateTime,
-    val lastNotedAt: LocalDateTime,
+    val createdAt: Instant,
+    val lastNotedAt: Instant,
     val name: String,
     val description: String?,
     val bannerUrl: String,

@@ -18,6 +18,7 @@ class MisskeyStatusApiTest {
                 "",
                 "http://localhost/",
                 TestUtil.createMockHttpClient(
+                    checkAuth = false, content =
                     Json.encodeToString(TestUtil.createFakeNote("Fx0Z", "D93", "brqNq4v", "earn"))
                 )
             )
@@ -32,7 +33,7 @@ class MisskeyStatusApiTest {
 
         //language=JSON
         val hoge: Hoge = Json(Json.Default) {
-            isLenient = true;ignoreUnknownKeys = true;
+            isLenient = true;ignoreUnknownKeys = true
         }.decodeFromString("""{"a": "aaaa","b": "bbbb"}""")
     }
 

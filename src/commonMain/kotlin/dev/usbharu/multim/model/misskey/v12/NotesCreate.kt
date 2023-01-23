@@ -1,5 +1,6 @@
 package dev.usbharu.multim.model.misskey.v12
 
+import dev.usbharu.multim.model.misskey.v12.components.MisskeyNeedAuth
 import dev.usbharu.multim.model.misskey.v12.components.Note
 import kotlinx.serialization.Serializable
 
@@ -42,7 +43,7 @@ data class NotesCreateRequest(
     val channelId: String? = null,
     val poll: Poll? = null,
 
-    ) {
+    ) : MisskeyNeedAuth() {
     enum class Visibility(val string: String) {
         PUBLIC("public"),
         HOME("home"),

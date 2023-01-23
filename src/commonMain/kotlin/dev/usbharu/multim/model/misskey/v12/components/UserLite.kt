@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserLite(
     val id: String,
-    val name: String,
-    val username: String = name,
+    val name: String?,
+    val username: String,
     val host: String? = null,
     val avatarUrl: String? = null,
     val avatarBlurhash: String? = null,

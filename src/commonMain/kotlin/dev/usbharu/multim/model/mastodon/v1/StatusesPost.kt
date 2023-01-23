@@ -1,7 +1,7 @@
 package dev.usbharu.multim.model.mastodon.v1
 
 import dev.usbharu.multim.model.mastodon.v1.components.Status
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -14,7 +14,7 @@ data class StatusesPostRequest(
     val sensitive: Boolean? = null,
     val visibility: Visibility? = null,
     val language: String? = null,
-    val scheduledAt: LocalDateTime? = null
+    val scheduledAt: Instant? = null
 ) {
     @Serializable
     data class Poll(

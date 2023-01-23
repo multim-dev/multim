@@ -1,13 +1,14 @@
 package dev.usbharu.multim.model.misskey.v12.components
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
 class Page(
     val id: String,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
+    val createdAt: Instant,
+    val updatedAt: Instant,
     val title: String,
     val name: String,
     val summary: String?,

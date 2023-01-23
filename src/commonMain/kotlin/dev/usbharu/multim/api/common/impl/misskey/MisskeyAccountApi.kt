@@ -73,6 +73,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
                     show.followersCount
                 )
                 is UserLite -> throw IllegalStateException()
+                else -> throw IllegalStateException("else")
             }
         }
         TODO("Not yet implemented")

@@ -1,12 +1,13 @@
 package dev.usbharu.multim.model.misskey.v12.components
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
 class MeDetailed(
     val id: String,
-    val name: String,
+    val name: String?,
     val username: String,
     val host: String? = null,
     val avatarUrl: String? = null,
@@ -20,9 +21,9 @@ class MeDetailed(
     val onlineStatus: OnlineStatus,
     val url: String? = null,
     val uri: String? = null,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime? = null,
-    val lastFetchedAt: LocalDateTime? = null,
+    val createdAt: Instant,
+    val updatedAt: Instant? = null,
+    val lastFetchedAt: Instant? = null,
     val bannerUrl: String? = null,
     val bannerBlurhash: String? = null,
     val bannerColor: String? = null,

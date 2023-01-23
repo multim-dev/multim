@@ -1,6 +1,9 @@
 package dev.usbharu.multim.api.misskey.v12
 
+import dev.usbharu.multim.api.common.TestUtil
 import dev.usbharu.multim.api.common.TestUtil.createFakeNote
+import dev.usbharu.multim.api.common.TestUtil.json
+import dev.usbharu.multim.model.misskey.v12.*
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
@@ -8,24 +11,85 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
+import kotlinx.serialization.encodeToString
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesTest {
 
     @Test
     fun globalTimelineTest() = runTest {
-//        val notes = Notes("","" ,TestUtil.createMockHttpClient(content = Json.encodeToString(expectNoteArray)))
-//        val globalTimeline =
-//            notes.globalTimeline(globalTimelineRequest = NotesGlobalTimelineRequest())
-//        assertEquals(expectNoteArray,globalTimeline)
+        val notes = Notes(
+            MisskeyApiClient(
+                "aaaa",
+                "",
+                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectNoteArray))
+            )
+        )
+        val globalTimeline =
+            notes.globalTimeline(globalTimelineRequest = NotesGlobalTimelineRequest())
+        assertEquals(expectNoteArray, globalTimeline)
     }
 
     @Test
     fun hybridTimelineTest() = runTest {
-//        val notes = Notes("","", TestUtil.createMockHttpClient(content = Json.encodeToString(expectNoteArray)))
-//        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest())
-//        assertEquals(expectNoteArray,hybridTimeline)
+        val notes = Notes(
+            MisskeyApiClient(
+                "aaaa",
+                "",
+                TestUtil.createMockHttpClient(content = json.encodeToString(expectNoteArray))
+            )
+        )
+        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest())
+        assertEquals(expectNoteArray, hybridTimeline)
+    }
+
+    @Test
+    fun localTimelineTest() = runTest {
+        val notes = Notes(
+            MisskeyApiClient(
+                "aaa",
+                "",
+                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectNoteArray))
+            )
+        )
+        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest())
+        assertEquals(expectNoteArray, localTimeline)
+    }
+
+    @Test
+    fun showTest() = runTest {
+        val expectedNote = createFakeNote("mLyakn", "7j1VB0L", "Ymhq", "8V7QrxD6")
+        val notes = Notes(
+            MisskeyApiClient(
+                "aaa",
+                "",
+                TestUtil.createMockHttpClient(checkAuth = false, content = json.encodeToString(expectedNote))
+            )
+        )
+        val note = notes.show(NotesShowRequest("mLvakn"))
+        assertEquals(expectedNote, note)
+    }
+
+    @Test
+    fun createTest() = runTest {
+        val note = createFakeNote("aT9o", "o00672o", "W2kwto", "gold")
+        val notes = Notes(
+            MisskeyApiClient(
+                "aaa",
+                "",
+                TestUtil.createMockHttpClient(content = json.encodeToString(NotesCreateResponse(note)))
+            )
+        )
+        val create = notes.create(NotesCreateRequest(text = "gold"))
+        assertEquals(note, create.createdNote)
+    }
+
+    @Test
+    fun deleteTest() = runTest {
+        val notes = Notes(MisskeyApiClient("aaa", "", TestUtil.createMockHttpClient(content = "")))
+        notes.delete(NotesDeleteRequest("Rw4g2CH"))
     }
 
     @Test

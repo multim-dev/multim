@@ -11,7 +11,7 @@ object NoteConverter {
             id = MisskeyStatusId(id, url ?: ""),
             account = MisskeyAccount(
                 id = user.id,
-                screenName = user.name,
+                screenName = user.name ?: user.username,
                 accountName = user.username,
                 isBot = user.isBot,
                 avatar = MisskeyAvatar(avatarUrl = user.avatarUrl ?: "")
