@@ -24,6 +24,7 @@ tasks.test {
 
     } catch (e: Exception) {
         e.printStackTrace()
+        systemProperties("multim_misskey_token" to System.getenv("multim_misskey_token"))
     }
 
     useJUnitPlatform()
