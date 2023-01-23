@@ -52,4 +52,6 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     }
 }
 
-expect fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient
+ fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient{
+     return HttpClient(CIO)
+ }
