@@ -6,9 +6,7 @@ import dev.usbharu.multim.model.misskey.v12.NotesHybridTimelineRequest
 import dev.usbharu.multim.secret.BuildKonfig
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty
 
-@EnabledIfSystemProperty(named = "test-e2e", matches = "true")
 class NotesTestE2E {
 
     val notes = Notes(MisskeyApiClient(BuildKonfig.token, "https://misskey.usbharu.dev/", createHttpClient()))

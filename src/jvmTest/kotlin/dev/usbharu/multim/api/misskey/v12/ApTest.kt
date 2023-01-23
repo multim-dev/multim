@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty
 import kotlin.test.assertIs
 
-@EnabledIfSystemProperty(named = "test-e2e", matches = "true")
 class ApTestE2E {
 
     val misskeyApiClient = MisskeyApiClient(
