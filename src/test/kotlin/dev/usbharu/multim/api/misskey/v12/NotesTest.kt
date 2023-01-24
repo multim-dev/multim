@@ -180,7 +180,7 @@ class NotesTestE2E {
     val notes = Notes(
         MisskeyApiClient(
             System.getProperty("multim_misskey_token"),
-            "https://misskey.usbharu.dev/",
+            System.getProperty("multim_misskey_instance"),
             createHttpClient()
         )
     )
@@ -205,7 +205,7 @@ class NotesTestE2E {
 
     @Test
     fun show() = runTest {
-        val show = notes.show(NotesShowRequest("9ac0713keb"))
+        val show = notes.show(NotesShowRequest("9ack8wxw3c"))
         println(show)
     }
 

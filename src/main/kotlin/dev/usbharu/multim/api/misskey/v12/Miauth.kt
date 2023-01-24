@@ -25,6 +25,6 @@ class Miauth(val client: MisskeyApiClient) {
     }
 
     companion object {
-        val baseUrl: String = "https://misskey.usbharu.dev"
+        val baseUrl: String = System.getProperty("multim_misskey_instance")
     }
 }

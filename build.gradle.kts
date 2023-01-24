@@ -21,10 +21,12 @@ tasks.test {
     try {
         props.load(file("local.properties").inputStream())
         systemProperties("multim_misskey_token" to props["multim_misskey_token"])
+        systemProperties("multim_misskey_instance" to props["multim_misskey_instance"])
 
     } catch (e: Exception) {
         e.printStackTrace()
         systemProperties("multim_misskey_token" to System.getenv("multim_misskey_token"))
+        systemProperties("multim_misskey_instance" to System.getenv("multim_misskey_instance"))
     }
 
     useJUnitPlatform()

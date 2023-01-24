@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 class ApTest {
 
     val misskeyApiClient = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"), "https://misskey.usbharu.dev/",
+        System.getProperty("multim_misskey_token"), System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
@@ -82,19 +82,19 @@ class ApTest {
 class ApTestE2E {
 
     val misskeyApiClient = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"), "https://misskey.usbharu.dev/",
+        System.getProperty("multim_misskey_token"), System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
     @Test
     fun show_showUserRequest_respondTypeUser() = runTest {
-        val show = Ap(misskeyApiClient).show(ApShowRequest("https://pawoo.net/web/accounts/1593472"))
+        val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
         assertInstanceOf(ApShowResponse.TypeUser::class.java,show)
     }
 
     @Test
     fun show_showNoteRequest_respondTypeNote() = runTest {
-        val show = Ap(misskeyApiClient).show(ApShowRequest("https://misskey.usbharu.dev/notes/9aaw20p6w4"))
+        val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
         assertInstanceOf(ApShowResponse.TypeNote::class.java,show)
     }
 }
