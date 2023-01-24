@@ -56,4 +56,5 @@ dependencies {
     testImplementation("io.ktor:ktor-client-mock:$ktor_version")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("org.slf4j:slf4j-simple:2.0.4")
+    testImplementation("io.github.artsok:rerunner-jupiter:2.1.6")
 }

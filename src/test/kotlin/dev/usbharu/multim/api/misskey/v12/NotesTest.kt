@@ -5,6 +5,7 @@ import dev.usbharu.multim.api.common.TestUtil.createFakeNote
 import dev.usbharu.multim.api.common.TestUtil.json
 import dev.usbharu.multim.api.common.createHttpClient
 import dev.usbharu.multim.model.misskey.v12.*
+import io.github.artsok.RepeatedIfExceptionsTest
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.*
@@ -359,7 +360,8 @@ class NotesTestE2E {
         println(timeline)
     }
 
-    @Test
+    @RepeatedIfExceptionsTest(repeats = 4)
+//    @Test
     fun unrenote() = runTest {
         val create =
             notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))

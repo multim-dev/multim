@@ -9,6 +9,7 @@ import dev.usbharu.multim.api.common.createHttpClient
 import dev.usbharu.multim.model.misskey.v12.ApShowRequest
 import dev.usbharu.multim.model.misskey.v12.ApShowResponse
 import dev.usbharu.multim.model.misskey.v12.components.Note
+import io.github.artsok.RepeatedIfExceptionsTest
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
@@ -86,13 +87,15 @@ class ApTestE2E {
         createHttpClient()
     )
 
-    @Test
+    @RepeatedIfExceptionsTest(repeats = 4)
+//    @Test
     fun show_showUserRequest_respondTypeUser() = runTest {
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
         assertInstanceOf(ApShowResponse.TypeUser::class.java,show)
     }
 
-    @Test
+    @RepeatedIfExceptionsTest(repeats = 4)
+//    @Test
     fun show_showNoteRequest_respondTypeNote() = runTest {
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
         assertInstanceOf(ApShowResponse.TypeNote::class.java,show)
