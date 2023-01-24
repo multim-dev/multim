@@ -1,5 +1,6 @@
 package dev.usbharu.multim.model.misskey.v12
 
+import dev.usbharu.multim.model.misskey.v12.components.MisskeyNeedAuth
 import dev.usbharu.multim.model.misskey.v12.components.Note
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -20,7 +21,7 @@ data class NotesTimelineRequest(
     val includeRenoteMyNotes: Boolean? = true,
     val includeLocalRenotes: Boolean? = true,
     val withFiles: Boolean? = false
-)
+) : MisskeyNeedAuth()
 
 @Serializable(with = NotesTimelineResponseSerializer::class)
 data class NotesTimelineResponse(private val content: List<Note>) : List<Note> by content {

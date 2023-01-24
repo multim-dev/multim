@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 data class NoteReaction(
     val id: String,
     val createdAt: Instant,
-    val userLite: UserLite,
+    val user: UserLite,
     val type: String
 )

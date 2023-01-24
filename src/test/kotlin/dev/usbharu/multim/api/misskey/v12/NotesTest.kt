@@ -14,9 +14,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesTest {
@@ -232,13 +234,165 @@ class NotesTestE2E {
         assertThrows<ClientRequestException> {
             notes.show(NotesShowRequest(deleteNote.createdNote.id)) //消せていたら失敗する
         }
-        }
+    }
 
-        @Test
-        fun featured() = runTest {
-            val featured = notes.featured()
-            println(featured)
-        }
+    @Test
+    fun featured() = runTest {
+        val featured = notes.featured()
+        println(featured)
+    }
 
+    @Test
+    fun children() = runTest {
+        val children = notes.children(NotesChildrenRequest("9ad7btwst8"))
+        println(children)
+    }
+
+    @Test
+    fun conversation() = runTest {
+        val conversation = notes.conversation(NotesConversationRequest("9ad7btwst8"))
+        println(conversation)
+    }
+
+    @Test
+    fun state() = runTest {
+        val state = notes.state(NotesStateRequest("9ad7btwst8"))
+        println(state)
+    }
+
+    @Test
+    fun favoritesCreate() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、お気に入り登録のテストで使用されます。 ${this@NotesTestE2E::class} favorites create test"))
+        notes.Favorites().create(NotesFavoritesCreateRequest(create.createdNote.id))
+        assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).isFavorited)
 
     }
+
+    @Test
+    fun favoritesDelete() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、お気に入り削除のテストで使用されます。 ${this@NotesTestE2E::class} favorites delete test"))
+        notes.Favorites().create(NotesFavoritesCreateRequest(create.createdNote.id))
+        assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).isFavorited)
+        notes.Favorites().delete(NotesFavoritesDeleteRequest(create.createdNote.id))
+        assertFalse(notes.state(NotesStateRequest(create.createdNote.id)).isFavorited)
+    }
+
+    @Test
+    fun mentions() = runTest {
+        val mentions = notes.mentions(NotesMentionsRequest())
+        println(mentions)
+    }
+
+    @Test
+    fun reactions() = runTest {
+        val reactions = notes.reactions(NotesReactionsRequest("9ack8wxw3c"))
+        println(reactions)
+    }
+
+    @Test
+    fun renotes() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"))
+        val notesCreateResponse = notes.create(NotesCreateRequest(renoteId = create.createdNote.id))
+        val renotes = notes.renotes(NotesRenoteRequest(create.createdNote.id))
+        println(renotes)
+    }
+
+    @Test
+    fun replies() = runTest {
+        val root =
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test"))
+        val reply1 = notes.create(
+            NotesCreateRequest(
+                text = "返信1 このノートはMultimのテストで作成され、返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test",
+                replyId = root.createdNote.id
+            )
+        )
+        val reply2 = notes.create(
+            NotesCreateRequest(
+                text = "返信2 このノートはMultimのテストで作成され、返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test",
+                replyId = root.createdNote.id
+            )
+        )
+        val replies = notes.replies(NotesRepliesRequest(root.createdNote.id))
+        assertEquals(
+            listOf(reply1.createdNote, reply2.createdNote).sortedBy { note -> note.id },
+            replies.sortedBy { note -> note.id })
+    }
+
+    @Test
+    fun searchByTag() = runTest {
+        val tag = UUID.randomUUID().toString()
+        val tagedNote =
+            notes.create(NotesCreateRequest(text = "#$tag このノートはMultimのテストで作成され、タグ検索のテストで使用されます。 ${this@NotesTestE2E::class} search by tag test"))
+        val searchByTag = notes.searchByTag(NotesSearchByTagRequest(tag))
+        org.assertj.core.api.Assertions.assertThat(searchByTag).isNotEmpty
+        assertTrue(searchByTag.contains(tagedNote.createdNote))
+        println(searchByTag)
+    }
+
+    @Test
+    fun threadMutingCreate() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、スレッドミュートのテストで使用されます。 ${this@NotesTestE2E::class} thread mute create test"))
+        assertFalse(notes.state(NotesStateRequest(create.createdNote.id)).isMutedThread)
+        notes.ThreadMuting().create(NotesThreadMutingCreateRequest(create.createdNote.id))
+        assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).isMutedThread)
+    }
+
+    @Test
+    fun threadMutingDelete() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、スレッドミュート解除のテストで使用されます。 ${this@NotesTestE2E::class} thread mute delete test"))
+        assertFalse(notes.state(NotesStateRequest(create.createdNote.id)).isMutedThread)
+        notes.ThreadMuting().create(NotesThreadMutingCreateRequest(create.createdNote.id))
+        assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).isMutedThread)
+        notes.ThreadMuting().delete(NotesThreadMutingDeleteRequest(create.createdNote.id))
+        assertFalse(notes.state(NotesStateRequest(create.createdNote.id)).isMutedThread)
+    }
+
+    @Test
+    fun timeline() = runTest {
+        val timeline = notes.timeline(NotesTimelineRequest())
+        println(timeline)
+    }
+
+    @Test
+    fun unrenote() = runTest {
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))
+        val renoted = notes.create(NotesCreateRequest(renoteId = create.createdNote.id))
+        notes.unrenote(NotesUnrenoteRequest(create.createdNote.id))
+        assertThrows<ClientRequestException> { notes.show(NotesShowRequest(renoted.createdNote.id)) }
+
+    }
+
+    @Test
+    fun userListTimeline() = runTest {
+        val userListTimeline = notes.userListTimeline(NotesUserListTimelineRequest("9ady10e6z5"))
+        println(userListTimeline)
+
+    }
+
+    @Test
+    fun watchingCreate() = runTest {
+        val state = notes.state(NotesStateRequest("9ad9fr34tu"))
+        if (state.isWatching) {
+            notes.Watching().delete(NotesWatchingDeleteRequest("9ad9fr34tu"))
+        }
+        notes.Watching().create(NotesWatchingCreateRequest("9ad9fr34tu"))
+        assertTrue(notes.state(NotesStateRequest("9ad9fr34tu")).isWatching)
+    }
+
+    @Test
+    fun watchingDelete() = runTest {
+        val state = notes.state(NotesStateRequest("9ad9fr34tu"))
+        if (!state.isWatching) {
+            notes.Watching().create(NotesWatchingCreateRequest("9ad9fr34tu"))
+        }
+        notes.Watching().delete(NotesWatchingDeleteRequest("9ad9fr34tu"))
+        assertFalse(notes.state(NotesStateRequest("9ad9fr34tu")).isWatching)
+    }
+}
