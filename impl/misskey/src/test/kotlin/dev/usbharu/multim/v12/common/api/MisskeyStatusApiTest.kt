@@ -5,6 +5,7 @@ import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyStatusApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -27,6 +28,7 @@ class MisskeyStatusApiTest {
         )
     )
 
+    @Suppress("JSON_FORMAT_REDUNDANT")
     @Test
     fun serializationTest() {
 
@@ -39,6 +41,7 @@ class MisskeyStatusApiTest {
         }.decodeFromString("""{"a": "aaaa","b": "bbbb"}""")
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun findByIdTest() = runTest {
         val findById = misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost"))

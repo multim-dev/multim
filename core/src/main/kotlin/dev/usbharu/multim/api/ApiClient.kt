@@ -19,7 +19,6 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         return post.body()
     }
 
-    @OptIn(InternalAPI::class)
     suspend inline fun <reified T, reified R> post(
         content: T,
         path: String,

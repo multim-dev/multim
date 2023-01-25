@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package dev.usbharu.multim.v12.api
 
 import MisskeyTestUtil.createFakeNote
