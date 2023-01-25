@@ -7,7 +7,7 @@ import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyAccountApi
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyStatusApi
-import dev.usbharu.multim.model.nodeinfo.NodeInfo
+import dev.usbharu.multim.model.nodeinfo.v2_0.NodeInfo
 import io.ktor.client.*
 
 

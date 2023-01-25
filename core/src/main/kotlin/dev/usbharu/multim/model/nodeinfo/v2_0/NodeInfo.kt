@@ -1,9 +1,11 @@
-package dev.usbharu.multim.model.nodeinfo
+package dev.usbharu.multim.model.nodeinfo.v2_0
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
-
+@Serializable
+//todo seald classにして基底クラス同じにする。
+// あとついでにversion分ける
 data class NodeInfo(
     val version: String,
     val software: Software,
@@ -12,13 +14,13 @@ data class NodeInfo(
     val openRegistrations: Boolean,
     val usage: Usage
 ) {
-    @kotlinx.serialization.Serializable
+    @Serializable
     data class Software(
         val name: String,
         val version: String
     )
 
-    @kotlinx.serialization.Serializable
+    @Serializable
     enum class Protocol {
         @SerialName("activitypub")
         ACTIVITYPUB,
@@ -51,12 +53,12 @@ data class NodeInfo(
         ZOT
     }
 
-    @kotlinx.serialization.Serializable
+    @Serializable
     data class Services(
         val inbound: List<Inbound>,
         val outBound: List<Outbound>
     ) {
-        @kotlinx.serialization.Serializable
+        @Serializable
         enum class Inbound {
             @SerialName("atom1.0")
             ATOM1,
@@ -83,7 +85,7 @@ data class NodeInfo(
             TWITTER,
         }
 
-        @kotlinx.serialization.Serializable
+        @Serializable
         enum class Outbound {
             @SerialName("atom1.0")
             ATOM1,
@@ -171,13 +173,13 @@ data class NodeInfo(
         }
     }
 
-    @kotlinx.serialization.Serializable
+    @Serializable
     data class Usage(
         val users: Users,
         val localPosts: Int,
         val localComments: Int
     ) {
-        @kotlinx.serialization.Serializable
+        @Serializable
         data class Users(
             val total: Int,
             val activeHalfyear: Int? = null,
