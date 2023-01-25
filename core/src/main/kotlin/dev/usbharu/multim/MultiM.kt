@@ -1,7 +1,6 @@
 package dev.usbharu.multim
 
 import dev.usbharu.multim.api.NodeinfoApi
-import dev.usbharu.multim.api.PlatformApis
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
 import io.ktor.client.*
