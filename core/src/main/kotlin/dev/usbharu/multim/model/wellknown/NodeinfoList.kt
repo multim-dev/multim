@@ -1,4 +1,4 @@
-package dev.usbharu.multim.model.nodeinfo.wellknown
+package dev.usbharu.multim.model.wellknown
 
 import kotlinx.serialization.Serializable
 
