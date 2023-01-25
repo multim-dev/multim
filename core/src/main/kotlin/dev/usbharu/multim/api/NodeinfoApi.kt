@@ -19,6 +19,7 @@ class NodeinfoApi(val httpClient: HttpClient) {
 
     // todo 強制で2.0のが返ってくるのでバージョンを識別する
     suspend fun nodeinfo(nodeinfoLink: NodeinfoList.NodeinfoLink): NodeInfo {
+
         return httpClient.get(nodeinfoLink.href).body()
     }
 }
