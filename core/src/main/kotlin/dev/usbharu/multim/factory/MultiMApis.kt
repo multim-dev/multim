@@ -1,7 +1,7 @@
 package dev.usbharu.multim.factory
 
-import dev.usbharu.multim.api.common.AccountApi
-import dev.usbharu.multim.api.common.StatusApi
+import dev.usbharu.multim.api.AccountApi
+import dev.usbharu.multim.api.StatusApi
 
 abstract class MultiMApis(
     var statusApi: StatusApi,

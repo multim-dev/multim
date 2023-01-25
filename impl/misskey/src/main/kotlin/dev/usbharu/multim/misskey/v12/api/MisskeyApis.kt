@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import dev.usbharu.multim.api.common.PlatformApis
+import dev.usbharu.multim.api.PlatformApis
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 
 class MisskeyApis(misskeyApiClient: MisskeyApiClient) : PlatformApis(misskeyApiClient) {

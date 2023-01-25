@@ -1,7 +1,7 @@
 package dev.usbharu.multim.misskey.v12.common
 
-import dev.usbharu.multim.model.common.Account
-import dev.usbharu.multim.model.common.Avatar
+import dev.usbharu.multim.model.Account
+import dev.usbharu.multim.model.Avatar
 
 class MisskeyAccount(
     val id: String,

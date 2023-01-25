@@ -3,7 +3,7 @@ package dev.usbharu.multim.misskey.v12.converter.misskey.v12
 import dev.usbharu.multim.misskey.v12.common.*
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import dev.usbharu.multim.misskey.v12.model.components.UserLite
-import dev.usbharu.multim.model.common.Status
+import dev.usbharu.multim.model.Status
 
 object NoteConverter {
     fun Note.toStatus(): MisskeyStatus {

@@ -1,13 +1,13 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
-import dev.usbharu.multim.api.common.StatusApi
+import dev.usbharu.multim.api.StatusApi
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyReaction
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.NoteConverter.toStatus
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.ReactionConverter.toReactions
 import dev.usbharu.multim.misskey.v12.model.*
-import dev.usbharu.multim.model.common.*
+import dev.usbharu.multim.model.*
 
 
 /**

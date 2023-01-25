@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
-import dev.usbharu.multim.api.common.AccountApi
+import dev.usbharu.multim.api.AccountApi
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyAccount
 import dev.usbharu.multim.misskey.v12.common.MisskeyProfile
@@ -12,7 +12,7 @@ import dev.usbharu.multim.misskey.v12.model.*
 import dev.usbharu.multim.misskey.v12.model.components.MeDetailed
 import dev.usbharu.multim.misskey.v12.model.components.UserDetailedNotMe
 import dev.usbharu.multim.misskey.v12.model.components.UserLite
-import dev.usbharu.multim.model.common.*
+import dev.usbharu.multim.model.*
 
 class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
     override suspend fun userTimeline(

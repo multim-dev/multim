@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common
 
-import dev.usbharu.multim.model.common.Relation
+import dev.usbharu.multim.model.Relation
 
 class MisskeyRelation(
     myself: MisskeyAccount,

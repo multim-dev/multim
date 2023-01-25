@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common
 
-import dev.usbharu.multim.model.common.*
+import dev.usbharu.multim.model.*
 
 class MisskeyStatus(
     override val id: MisskeyStatusId,

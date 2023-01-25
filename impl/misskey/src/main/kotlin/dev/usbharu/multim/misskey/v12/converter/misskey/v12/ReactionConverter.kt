@@ -4,7 +4,7 @@ import dev.usbharu.multim.misskey.v12.common.MisskeyReaction
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import dev.usbharu.multim.misskey.v12.model.components.NoteReaction
 import dev.usbharu.multim.misskey.v12.model.components.Reactions
-import dev.usbharu.multim.model.common.Reaction
+import dev.usbharu.multim.model.Reaction
 
 object ReactionConverter {
     fun NoteReaction.toReaction(note: Note): Reaction {

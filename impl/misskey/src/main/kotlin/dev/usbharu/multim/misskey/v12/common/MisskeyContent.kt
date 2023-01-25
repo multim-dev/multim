@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common
 
-import dev.usbharu.multim.model.common.StatusContent
+import dev.usbharu.multim.model.StatusContent
 
 class MisskeyContent(val content: String) : StatusContent() {
     override fun getText(): String {

@@ -1,6 +1,6 @@
 package dev.usbharu.multim.misskey.factory
 
-import dev.usbharu.multim.api.common.PlatformApis
+import dev.usbharu.multim.api.PlatformApis
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis

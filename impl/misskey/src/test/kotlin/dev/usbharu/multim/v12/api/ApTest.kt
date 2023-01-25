@@ -5,7 +5,7 @@ package dev.usbharu.multim.v12.api
 import MisskeyTestUtil.checkAuth
 import MisskeyTestUtil.createFakeNoteToString
 import MisskeyTestUtil.json
-import dev.usbharu.multim.api.common.createHttpClient
+import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.api.Ap
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.ApShowRequest

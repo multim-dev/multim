@@ -1,9 +1,9 @@
 package dev.usbharu.multim.misskey.v12.common
 
-import dev.usbharu.multim.model.common.Account
-import dev.usbharu.multim.model.common.Field
-import dev.usbharu.multim.model.common.Profile
-import dev.usbharu.multim.model.common.ProfileContent
+import dev.usbharu.multim.model.Account
+import dev.usbharu.multim.model.Field
+import dev.usbharu.multim.model.Profile
+import dev.usbharu.multim.model.ProfileContent
 
 class MisskeyProfile(
     account: Account,
