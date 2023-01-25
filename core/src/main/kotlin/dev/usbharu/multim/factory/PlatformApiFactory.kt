@@ -1,7 +1,7 @@
 package dev.usbharu.multim.factory
 
 import dev.usbharu.multim.api.PlatformApis
-import dev.usbharu.multim.model.wellknown.nodeinfo.v2_0.NodeInfo
+import dev.usbharu.multim.model.wellknown.nodeinfo.NodeInfo
 import io.ktor.client.*
 
 interface PlatformApiFactory {
