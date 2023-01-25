@@ -20,7 +20,7 @@ data class DriveFile(
     val folderId: String?,
     val folder: DriveFolder? = null,
     val userId: String?,
-    val user: UserLite
+    val user: UserLite?
 )
 
 @Serializable

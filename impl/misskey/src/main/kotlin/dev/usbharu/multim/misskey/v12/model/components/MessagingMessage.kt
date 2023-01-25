@@ -10,7 +10,7 @@ data class MessagingMessage(
     val userId: String,
     val text: String?,
     val fileId: String,
-    val file: File? = null,
+    val file: DriveFile? = null,
     val recipientId: String?,
     val recipient: UserLite? = null,
     val groupId: String?,

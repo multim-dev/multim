@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.model.components
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
@@ -21,7 +22,7 @@ data class Note(
     val mentions: List<String>? = listOf(),
     val visibleUserIds: List<String>? = listOf(),
     val fileIds: List<String>? = listOf(),
-    val files: List<File>? = listOf(),
+    val files: List<DriveFile>? = listOf(),
     val tags: List<String>? = listOf(),
     val poll: Poll? = null,
     val channelId: String? = null,
@@ -42,7 +43,19 @@ data class Note(
     class MyReaction
 
     @Serializable
-    class Poll
+    data class Poll(
+        val multiple:Boolean,
+        val expiresAt:Instant? = null,
+        val expiredAfter:Long? = null,
+        val choices:Set<Choice>? = setOf()
+    ) {
+        @Serializable
+        data class Choice(
+            val text:String,
+            val votes:Int = 0,
+            val isVoted:Boolean = false
+        )
+    }
 }
 
 typealias Reactions = Map<String, Int>

@@ -6,6 +6,7 @@ import MisskeyTestUtil.createFakeNote
 import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
 import dev.usbharu.multim.api.createHttpClient
+import dev.usbharu.multim.misskey.v12.api.Drive
 import dev.usbharu.multim.misskey.v12.api.Notes
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
@@ -15,8 +16,10 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import org.junit.jupiter.api.Assertions.*
@@ -183,13 +186,13 @@ class NotesTest {
 
 class NotesTestE2E {
 
-    val notes = Notes(
-        MisskeyApiClient(
-            System.getProperty("multim_misskey_token"),
-            System.getProperty("multim_misskey_instance"),
-            createHttpClient()
-        )
+    val client = MisskeyApiClient(
+        System.getProperty("multim_misskey_token"),
+        System.getProperty("multim_misskey_instance"),
+        createHttpClient()
     )
+    val notes = Notes(client)
+    val drive = Drive(client)
 
     @Test
     fun globalTimeline() = runTest {
@@ -224,6 +227,36 @@ class NotesTestE2E {
             )
         )
         println(created.createdNote)
+    }
+
+    @Test
+    fun createWithFile() = runTest {
+        val encode = withContext(Dispatchers.IO) {
+            NotesTestE2E::class.java.classLoader.getResourceAsStream("notes/create/files/note_with_file_test.jpg")!!
+                .readAllBytes()
+        }
+
+        val driveFile = drive.Files().create(DriveFilesCreateRequest(file = encode))
+        val createdNote = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultiMのテストで作成され、ファイル添付のテストで使用されます。",
+                fileIds = setOf(driveFile.id)
+            )
+        )
+
+        assertEquals(driveFile, createdNote.createdNote.files?.firstOrNull())
+    }
+
+    @Test
+    fun createWithPoll() = runTest {
+        val poll = NotesCreateRequest.Poll(choices = setOf("a", "b", "c"))
+        val create = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultiMのテストで作成され、投票付きノートの作成で使用されます。 ${this@NotesTestE2E::class} create note with poll",
+                poll = poll
+            )
+        )
+        assertEquals(poll.choices.map { it },create.createdNote.poll?.choices?.map { it.text });
     }
 
     @Test
