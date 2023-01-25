@@ -9,7 +9,7 @@ import io.ktor.client.request.*
 // todo well-knwonだけでパッケージ作ったほうがいいかも
 class NodeinfoApi(val httpClient: HttpClient) {
     suspend fun wellKnownNodeinfo(url:String): NodeinfoList {
-        return httpClient.get("$url/.well-known/nodeinfo").body()
+        return httpClient.get("$url.well-known/nodeinfo").body()
     }
 
     fun nodeinfoLink(nodeinfoList: NodeinfoList): NodeinfoList.NodeinfoLink {
@@ -21,5 +21,9 @@ class NodeinfoApi(val httpClient: HttpClient) {
     suspend fun nodeinfo(nodeinfoLink: NodeinfoList.NodeinfoLink): NodeInfo {
 
         return httpClient.get(nodeinfoLink.href).body()
+    }
+
+    suspend fun nodeinfo(url:String):NodeInfo{
+        return nodeinfo(nodeinfoLink(wellKnownNodeinfo(url)))
     }
 }
