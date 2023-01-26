@@ -45,6 +45,6 @@ class MisskeyStatusApiTest {
     @Test
     fun findByIdTest() = runTest {
         val findById = misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost"))
-        println(findById.content.getText())
+        println(findById.content.text)
     }
 }

@@ -19,7 +19,7 @@ import dev.usbharu.multim.model.*
 class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
     override suspend fun post(status: StatusForPost): Status {
 
-        val create = misskeyApis.notes.create(NotesCreateRequest(text = status.content.getText()))
+        val create = misskeyApis.notes.create(NotesCreateRequest(text = status.content.text))
         return create.createdNote.toStatus()
     }
 
@@ -86,7 +86,7 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
     override suspend fun replyTo(id: StatusId, status: StatusForPost): Status {
         return misskeyApis.notes.create(
             NotesCreateRequest(
-                replyId = id.fetchId().id, text = status.content.getText()
+                replyId = id.fetchId().id, text = status.content.text
             )
         ).createdNote.toStatus()
     }

@@ -5,7 +5,7 @@ import dev.usbharu.multim.model.*
 class MisskeyStatus(
     override val id: MisskeyStatusId,
     override val account: MisskeyAccount,
-    content: StatusContent,
+    content: Content,
     reactions: Map<Reaction, Int> = emptyMap(),
     myReactions: List<Reaction> = emptyList(),
     repostCount: Int = 0,
@@ -13,7 +13,7 @@ class MisskeyStatus(
     reposted: Boolean = false,
     emojis: List<Emoji> = emptyList(),
     tags: List<Tag> = emptyList(),
-    language: String? = null
+    language: String? = null,
 ) : Status(
     id,
     account,
