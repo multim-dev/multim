@@ -14,6 +14,8 @@ class MisskeyStatus(
     emojis: List<Emoji> = emptyList(),
     tags: List<Tag> = emptyList(),
     language: String? = null,
+    poll: Poll? = null,
+    files: Files? = null,
 ) : Status(
     id,
     account,
@@ -25,5 +27,7 @@ class MisskeyStatus(
     reposted,
     emojis,
     tags,
-    language
+    language,
+    poll,
+    files
 )

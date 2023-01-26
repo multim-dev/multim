@@ -2,10 +2,7 @@ package dev.usbharu.multim.misskey.v12.common.api
 
 import dev.usbharu.multim.api.AccountApi
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
-import dev.usbharu.multim.misskey.v12.common.MisskeyAccount
-import dev.usbharu.multim.misskey.v12.common.MisskeyProfile
-import dev.usbharu.multim.misskey.v12.common.MisskeyProfileContent
-import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
+import dev.usbharu.multim.misskey.v12.common.*
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.NoteConverter.toStatus
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.UsersConverter.toRelation
 import dev.usbharu.multim.misskey.v12.model.*
@@ -60,14 +57,14 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
                 is MeDetailed -> MisskeyProfile(
                     account,
                     account.isBot ?: false,
-                    MisskeyProfileContent(show.description ?: ""),
+                    MisskeyContent(show.description ?: ""),
                     show.followingCount,
                     show.followersCount,
                 )
                 is UserDetailedNotMe -> MisskeyProfile(
                     account,
                     account.isBot ?: false,
-                    MisskeyProfileContent(
+                    MisskeyContent(
                         show.description ?: ""
                     ),
                     show.followingCount,
