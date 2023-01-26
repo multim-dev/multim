@@ -11,7 +11,7 @@ abstract class Poll(
 )
 
 abstract class PollForPost(
-    val options: List<OptionForPost>
+    val options: List<OptionForPost>,
     val multiple: Boolean,
     val expiredAt: Instant,
 )
