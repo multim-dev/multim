@@ -11,7 +11,7 @@ class Miauth(val client: MisskeyApiClient) {
 
     suspend fun auth(): String {
 
-        val body = client.get(baseUrl + "/miauth/" + UUID.randomUUID() + "/") {
+        val body = client.get(client.baseUrl + "/miauth/" + UUID.randomUUID() + "/") {
             url {
 
                 parameters.append("name", "multim-test")
@@ -25,7 +25,4 @@ class Miauth(val client: MisskeyApiClient) {
         return client.post("", "/api/miauth/${params.sessionId}/check")
     }
 
-    companion object {
-        val baseUrl: String = System.getProperty("multim_misskey_instance")
-    }
 }

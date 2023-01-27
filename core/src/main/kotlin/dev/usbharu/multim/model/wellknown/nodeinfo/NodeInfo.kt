@@ -76,7 +76,7 @@ data class V2_0(
     @Serializable
     data class Services(
         val inbound: List<Inbound>,
-        val outBound: List<Outbound>
+        val outbound: List<Outbound>
     ) {
         @Serializable
         enum class Inbound {

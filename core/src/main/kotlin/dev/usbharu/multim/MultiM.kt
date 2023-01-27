@@ -19,8 +19,8 @@ object MultiM {
      * @param token 使用するトークン、実装によって変わる
      * @return 作成されたAPIクライアント
      */
-    suspend fun createClient(url: String, token: String, factory: PlatformApiFactory): MultiMApis {
-        val httpClient = HttpClient(CIO)
+    suspend fun createClient(url: String, token: String, factory: PlatformApiFactory,httpClient:HttpClient = HttpClient(CIO)): MultiMApis {
+
         val nodeinfo = NodeinfoApi(httpClient).nodeinfo(url)
         return factory.factory(nodeInfo = nodeinfo, httpClient, token, url)
     }
