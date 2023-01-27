@@ -6,7 +6,6 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.util.*
 
 abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
@@ -49,6 +48,6 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     }
 }
 
- fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient{
-     return HttpClient(CIO)
- }
+fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient {
+    return HttpClient(CIO)
+}

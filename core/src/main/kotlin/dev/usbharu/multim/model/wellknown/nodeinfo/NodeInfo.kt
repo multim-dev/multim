@@ -10,7 +10,10 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable(with = NodeinfoSerializer::class)
-sealed class NodeInfo
+sealed class NodeInfo{
+    abstract fun getSoftwareName():String
+    abstract fun getSoftwareVersion():String
+}
 
 @Serializer(forClass = NodeInfo::class)
 object NodeinfoSerializer : JsonContentPolymorphicSerializer<NodeInfo>(NodeInfo::class){
@@ -206,6 +209,14 @@ data class V2_0(
             val activeMonth: Int? = null
         )
     }
+
+    override fun getSoftwareName(): String {
+        return software.name
+    }
+
+    override fun getSoftwareVersion(): String {
+        return software.version
+    }
 }
 
 @Serializable
@@ -389,6 +400,14 @@ data class V2_1(
             val activeHalfyear: Int? = null,
             val activeMonth: Int? = null
         )
+    }
+
+    override fun getSoftwareName(): String {
+        return software.name
+    }
+
+    override fun getSoftwareVersion(): String {
+        return software.version
     }
 
 }
