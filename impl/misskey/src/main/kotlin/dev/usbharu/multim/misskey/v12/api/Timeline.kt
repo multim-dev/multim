@@ -1,6 +1,5 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import dev.usbharu.multim.misskey.v12.api.Miauth.Companion.baseUrl
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
@@ -26,7 +25,7 @@ class Timeline(val client: MisskeyApiClient) {
 
 //        println("end session?")
 
-        val urlString = "ws" + baseUrl.replaceFirst(Regex("http"), "") + "/streaming"
+        val urlString = "ws" + client.baseUrl.replaceFirst(Regex("http"), "") + "/streaming"
         println(urlString)
         client.client.ws(urlString) {
             awaitAll(
