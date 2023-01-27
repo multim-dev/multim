@@ -4,10 +4,26 @@ import dev.usbharu.multim.model.wellknown.NodeinfoList
 import dev.usbharu.multim.model.wellknown.nodeinfo.NodeInfo
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.http.ContentType.Application.Json
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 // todo well-knwonだけでパッケージ作ったほうがいいかも
-class NodeinfoApi(val httpClient: HttpClient) {
+class NodeinfoApi(var httpClient: HttpClient) {
+
+    init {
+        httpClient.config {
+            install(ContentNegotiation) {
+                json(Json{
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                })
+            }
+        }
+    }
+
     suspend fun wellKnownNodeinfo(url:String): NodeinfoList {
         return httpClient.get("$url.well-known/nodeinfo").body()
     }
