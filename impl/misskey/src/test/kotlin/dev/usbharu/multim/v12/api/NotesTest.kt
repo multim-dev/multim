@@ -16,10 +16,8 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import org.junit.jupiter.api.Assertions.*
@@ -399,11 +397,14 @@ class NotesTestE2E {
 
     @RepeatedIfExceptionsTest(repeats = 4)
 //    @Test
-    fun unrenote() = runTest {
+    fun unrenote() = runBlocking {
         val create =
             notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))
+        delay(1000)
         val renoted = notes.create(NotesCreateRequest(renoteId = create.createdNote.id))
+        delay(1000)
         notes.unrenote(NotesUnrenoteRequest(create.createdNote.id))
+        delay(1000)
         assertThrows<ClientRequestException> { notes.show(NotesShowRequest(renoted.createdNote.id)) }
 
     }

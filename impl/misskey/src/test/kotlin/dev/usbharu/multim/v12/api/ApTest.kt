@@ -15,6 +15,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.decodeFromString
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -90,15 +92,17 @@ class ApTestE2E {
 
     @RepeatedIfExceptionsTest(repeats = 4)
 //    @Test
-    fun show_showUserRequest_respondTypeUser() = runTest {
+    fun show_showUserRequest_respondTypeUser() = runBlocking {
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
+        delay(1000)
         assertInstanceOf(ApShowResponse.TypeUser::class.java,show)
     }
 
     @RepeatedIfExceptionsTest(repeats = 4)
 //    @Test
-    fun show_showNoteRequest_respondTypeNote() = runTest {
+    fun show_showNoteRequest_respondTypeNote() = runBlocking {
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
+        delay(1000)
         assertInstanceOf(ApShowResponse.TypeNote::class.java,show)
     }
 }
