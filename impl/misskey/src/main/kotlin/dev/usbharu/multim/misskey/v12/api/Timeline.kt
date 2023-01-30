@@ -1,79 +1,109 @@
 package dev.usbharu.multim.misskey.v12.api
 
+import dev.usbharu.multim.misskey.v12.common.api.Callback
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
-import io.ktor.client.plugins.websocket.*
+import dev.usbharu.multim.misskey.v12.common.api.json
+import dev.usbharu.multim.misskey.v12.model.StreamRequest
+import dev.usbharu.multim.misskey.v12.model.StreamResponse
+import dev.usbharu.multim.misskey.v12.model.StreamResponse.ChannelResponse.ChannelBody.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.decodeFromString
 
 class Timeline(val client: MisskeyApiClient) {
+    fun connectChannel(channelConnectRequest: StreamRequest.ConnectRequest) {
+        client.Streaming().send(channelConnectRequest)
+    }
 
-    val sendMutex: Mutex = Mutex()
-    val receiveMutex: Mutex = Mutex()
-
-    val sendList: MutableList<String> = mutableListOf()
-
-    val receiveCallbackList: MutableList<(String) -> Unit> = mutableListOf()
-
-    suspend fun connect() {
-//        withContext(Dispatchers.Default){
-//            webSocketSession = client.webSocketSession("wss" + baseUrl.replaceFirst(Regex("https?"),"")+"/streaming")
-//        }
-
-//        println("end session?")
-
-        val urlString = "ws" + client.baseUrl.replaceFirst(Regex("http"), "") + "/streaming"
-        println(urlString)
-        client.client.ws(urlString) {
-            awaitAll(
-                async {
-                    incoming.consumeEach {
-                        when (it) {
-                            is Frame.Close -> println("Connection closed")
-                            is Frame.Text -> {
-                                val readText = it.readText()
-                                println("Received: $readText")
-                                for (function in receiveCallbackList) {
-                                    function.invoke(readText)
-                                }
-                            }
-                            is Frame.Binary -> println("binary")
-                            is Frame.Ping -> println("ping")
-                            is Frame.Pong -> println("pong")
-                            else -> println("else")
-                        }
+    fun connectChannel(
+        channelConnectRequest: StreamRequest.ConnectRequest,
+        callBack: (StreamResponse.ChannelResponse.ChannelBody) -> Unit
+    ) {
+        val id = channelConnectRequest.body.id
+        client.Streaming().send(channelConnectRequest)
+        val callback: Callback = {
+            if (it is Frame.Text) {
+                val response: StreamResponse.ChannelResponse = json.decodeFromString(it.readText())
+                when (val body = response.body) {
+                    is NoteBody -> if (id == body.id) {
+                        callBack(body)
                     }
-                },
-                async {
-                    sendMutex.withLock {
 
-                        val text = sendList.removeLastOrNull()
-                        if (text != null) {
-                            outgoing.send(Frame.Text(text))
-                        }
+                    is FollowBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is FollowedBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is MentionBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is MessagingMessageBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is NotificationBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is ReadAllMessagingMessageBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is ReadAllNotificationsBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is ReadAllUnreadMentionsBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is ReadAllUnreadSpecifiedNotesBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is RenoteBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is ReplyBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is UnfollowBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is UnreadMentionBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is UnreadMessagingMessageBody -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is UnreadNotification -> if (id == body.id) {
+                        callBack(body)
+                    }
+
+                    is UnreadSpecifiedNoteBody -> if (id == body.id) {
+                        callBack(body)
                     }
                 }
-            )
+            }
         }
-
-    }
-
-    suspend fun send(text: String) {
-
-        sendMutex.withLock {
-            sendList.add(text)
-            println("send $text")
-        }
-    }
-
-    suspend fun addCallback(callback: (String) -> Unit) {
-        receiveMutex.withLock {
-            receiveCallbackList.add(callback)
-        }
+        client.Streaming().listen(id, callback)
     }
 
 
+    fun sendToChannel(channelRequest: StreamRequest.ChannelRequest) {
+        client.Streaming().send(channelRequest)
+    }
+
+    fun disconnectChannel(channelDisconnectRequest: StreamRequest.DisconnectRequest){
+        client.Streaming().send(channelDisconnectRequest)
+        client.Streaming().unlisted(channelDisconnectRequest.body.id)
+    }
 }
