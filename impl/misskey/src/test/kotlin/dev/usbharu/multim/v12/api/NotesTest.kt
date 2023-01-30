@@ -334,6 +334,7 @@ class NotesTestE2E {
             notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"))
         val notesCreateResponse = notes.create(NotesCreateRequest(renoteId = create.createdNote.id))
         val renotes = notes.renotes(NotesRenoteRequest(create.createdNote.id))
+        assertEquals(listOf(notesCreateResponse.createdNote),renotes)
         println(renotes)
     }
 
