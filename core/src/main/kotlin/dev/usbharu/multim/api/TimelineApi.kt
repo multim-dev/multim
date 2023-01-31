@@ -6,7 +6,7 @@ import dev.usbharu.multim.model.Timeline
 interface TimelineApi {
     suspend fun availableTimelines(): List<Timeline>
 
-    suspend fun onReceive(callback: (List<Status>) -> Unit)
+    suspend fun listen(timeline: Timeline,callback: (List<Status>) -> Unit)
 
     // todo 返り値を詳細にする
     suspend fun connect(timeline: Timeline): Boolean
