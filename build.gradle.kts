@@ -3,11 +3,12 @@ import java.util.Properties
 plugins {
     kotlin("jvm") version "1.8.0" apply false
     kotlin("plugin.serialization") version "1.8.0" apply false
+    id("maven-publish")
 }
 
 
 
-group = "org.example"
+group = "dev.usbharu"
 version = "1.0-SNAPSHOT"
 
 allprojects {
@@ -20,10 +21,11 @@ subprojects {
     apply {
         plugin("org.jetbrains.kotlin.jvm")
         plugin("org.jetbrains.kotlin.plugin.serialization")
+        plugin("maven-publish")
     }
 
-    group = "org.example"
-    version = "1.0-SNAPSHOT"
+    group = rootProject.group
+    version = rootProject.version
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
@@ -67,6 +69,23 @@ subprojects {
         "testImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
         "testImplementation"("org.slf4j:slf4j-simple:2.0.4")
         "testImplementation"("io.github.artsok:rerunner-jupiter:2.1.6")
+    }
+
+
+    afterEvaluate{
+        publishing{
+            publications{
+                create<MavenPublication>("maven"){
+                    groupId = project.group.toString()
+                    artifactId = "multim-${project.name}"
+                    version = project.version.toString()
+
+                    from(components["kotlin"])
+                }
+
+
+            }
+        }
     }
 
 }
