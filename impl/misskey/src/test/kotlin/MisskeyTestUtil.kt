@@ -6,6 +6,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.datetime.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -71,7 +72,8 @@ object MisskeyTestUtil {
             id = id,
             userId = userId,
             user = UserLite(id = userId, name = username, username = username),
-            text = text
+            text = text,
+            createdAt = Clock.System.now()
         )
     }
 
