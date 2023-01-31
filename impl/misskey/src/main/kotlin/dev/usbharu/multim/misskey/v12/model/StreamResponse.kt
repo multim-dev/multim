@@ -17,116 +17,117 @@ sealed class StreamResponse {
     ) : StreamResponse() {
         @Serializable
         sealed class ChannelBody {
+            abstract val id: String
 
             @SerialName("note")
             @Serializable
             data class NoteBody(
-                val id: String,
+                override val id: String,
                 val body: Note
             ) : ChannelBody()
 
             @SerialName("notification")
             @Serializable
             data class NotificationBody(
-                val id: String,
+                override val id: String,
                 val body: Notification
             ) : ChannelBody()
 
             @SerialName("mention")
             @Serializable
             data class MentionBody(
-                val id: String,
+                override val id: String,
                 val body: Note
             ) : ChannelBody()
 
             @SerialName("reply")
             @Serializable
             data class ReplyBody(
-                val id: String,
+                override val id: String,
                 val body: Note
             ) : ChannelBody()
 
             @SerialName("renote")
             @Serializable
             data class RenoteBody(
-                val id: String,
+                override val id: String,
                 val body: Note
             ) : ChannelBody()
 
             @SerialName("follow")
             @Serializable
             data class FollowBody(
-                val id: String,
+                override val id: String,
                 val body: User
             ) : ChannelBody()
 
             @SerialName("followed")
             @Serializable
             data class FollowedBody(
-                val id: String,
+                override val id: String,
                 val body: User
             ) : ChannelBody()
 
             @SerialName("unfollow")
             @Serializable
             data class UnfollowBody(
-                val id: String,
+                override val id: String,
                 val body: User
             ) : ChannelBody()
 
             @SerialName("messagingMessage")
             @Serializable
             data class MessagingMessageBody(
-                val id: String,
+                override val id: String,
                 val body: MessagingMessage
             ) : ChannelBody()
 
             @SerialName("readAllNotifications")
             @Serializable
             data class ReadAllNotificationsBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("unreadNotification")
             @Serializable
             data class UnreadNotification(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("unreadMention")
             @Serializable
             data class UnreadMentionBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("readAllUnreadMentions")
             @Serializable
             data class ReadAllUnreadMentionsBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("unreadSpecifiedNote")
             @Serializable
             data class UnreadSpecifiedNoteBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("readAllUnreadSpecifiedNotes")
             @Serializable
             data class ReadAllUnreadSpecifiedNotesBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("unreadMessagingMessage")
             @Serializable
             data class UnreadMessagingMessageBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
 
             @SerialName("readAllMessagingMessage")
             @Serializable
             data class ReadAllMessagingMessageBody(
-                val id: String
+                override val id: String
             ) : ChannelBody()
         }
     }
