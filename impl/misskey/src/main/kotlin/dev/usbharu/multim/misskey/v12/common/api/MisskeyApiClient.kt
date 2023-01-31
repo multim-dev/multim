@@ -11,13 +11,14 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 val json = Json {
@@ -52,40 +53,58 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
             json(json = json)
         }
     }) {
-    inner class Streaming {
+
+    internal val streaming = Streaming()
+
+    internal inner class Streaming {
 
         val callbackMutex = Mutex()
         val callbackList = mutableMapOf<String, Callback>()
 
-        var webSocketSession: DefaultClientWebSocketSession? = null
-
         val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+        var commands = MutableStateFlow("a")
         fun connect() {
-            coroutineScope.launch {
-                webSocketSession =
-                    client.webSocketSession("ws" + baseUrl.replaceFirst("http", "") + "/streaming")
-                webSocketSession?.incoming?.consumeEach { frame ->
-                    callbackMutex.withLock {
-                        callbackList.forEach {
-                            it.value.invoke(frame)
+            val launch = coroutineScope.launch {
+                client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming") {
+                    awaitAll(
+                        coroutineScope.async {
+                            commands.onEach { println("Sending :$it");outgoing.send(Frame.Text(it)) }
+                                .launchIn(coroutineScope)
+                        },
+                        coroutineScope.async {
+                            incoming.consumeEach {
+                                callbackMutex.withLock {
+                                    callbackList.forEach { mutableEntry ->
+                                        mutableEntry.value.invoke(it)
+                                    }
+                                }
+                            }
                         }
-                    }
+                    )
                 }
+                println("connected")
+
             }
+//            launch.join()
         }
 
         suspend fun disconnect() {
             coroutineScope.launch {
-                webSocketSession?.close()
+//                webSocketSession?.close()
             }.cancelAndJoin()
         }
 
         inline fun <reified T> send(data: T) {
-            if (webSocketSession == null) {
-                connect()
-            }
             coroutineScope.launch {
-                webSocketSession?.sendSerialized(data)
+                val value = json.encodeToString(data)
+                commands.emit(value)
+            }
+        }
+
+        fun send(data: String) {
+            coroutineScope.launch {
+                commands.emit(data)
             }
         }
 

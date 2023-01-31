@@ -41,7 +41,7 @@ sealed class StreamRequest {
     @Serializable
     data class ChannelRequest(
         val body: Body
-    ) {
+    ) : StreamRequest() {
         @Serializable
         sealed class Body(
             val id: String
@@ -54,7 +54,7 @@ sealed class StreamRequest {
     @Serializable
     data class DisconnectRequest(
         val body: Body
-    ) {
+    ) : StreamRequest() {
         @Serializable
         data class Body(
             val id: String

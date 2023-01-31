@@ -8,10 +8,12 @@ import dev.usbharu.multim.misskey.v12.model.StreamResponse
 import dev.usbharu.multim.misskey.v12.model.StreamResponse.ChannelResponse.ChannelBody.*
 import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class Timeline(val client: MisskeyApiClient) {
     fun connectChannel(channelConnectRequest: StreamRequest.ConnectRequest) {
-        client.Streaming().send(channelConnectRequest)
+        client.Streaming().send(channelConnectRequest as StreamRequest)
     }
 
     fun connectChannel(
@@ -19,7 +21,7 @@ class Timeline(val client: MisskeyApiClient) {
         callBack: (StreamResponse.ChannelResponse.ChannelBody) -> Unit
     ) {
         val id = channelConnectRequest.body.id
-        client.Streaming().send(channelConnectRequest)
+        client.streaming.send(channelConnectRequest as StreamRequest)
         val callback: Callback = {
             if (it is Frame.Text) {
                 val response: StreamResponse.ChannelResponse = json.decodeFromString(it.readText())
@@ -94,16 +96,16 @@ class Timeline(val client: MisskeyApiClient) {
                 }
             }
         }
-        client.Streaming().listen(id, callback)
+        client.streaming.listen(id, callback)
     }
 
 
     fun sendToChannel(channelRequest: StreamRequest.ChannelRequest) {
-        client.Streaming().send(channelRequest)
+        client.streaming.send(channelRequest)
     }
 
     fun disconnectChannel(channelDisconnectRequest: StreamRequest.DisconnectRequest){
-        client.Streaming().send(channelDisconnectRequest)
-        client.Streaming().unlisted(channelDisconnectRequest.body.id)
+        client.streaming.send(channelDisconnectRequest as StreamRequest)
+        client.streaming.unlisted(channelDisconnectRequest.body.id)
     }
 }
