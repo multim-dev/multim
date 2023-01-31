@@ -1,4 +1,4 @@
 package dev.usbharu.multim.model
 
-abstract class Timeline {
+abstract class Timeline(open val name:String) {
 }
