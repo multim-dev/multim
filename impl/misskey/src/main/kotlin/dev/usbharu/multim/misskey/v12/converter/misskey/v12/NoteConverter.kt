@@ -20,10 +20,12 @@ object NoteConverter {
         )
     }
 
-    fun Note.fromStatus(status: Status): Note {
+    fun Note.Companion.fromStatus(status: Status): Note {
         if (status is MisskeyStatus) {
             return Note(
                 id = status.id.id,
+                text = status.content.text,
+                createdAt = status.createdAt,
                 userId = status.account.id,
                 user = UserLite(
                     id = status.account.id,

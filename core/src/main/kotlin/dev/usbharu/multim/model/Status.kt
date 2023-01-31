@@ -1,5 +1,8 @@
 package dev.usbharu.multim.model
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+
 abstract class Status(
     open val id: StatusId,
     open val account: Account,
@@ -13,7 +16,8 @@ abstract class Status(
     val tags: List<Tag> = emptyList(),
     val language: String? = null,
     val poll: Poll? = null,
-    val files: Files? = null
+    val files: Files? = null,
+    val createdAt:Instant = Clock.System.now()
 )
 
 abstract class StatusForPost(

@@ -7,6 +7,7 @@ import kotlinx.serialization.Transient
 @Serializable
 data class Note(
     val id: String,
+    val createdAt:Instant,
     val text: String? = null,
     val cw: String? = null,
     val userId: String,
