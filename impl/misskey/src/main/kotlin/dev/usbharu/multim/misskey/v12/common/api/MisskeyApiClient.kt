@@ -66,7 +66,7 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
         var commands = MutableStateFlow("a")
         fun connect() {
             val launch = coroutineScope.launch {
-                client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming") {
+                client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming?i=$token") {
                     awaitAll(
                         coroutineScope.async {
                             commands.onEach { println("Sending :$it");outgoing.send(Frame.Text(it)) }

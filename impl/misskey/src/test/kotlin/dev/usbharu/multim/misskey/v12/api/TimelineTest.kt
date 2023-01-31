@@ -70,6 +70,7 @@ class TimelineTestE2E {
 
     @Test
     fun sendToChannelTest() {
+
     }
 
     @Test
