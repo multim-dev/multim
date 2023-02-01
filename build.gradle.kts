@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.plugin.sources.getVisibleSourceSetsFromAssociateCompilations
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.Properties
+import java.util.*
+
 plugins {
     kotlin("jvm") version "1.8.0" apply false
     kotlin("plugin.serialization") version "1.8.0" apply false
@@ -27,11 +29,23 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
+    val compileKotlin: KotlinCompile by tasks
+    compileKotlin.kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    val compileTestKotlin: KotlinCompile by tasks
+    compileTestKotlin.kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
 
-    tasks.getByName("test",Test::class) {
+
+
+    tasks.getByName("test", Test::class) {
         val props = Properties()
 //
         try {
@@ -70,22 +84,4 @@ subprojects {
         "testImplementation"("org.slf4j:slf4j-simple:2.0.4")
         "testImplementation"("io.github.artsok:rerunner-jupiter:2.1.6")
     }
-
-
-    afterEvaluate{
-        publishing{
-            publications{
-                create<MavenPublication>("maven"){
-                    groupId = project.group.toString()
-                    artifactId = "multim-${project.name}"
-                    version = project.version.toString()
-
-                    from(components["kotlin"])
-                }
-
-
-            }
-        }
-    }
-
 }
