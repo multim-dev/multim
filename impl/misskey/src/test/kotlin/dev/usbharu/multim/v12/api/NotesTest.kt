@@ -229,9 +229,8 @@ class NotesTestE2E {
 
     @Test
     fun createWithFile() = runTest {
-        val encode = withContext(Dispatchers.IO) {
-            NotesTestE2E::class.java.classLoader.getResourceAsStream("notes/create/files/note_with_file_test.jpg")!!
-                .readAllBytes()
+        val encode : ByteArray = withContext(Dispatchers.IO) {
+            NotesTestE2E::class.java.classLoader.getResourceAsStream("notes/create/files/note_with_file_test.jpg")!!.readBytes()
         }
 
         val driveFile = drive.Files().create(DriveFilesCreateRequest(file = encode))
