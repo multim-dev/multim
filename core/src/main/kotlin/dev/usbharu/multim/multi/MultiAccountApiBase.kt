@@ -7,13 +7,11 @@ import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.ServiceInfoFactory
 import java.security.MessageDigest
 
-class MultiAccountApiBase(private val serviceList: List<ServiceInfo>) {
+class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
 
     val factory = ServiceInfoFactory(serviceList)
 
     val httpClient = createHttpClient()
-
-    val hashAlgorithm = MessageDigest.getInstance("SHA-1")
 
     val apiClientMap = mutableMapOf<Int, MultiMApis>()
     suspend fun addAccount(url: String, token: String): Int {
