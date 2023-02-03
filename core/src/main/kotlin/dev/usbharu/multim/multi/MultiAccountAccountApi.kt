@@ -2,10 +2,8 @@ package dev.usbharu.multim.multi
 
 import dev.usbharu.multim.api.AccountApi
 import dev.usbharu.multim.model.*
-import dev.usbharu.multim.multi.model.MultiAccountAccount
 import dev.usbharu.multim.multi.model.MultiAccountProfile
 import dev.usbharu.multim.multi.model.MultiAccountStatus
-import dev.usbharu.multim.multi.model.MultiAccountStatusId
 
 class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBase) : AccountApi {
 
@@ -14,17 +12,13 @@ class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBas
         since: StatusId?,
         until: StatusId?
     ): List<Status> {
-        if (account is MultiAccountAccount && since is MultiAccountStatusId && until is MultiAccountStatusId) {
-            return getImpl(account) {
-                userTimeline(
-                    it,
-                    since,
-                    until
-                )
-            }.innerData.map { MultiAccountStatus(it, account.hashCode) }
-        } else {
-            TODO()
-        }
+        return getImpl2(account) {
+            userTimeline(
+                it,
+                since,
+                until
+            )
+        }.let { it.first.map { status -> MultiAccountStatus(status, it.second) } }
     }
 
     override suspend fun follow(account: Account): Boolean {
@@ -45,23 +39,28 @@ class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBas
     }
 
     override suspend fun statuses(account: Account, includeRepost: Boolean): List<Status> {
-        TODO("Not yet implemented")
+        return getImpl2(account) {
+            statuses(
+                it,
+                includeRepost
+            )
+        }.let { it.first.map { status -> MultiAccountStatus(status, it.second) } }
     }
 
     override suspend fun relationships(myself: Account, other: Account): Relation {
-        TODO("Not yet implemented")
+        return getImpl2(myself) { relationships(it, other) }.first
     }
 
     override suspend fun requestCancel(account: Account): Boolean {
-        TODO("Not yet implemented")
+        return getImpl2(account) { requestCancel(it) }.first
     }
 
     override suspend fun requestAccept(account: Account): Boolean {
-        TODO("Not yet implemented")
+        return getImpl2(account) { requestAccept(account) }.first
     }
 
     override suspend fun requestReject(account: Account): Boolean {
-        TODO("Not yet implemented")
+        return getImpl2(account) { requestReject(it) }.first
     }
 
     suspend fun unfollow(account: MultiAccountData<Account>): MultiAccountData<Boolean> {

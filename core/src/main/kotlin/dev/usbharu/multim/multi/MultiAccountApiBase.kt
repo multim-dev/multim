@@ -19,6 +19,9 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
         val hashCode = (url + token).hashCode()
         apiClientMap[hashCode] =
             MultiM.createClient(url, token, factory, httpClient)
+        if (mainClientHashCode == null) {
+            mainClientHashCode = hashCode
+        }
         return hashCode
     }
 

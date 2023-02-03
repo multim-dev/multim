@@ -5,7 +5,7 @@ import dev.usbharu.multim.model.Status
 import dev.usbharu.multim.model.Timeline
 import dev.usbharu.multim.multi.model.MultiAccountStatus
 
-class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBase) {
+class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBase) : TimelineApi {
 
     suspend fun availableTimelines(id: MultiAccountData<*>): MultiAccountData<List<Timeline>> {
         return getImpl(id) { availableTimelines() }
@@ -45,7 +45,32 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         MultiAccountDataImpl(callback(timelineApi(apiData), apiData.innerData), apiData.hashCode)
 
 
-    private fun timelineApi(id: MultiAccountData<*>) =
-        multiAccountApiBase.getImpl(id.hashCode).timelineApi
+    private suspend fun <T, R> getImpl2(
+        apiData: T,
+        callback: suspend TimelineApi.(T) -> R
+    ): Pair<R, Int> {
+        return callback(timelineApi(apiData), apiData) to (
+                (apiData as? MultiAccountData<*>)?.hashCode
+                    ?: multiAccountApiBase.mainClientHashCode!!)
+    }
+
+    private fun <T> timelineApi(id: T) =
+        multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode).timelineApi
+
+    override suspend fun availableTimelines(): List<Timeline> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun listen(timeline: Timeline, callback: (List<Status>) -> Unit) {
+        return getImpl2(timeline) { listen(it, callback) }.first
+    }
+
+    override suspend fun connect(timeline: Timeline): Boolean {
+        return getImpl2(timeline){connect(it)}.first
+    }
+
+    override suspend fun disconnect(timeline: Timeline, force: Boolean): Boolean {
+        return getImpl2(timeline){disconnect(it,force)}.first
+    }
 
 }
