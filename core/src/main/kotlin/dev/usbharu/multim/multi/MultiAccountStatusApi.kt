@@ -16,12 +16,12 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     suspend fun addReaction(
         id: MultiAccountData<StatusId>,
         reaction: MultiAccountData<Reaction>
-    ): MultiAccountData<Boolean> = getImpl(id) { addReaction(it, reaction.data) }
+    ): MultiAccountData<Boolean> = getImpl(id) { addReaction(it, reaction.innerData) }
 
     suspend fun removeReaction(
         id: MultiAccountData<StatusId>,
         reaction: MultiAccountData<Reaction>
-    ): MultiAccountData<Boolean> = getImpl(id) { removeReaction(it, reaction.data) }
+    ): MultiAccountData<Boolean> = getImpl(id) { removeReaction(it, reaction.innerData) }
 
     suspend fun reactions(id: MultiAccountData<StatusId>): MultiAccountData<Map<Reaction, Int>> =
         getImpl(id) { reactions(it) }
@@ -38,7 +38,7 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     suspend fun replyTo(
         id: MultiAccountData<StatusId>,
         status: MultiAccountData<StatusForPost>
-    ): MultiAccountData<Status> = getImpl(id) { replyTo(it, status.data) }
+    ): MultiAccountData<Status> = getImpl(id) { replyTo(it, status.innerData) }
 
     suspend fun addToBookmarks(id: MultiAccountData<StatusId>): MultiAccountData<Boolean> =
         getImpl(id) { addToBookmarks(it) }
@@ -53,7 +53,7 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
         apiData: MultiAccountData<T>,
         callback: suspend StatusApi.(T) -> R
     ): MultiAccountData<R> =
-        MultiAccountDataImpl(callback(statusApi(apiData), apiData.data), apiData.hashCode)
+        MultiAccountDataImpl(callback(statusApi(apiData), apiData.innerData), apiData.hashCode)
 
 
     private fun statusApi(id: MultiAccountData<*>) =

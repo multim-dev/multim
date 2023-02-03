@@ -3,6 +3,7 @@ package dev.usbharu.multim.multi
 import dev.usbharu.multim.api.TimelineApi
 import dev.usbharu.multim.model.Status
 import dev.usbharu.multim.model.Timeline
+import dev.usbharu.multim.multi.model.MultiAccountStatus
 
 class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBase) {
 
@@ -23,7 +24,7 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         callback: MultiAccountData<(List<MultiAccountStatus>) -> Unit>
     ): MultiAccountData<Unit> {
 
-        return getImpl(timeline) { listen(it, callback.data as (List<Status>) -> Unit) }
+        return getImpl(timeline) { listen(it, callback.innerData as (List<Status>) -> Unit) }
     }
 
     suspend fun connect(timeline: MultiAccountData<Timeline>): MultiAccountData<Boolean> {
@@ -41,29 +42,10 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         apiData: MultiAccountData<T>,
         callback: suspend TimelineApi.(T) -> R
     ): MultiAccountData<R> =
-        MultiAccountDataImpl(callback(timelineApi(apiData), apiData.data), apiData.hashCode)
+        MultiAccountDataImpl(callback(timelineApi(apiData), apiData.innerData), apiData.hashCode)
 
 
     private fun timelineApi(id: MultiAccountData<*>) =
         multiAccountApiBase.getImpl(id.hashCode).timelineApi
 
 }
-
-class MultiAccountStatus(override val data: Status, override val hashCode: Int) :
-    MultiAccountData<Status>,
-    Status(
-        data.id,
-        data.account,
-        data.content,
-        data.reactions,
-        data.myReactions,
-        data.repostCount,
-        data.repliesCount,
-        data.reposted,
-        data.emojis,
-        data.tags,
-        data.language,
-        data.poll,
-        data.files,
-        data.createdAt
-    )

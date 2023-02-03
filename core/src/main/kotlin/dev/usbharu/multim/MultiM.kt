@@ -3,6 +3,7 @@ package dev.usbharu.multim
 import dev.usbharu.multim.api.NodeinfoApi
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
+import dev.usbharu.multim.multi.MultiAccountApiBase
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 
@@ -23,5 +24,9 @@ object MultiM {
 
         val nodeinfo = NodeinfoApi(httpClient).nodeinfo(url)
         return factory.factory(nodeInfo = nodeinfo, httpClient, token, url)
+    }
+
+    fun createMultiAccountClients(serviceInfoList: List<ServiceInfo> = listOf()): MultiAccountApiBase {
+        return MultiAccountApiBase(serviceInfoList)
     }
 }

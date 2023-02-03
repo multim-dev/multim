@@ -13,6 +13,8 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
     val httpClient = createHttpClient()
 
     val apiClientMap = mutableMapOf<Int, MultiMApis>()
+
+    var mainClientHashCode: Int? = null
     suspend fun addAccount(url: String, token: String): Int {
         val hashCode = (url + token).hashCode()
         apiClientMap[hashCode] =
@@ -20,7 +22,13 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
         return hashCode
     }
 
-    fun getImpl(hashCode:Int):MultiMApis{
-        return apiClientMap.getValue(hashCode)
+    suspend fun addMainAccount(url: String, token: String): Int {
+        mainClientHashCode =
+            addAccount(url, token)
+        return mainClientHashCode as Int
+    }
+
+    fun getImpl(hashCode: Int? = mainClientHashCode): MultiMApis {
+        return apiClientMap[hashCode]!!
     }
 }
