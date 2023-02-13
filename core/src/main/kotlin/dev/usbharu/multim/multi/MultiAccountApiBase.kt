@@ -32,6 +32,9 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
     }
 
     fun getImpl(hashCode: Int? = mainClientHashCode): MultiMApis {
+        if (hashCode == null) {
+            return apiClientMap[mainClientHashCode]!!
+        }
         return apiClientMap[hashCode]!!
     }
 }

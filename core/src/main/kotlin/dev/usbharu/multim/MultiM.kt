@@ -6,6 +6,7 @@ import dev.usbharu.multim.factory.PlatformApiFactory
 import dev.usbharu.multim.multi.MultiAccountApiBase
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import kotlinx.serialization.json.Json
 
 object MultiM {
 
@@ -28,5 +29,10 @@ object MultiM {
 
     fun createMultiAccountClients(serviceInfoList: List<ServiceInfo> = listOf()): MultiAccountApiBase {
         return MultiAccountApiBase(serviceInfoList)
+    }
+
+    val json = Json{
+        isLenient = true
+        ignoreUnknownKeys = true
     }
 }
