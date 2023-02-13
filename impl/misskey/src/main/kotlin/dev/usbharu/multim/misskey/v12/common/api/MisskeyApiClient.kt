@@ -23,7 +23,6 @@ import kotlinx.serialization.encodeToString
 
 class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
-        expectSuccess = true
         install(WebSockets) {
             pingInterval = 20_000
             contentConverter = KotlinxWebsocketSerializationConverter(json)
@@ -40,13 +39,6 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
                 )
             }
         })
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.ALL
-        }
-        install(ContentNegotiation) {
-            json(json = json)
-        }
     }) {
 
     internal val streaming = Streaming()

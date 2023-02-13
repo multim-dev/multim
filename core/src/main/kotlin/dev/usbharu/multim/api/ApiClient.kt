@@ -1,5 +1,6 @@
 package dev.usbharu.multim.api
 
+import dev.usbharu.multim.MultiM
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -48,6 +49,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     }
 }
 
+// todo なぜこれがここにあるのかわからないが、ここにあるのはおかしいので消す。
 fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient {
-    return HttpClient(CIO)
+    return MultiM.httpClientWithLogger.config(config)
 }
