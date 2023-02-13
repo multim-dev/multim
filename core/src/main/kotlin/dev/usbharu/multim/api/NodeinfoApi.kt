@@ -1,5 +1,6 @@
 package dev.usbharu.multim.api
 
+import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.model.wellknown.NodeinfoList
 import dev.usbharu.multim.model.wellknown.nodeinfo.NodeInfo
 import io.ktor.client.*
@@ -7,7 +8,6 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 // todo well-knwonだけでパッケージ作ったほうがいいかも
 class NodeinfoApi(private var httpClient: HttpClient) {
@@ -15,10 +15,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
     init {
         httpClient = httpClient.config {
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                })
+                json(json)
             }
         }
     }

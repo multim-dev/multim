@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
+import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.api.ApiClient
 import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
 import io.ktor.client.*
@@ -19,12 +20,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-
-val json = Json {
-    ignoreUnknownKeys = true
-    isLenient = true
-}
 
 class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
