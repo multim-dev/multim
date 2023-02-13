@@ -1,8 +1,8 @@
 package dev.usbharu.multim.misskey.v12.api
 
+import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.misskey.v12.common.api.Callback
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
-import dev.usbharu.multim.misskey.v12.common.api.json
 import dev.usbharu.multim.misskey.v12.model.StreamRequest
 import dev.usbharu.multim.misskey.v12.model.StreamResponse
 import io.ktor.websocket.*

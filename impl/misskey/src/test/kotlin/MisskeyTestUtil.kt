@@ -37,15 +37,9 @@ object MisskeyTestUtil {
         }
     ): HttpClient {
         return HttpClient(MockEngine(respond)) {
-            Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            }
+
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                })
+                json(json)
             }
         }
     }

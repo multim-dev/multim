@@ -51,5 +51,5 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
 // todo なぜこれがここにあるのかわからないが、ここにあるのはおかしいので消す。
 fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient {
-    return MultiM.httpClientWithLogger.config(config)
+    return MultiM.httpClientWithJson.config(config)
 }

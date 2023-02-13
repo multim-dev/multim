@@ -4,6 +4,7 @@ package dev.usbharu.multim.v12.api
 
 import MisskeyTestUtil.checkAuth
 import MisskeyTestUtil.createFakeNoteToString
+import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
 import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.api.Ap
@@ -47,13 +48,7 @@ class ApTest {
 }"""
 
         val misskeyApiClient = MisskeyApiClient(
-            "aaaaaaaa", "https://localhost", HttpClient(
-                MockEngine(
-                    checkAuth(
-                        typeUser, HttpStatusCode.OK, headersOf("Content-Type", "application/json")
-                    )
-                )
-            )
+            "aaaaaaaa", "https://localhost", createMockHttpClient(typeUser)
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/IN7OFhht"))
         assertEquals(json.decodeFromString<ApShowResponse.TypeUser>(typeUser), show)
@@ -70,13 +65,7 @@ class ApTest {
         """.trimIndent()
 
         val misskeyApiClient = MisskeyApiClient(
-            "W7Xw8F", "https://localhost", HttpClient(
-                MockEngine(
-                    checkAuth(
-                        typeNote, HttpStatusCode.OK, headersOf("Content-Type", "application/json")
-                    )
-                )
-            )
+            "W7Xw8F", "https://localhost", createMockHttpClient(typeNote)
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/C56WI"))
         assertEquals(json.decodeFromString<ApShowResponse.TypeNote>(typeNote), show)
