@@ -6,17 +6,16 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.http.ContentType.Application.Json
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 // todo well-knwonだけでパッケージ作ったほうがいいかも
-class NodeinfoApi(var httpClient: HttpClient) {
+class NodeinfoApi(private var httpClient: HttpClient) {
 
     init {
-        httpClient.config {
+        httpClient = httpClient.config {
             install(ContentNegotiation) {
-                json(Json{
+                json(Json {
                     ignoreUnknownKeys = true
                     isLenient = true
                 })
@@ -24,12 +23,12 @@ class NodeinfoApi(var httpClient: HttpClient) {
         }
     }
 
-    suspend fun wellKnownNodeinfo(url:String): NodeinfoList {
+    suspend fun wellKnownNodeinfo(url: String): NodeinfoList {
         return httpClient.get("$url.well-known/nodeinfo").body()
     }
 
     fun nodeinfoLink(nodeinfoList: NodeinfoList): NodeinfoList.NodeinfoLink {
-        return nodeinfoList.links.sortedBy { it.rel.substringAfterLast("/", "0").toFloat() }.first()
+        return nodeinfoList.links.minByOrNull { it.rel.substringAfterLast("/", "0").toFloat() }!!
     }
 
 
@@ -39,7 +38,7 @@ class NodeinfoApi(var httpClient: HttpClient) {
         return httpClient.get(nodeinfoLink.href).body()
     }
 
-    suspend fun nodeinfo(url:String):NodeInfo{
+    suspend fun nodeinfo(url: String): NodeInfo {
         return nodeinfo(nodeinfoLink(wellKnownNodeinfo(url)))
     }
 }
