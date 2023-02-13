@@ -72,7 +72,7 @@ subprojects {
         "implementation"("io.ktor:ktor-client-logging:$ktor_version")
         "implementation"("io.ktor:ktor-client-websockets:$ktor_version")
         "implementation"("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-
+        "implementation"("io.github.aakira:napier:2.6.1")
 
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.9.0")
         "testImplementation"("org.junit.jupiter:junit-jupiter-params:5.9.0")
