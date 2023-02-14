@@ -17,12 +17,12 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         since: StatusId?,
         until: StatusId?
     ): List<Status> {
-        if (account is MisskeyAccount && since is MisskeyStatusId && until is MisskeyStatusId) {
+        if (account is MisskeyAccount && since is MisskeyStatusId? && until is MisskeyStatusId?) {
             return misskeyApis.users.notes(
                 UsersNotesRequest(
                     userId = account.id,
-                    sinceId = since.id,
-                    untilId = until.id
+                    sinceId = since?.id,
+                    untilId = until?.id
                 )
             ).map { it.toStatus() }
 
