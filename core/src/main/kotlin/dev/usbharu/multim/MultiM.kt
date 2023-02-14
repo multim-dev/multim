@@ -1,6 +1,10 @@
 package dev.usbharu.multim
 
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.map
 import dev.usbharu.multim.api.NodeinfoApi
+import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
 import dev.usbharu.multim.multi.MultiAccountApiBase
@@ -30,10 +34,9 @@ object MultiM {
         token: String,
         factory: PlatformApiFactory,
         httpClient: HttpClient = httpClientWithJson
-    ): MultiMApis {
+    ): Result<MultiMApis,MultiMError> {
 
-        val nodeinfo = NodeinfoApi(httpClient).nodeinfo(url)
-        return factory.factory(nodeInfo = nodeinfo, httpClient, token, url)
+        return NodeinfoApi(httpClient).nodeinfo(url).map{ nodeInfo ->  factory.factory(nodeInfo,httpClient,token,url) }
     }
 
     fun createMultiAccountClients(serviceInfoList: List<ServiceInfo> = listOf()): MultiAccountApiBase {
