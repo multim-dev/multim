@@ -16,7 +16,9 @@ object NoteConverter {
                 isBot = user.isBot,
                 avatar = MisskeyAvatar(avatarUrl = user.avatarUrl ?: "")
             ),
-            content = MisskeyContent(text ?: "")
+            content = MisskeyContent(text ?: ""),
+            files = files?.map { MisskeyFile(byteArrayOf(), it.type, it.url ?: "") }
+                ?.let { MisskeyFiles(it) }
         )
     }
 
