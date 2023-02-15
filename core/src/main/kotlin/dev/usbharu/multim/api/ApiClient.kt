@@ -18,10 +18,10 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         return createHttpClient(config)
     }
 
-    suspend inline fun <reified R> post(
+    suspend inline fun <reified R> postEmpty(
         path: String,
         baseUrl: String = this.baseUrl
-    ): Result<R, Error> {
+    ): Result<R, ThrowableError> {
         val post = try {
             client.post(baseUrl + path)
         } catch (e: ClientRequestException) {
@@ -38,7 +38,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         content: T,
         path: String,
         baseUrl: String = this.baseUrl
-    ): Result<R, Error> {
+    ): Result<R, ThrowableError> {
         val post =
             try {
                 client.post(baseUrl + path) {
@@ -59,7 +59,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         content: T,
         path: String,
         baseUrl: String = this.baseUrl
-    ): Result<Unit, Error> {
+    ): Result<Unit, ThrowableError> {
         return runCatching<Unit> {
             client.post(baseUrl + path) {
                 contentType(ContentType.Application.Json)
@@ -71,7 +71,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     suspend fun get(
         path: String,
         block: HttpRequestBuilder.() -> Unit
-    ): Result<HttpResponse, Error> {
+    ): Result<HttpResponse, ThrowableError> {
         return runCatching<HttpResponse> {
             client.get(
                 baseUrl + path,
