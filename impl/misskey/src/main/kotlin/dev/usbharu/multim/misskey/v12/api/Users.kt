@@ -1,18 +1,21 @@
 package dev.usbharu.multim.misskey.v12.api
 
+import dev.usbharu.multim.error.MultiMResult
+import dev.usbharu.multim.error.mapMultiMError
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
+import dev.usbharu.multim.misskey.v12.model.components.Note
 
 class Users(val client: MisskeyApiClient) {
-    suspend fun relation(relationRequest: UsersRelationRequest): UsersRelationResponse {
-        return client.post(relationRequest, "api/users/relation")
+    suspend fun relation(relationRequest: UsersRelationRequest): MultiMResult<UsersRelationResponse> {
+        return client.post<UsersRelationRequest,UsersRelationResponse>(relationRequest, "api/users/relation").mapMultiMError()
     }
 
-    suspend fun notes(notesRequest: UsersNotesRequest): UsersNotesResponse {
-        return client.post(notesRequest, "api/users/notes")
+    suspend fun notes(notesRequest: UsersNotesRequest): MultiMResult<UsersNotesResponse> {
+        return client.post<UsersNotesRequest, List<Note>>(notesRequest, "api/users/notes").mapMultiMError()
     }
 
-    suspend fun show(showRequest: UsersShowRequest): UsersShowResponse {
-        return client.post(showRequest, "api/users/show")
+    suspend fun show(showRequest: UsersShowRequest): MultiMResult<UsersShowResponse> {
+        return client.post<UsersShowRequest, UsersShowResponse>(showRequest, "api/users/show").mapMultiMError()
     }
 }

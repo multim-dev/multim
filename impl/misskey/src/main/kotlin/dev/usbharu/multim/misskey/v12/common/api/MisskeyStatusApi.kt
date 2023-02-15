@@ -1,6 +1,11 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
+import com.github.michaelbull.result.*
 import dev.usbharu.multim.api.StatusApi
+import dev.usbharu.multim.error.ErrorType
+import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
+import dev.usbharu.multim.error.TODO
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyReaction
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
@@ -17,34 +22,37 @@ import dev.usbharu.multim.model.*
  * @constructor Create empty Misskey status api
  */
 class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
-    override suspend fun post(status: StatusForPost): Status {
+    override suspend fun post(status: StatusForPost): Result<Status, MultiMError> {
 
-        val create = misskeyApis.notes.create(NotesCreateRequest(text = status.content.text))
-        return create.createdNote.toStatus()
+        return misskeyApis.notes.create(NotesCreateRequest(text = status.content.text))
+            .map { it.createdNote.toStatus() }
+
     }
 
-    override suspend fun delete(id: StatusId): Boolean {
+    override suspend fun delete(id: StatusId): Result<Unit, MultiMError> {
         if (id is MisskeyStatusId) {
             misskeyApis.notes.delete(NotesDeleteRequest(id.id))
-            return true
+            return Ok(Unit)
         }
-        return false
+        return TODO()
     }
 
-    override suspend fun findById(id: StatusId): Status {
-        return misskeyApis.notes.show(NotesShowRequest(id.fetchId().id)).toStatus()
+    override suspend fun findById(id: StatusId): Result<Status, MultiMError> {
+        return id.fetchId()
+            .flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }
+            .map { it.toStatus() }
     }
 
-    override suspend fun addReaction(id: StatusId, reaction: Reaction): Boolean {
+    override suspend fun addReaction(id: StatusId, reaction: Reaction): Result<Unit, MultiMError> {
         if (reaction is MisskeyReaction && id is MisskeyStatusId) {
             misskeyApis.notes.Reaction().create(
                 NotesReactionCreateRequest(
                     noteId = id.id, reaction = reaction.toLocal().name
                 )
             )
-            return true
+            return Ok(Unit)
         }
-        return false
+        return TODO()
     }
 
     /**
@@ -54,77 +62,84 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
      * @param reaction 無視される
      * @return
      */
-    override suspend fun removeReaction(id: StatusId, reaction: Reaction?): Boolean {
+    override suspend fun removeReaction(
+        id: StatusId,
+        reaction: Reaction?
+    ): Result<Unit, MultiMError> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.Reaction().delete(NotesReactionDeleteRequest(id.id))
-            true
+            Ok(Unit)
         } else {
             //サーバーが認知していない投稿のリアクションを消せるわけないので何もしない
-            false
+            Err(MultiMError("id is Not misskey id", null, ErrorType.API))
         }
     }
 
-    override suspend fun reactions(id: StatusId): Map<Reaction, Int> {
-        val show = misskeyApis.notes.show(NotesShowRequest(id.fetchId().id))
-        return show.reactions.toReactions(show)
+    override suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>, MultiMError> {
+        return id.fetchId().flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }.map { it.reactions.toReactions(it) }
     }
 
-    override suspend fun repost(id: StatusId): Status {
-        return misskeyApis.notes.create(NotesCreateRequest(renoteId = id.fetchId().id)).createdNote.toStatus()
+    override suspend fun repost(id: StatusId): Result<Status, MultiMError> {
+        return id.fetchId()
+            .flatMap { misskeyApis.notes.create(NotesCreateRequest(renoteId = it.id)) }
+            .map { it.createdNote.toStatus() }
     }
 
-    override suspend fun unRepost(id: StatusId): Boolean {
+    override suspend fun unRepost(id: StatusId): Result<Unit, MultiMError> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.unrenote(NotesUnrenoteRequest(id.id))
-            true
+            Ok(Unit)
         } else {
             //サーバーが認知していない投稿の再投稿を消せるわけないので何もしない
-            false
+            Err(MultiMError("id is Not Misskey id",null,ErrorType.API))
         }
     }
 
-    override suspend fun replyTo(id: StatusId, status: StatusForPost): Status {
-        return misskeyApis.notes.create(
-            NotesCreateRequest(
-                replyId = id.fetchId().id, text = status.content.text
+    override suspend fun replyTo(id: StatusId, status: StatusForPost): Result<Status, MultiMError> {
+        return id.fetchId().flatMap {
+            misskeyApis.notes.create(
+                NotesCreateRequest(
+                    replyId = it.id,
+                    text = status.content.text
+                )
             )
-        ).createdNote.toStatus()
+        }.map { it.createdNote.toStatus() }
     }
 
-    override suspend fun addToBookmarks(id: StatusId): Boolean {
-        misskeyApis.notes.Favorites().create(NotesFavoritesCreateRequest(id.fetchId().id))
-        return true
+    override suspend fun addToBookmarks(id: StatusId): Result<Unit, MultiMError> {
+        return id.fetchId()
+            .flatMap { misskeyApis.notes.Favorites().create(NotesFavoritesCreateRequest(it.id)) }
     }
 
-    override suspend fun removeFromBookmarks(id: StatusId): Boolean {
+    override suspend fun removeFromBookmarks(id: StatusId): Result<Unit, MultiMError> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.Favorites().delete(NotesFavoritesDeleteRequest(id.id))
-            true
+            Ok(Unit)
         } else {
             // サーバーが認知していない投稿のブックマークを消せるわけないので何もしない
-            false
+            Err(MultiMError("id is Not Misskey id",null,ErrorType.API))
         }
     }
 
-    override suspend fun getPreviousAndNext(id: StatusId): PreviousAndNextPosts {
-        TODO("よくわからないので未実装") //よくわからんのでとりあえず未実装 多分user-timelineからリノートを取り除いたらできる
+    override suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts, MultiMError> {
+        return TODO() //よくわからんのでとりあえず未実装 多分user-timelineからリノートを取り除いたらできる
     }
 
-    override suspend fun replies(id: StatusId): List<Status> {
-
-        return misskeyApis.notes.children(NotesChildrenRequest(id.fetchId().id))
-            .map { it.toStatus() }
-
+    override suspend fun replies(id: StatusId): Result<List<Status>, MultiMError> {
+        return id.fetchId().flatMap { misskeyApis.notes.children(NotesChildrenRequest(it.id)) }
+            .map { it.map { note -> note.toStatus() } }
     }
 
-    private suspend fun StatusId.fetchId(): MisskeyStatusId {
+    private suspend fun StatusId.fetchId(): MultiMResult<MisskeyStatusId> {
         if (this is MisskeyStatusId) {
-            return this
+            return Ok(this)
         }
-        val show = misskeyApis.ap.show(ApShowRequest(getUrl()))
-        if (show is ApShowResponse.TypeNote) {
-            return show.note.toStatus().id
+        return misskeyApis.ap.show(ApShowRequest(getUrl())).flatMap {
+            if (it is ApShowResponse.TypeNote) {
+                Ok(it.note.toStatus().id)
+            }else {
+                Err(MultiMError("The format of the Id($this ${this.getUrl()}) is different.",null,ErrorType.API))
+            }
         }
-        throw IllegalArgumentException("The format of the Id is different.")
     }
 }
