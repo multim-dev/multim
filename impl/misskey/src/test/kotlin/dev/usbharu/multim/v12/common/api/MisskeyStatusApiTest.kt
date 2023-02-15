@@ -1,6 +1,7 @@
 package dev.usbharu.multim.v12.common.api
 
 import MisskeyTestUtil
+import com.github.michaelbull.result.get
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
@@ -44,7 +45,7 @@ class MisskeyStatusApiTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun findByIdTest() = runTest {
-        val findById = misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost"))
-        println(findById.content.text)
+        val findById = misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost")).get()
+        println(findById?.content?.text)
     }
 }

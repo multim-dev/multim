@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.api
 
+import com.github.michaelbull.result.get
 import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.NotesCreateRequest
@@ -48,9 +49,11 @@ class TimelineTestE2E {
         }
         delay(1000)
         repeat(10) {
-            createdNotes.add(
-                notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、Streaming APIのテストで使用されます。#$uuid ")).createdNote
-            )
+            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、Streaming APIのテストで使用されます。#$uuid ")).get()?.createdNote?.let { it1 ->
+                createdNotes.add(
+                    it1
+                )
+            }
         }
         delay(2000)
         timeline.disconnectChannel(DisconnectRequest(DisconnectRequest.Body(uuid)))
