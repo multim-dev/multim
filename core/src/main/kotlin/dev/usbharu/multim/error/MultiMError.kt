@@ -1,5 +1,8 @@
 package dev.usbharu.multim.error
 
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import io.ktor.client.plugins.*
 
 open class MultiMError(
@@ -36,6 +39,7 @@ class MultiMHttpError(val httpError: HttpError, throwable: Throwable? = httpErro
             e
         )
     )
+
     constructor(httpClientClientError: HttpClientClientError) : this(
         (httpClientClientError.throwable as ClientRequestException).let {
             HttpError.ClientError(
@@ -97,3 +101,30 @@ enum class ErrorType(val message: String) {
     ILLEGAL_ARGUMENT("Illegal Argument"),
     UNKNOWN("UNKNOWN")
 }
+
+fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
+    return when (this) {
+        is Ok -> this
+        is Err -> {
+            when (this.error) {
+                is HttpClientServerError -> {
+                    Err(MultiMHttpError(this.error.throwable as ServerResponseException))
+                }
+
+                is HttpClientClientError -> {
+                    Err(MultiMHttpError(this.error.throwable as ClientRequestException))
+                }
+
+                else -> {
+                    Err(MultiMError(this.error.message, this.error.throwable, ErrorType.UNKNOWN))
+                }
+            }
+        }
+    }
+}
+
+fun <T> mapMultiMError(result: Result<T, ThrowableError>): Result<T, MultiMError> {
+    return result.mapMultiMError()
+}
+
+typealias MultiMResult<T> = Result<T,MultiMError>
