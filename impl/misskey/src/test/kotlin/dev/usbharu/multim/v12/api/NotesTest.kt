@@ -42,7 +42,7 @@ class NotesTest {
             )
         )
         val globalTimeline =
-            notes.globalTimeline(globalTimelineRequest = NotesGlobalTimelineRequest())
+            notes.globalTimeline(globalTimelineRequest = NotesGlobalTimelineRequest()).get()
         assertEquals(expectNoteArray, globalTimeline)
     }
 
@@ -55,7 +55,7 @@ class NotesTest {
                 createMockHttpClient(content = json.encodeToString(expectNoteArray))
             )
         )
-        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest())
+        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest()).get()
         assertEquals(expectNoteArray, hybridTimeline)
     }
 
@@ -71,7 +71,7 @@ class NotesTest {
                 )
             )
         )
-        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest())
+        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest()).get()
         assertEquals(expectNoteArray, localTimeline)
     }
 
@@ -88,7 +88,7 @@ class NotesTest {
                 )
             )
         )
-        val note = notes.show(NotesShowRequest("mLvakn"))
+        val note = notes.show(NotesShowRequest("mLvakn")).get()
         assertEquals(expectedNote, note)
     }
 
@@ -195,25 +195,25 @@ class NotesTestE2E {
 
     @Test
     fun globalTimeline() = runTest {
-        val globalTimeline = notes.globalTimeline(NotesGlobalTimelineRequest())
+        val globalTimeline = notes.globalTimeline(NotesGlobalTimelineRequest()).get()
         println(globalTimeline)
     }
 
     @Test
     fun hybridTimeline() = runTest {
-        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest())
+        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest()).get()
         println(hybridTimeline)
     }
 
     @Test
     fun localTimeline() = runTest {
-        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest())
+        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest()).get()
         println(localTimeline)
     }
 
     @Test
     fun show() = runTest {
-        val show = notes.show(NotesShowRequest("9ack8wxw3c"))
+        val show = notes.show(NotesShowRequest("9ack8wxw3c")).get()
         println(show)
     }
 
@@ -271,9 +271,9 @@ class NotesTestE2E {
             is Err -> fail(create.error.message, create.error.throwable)
         }
         notes.delete(NotesDeleteRequest(deleteNote))
-        assertThrows<ClientRequestException> {
-            notes.show(NotesShowRequest(deleteNote)) //消せていたら失敗する
-        }
+        assertInstanceOf(Err::class.java,notes.show(NotesShowRequest(deleteNote)))
+         //消せていたら失敗する
+
     }
 
     @Test
@@ -476,6 +476,6 @@ class NotesTestE2E {
             notes.Watching().create(NotesWatchingCreateRequest("9ad9fr34tu"))
         }
         notes.Watching().delete(NotesWatchingDeleteRequest("9ad9fr34tu"))
-        assertFalse(notes.state(NotesStateRequest("9ad9fr34tu")).get()?.isWatching == false)
+        assertFalse(notes.state(NotesStateRequest("9ad9fr34tu")).get()?.isWatching == true)
     }
 }
