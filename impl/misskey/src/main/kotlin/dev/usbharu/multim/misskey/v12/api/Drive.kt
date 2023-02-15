@@ -61,15 +61,15 @@ class Drive(val client: MisskeyApiClient) {
         }
 
         suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest): Result<DriveFilesFindByHashResponse, MultiMError> {
-            return mapMultiMError(client.post(findByHashRequest, "api/drive/files/find-by-hash"))
+            return client.post<DriveFilesFindByHashRequest, DriveFilesFindByHashResponse>(findByHashRequest, "api/drive/files/find-by-hash").mapMultiMError()
         }
 
         suspend fun find(findRequest: DriveFilesFindRequest): Result<DriveFilesFindResponse, MultiMError> {
-            return mapMultiMError(client.post(findRequest, "api/drive/files/find"))
+            return client.post<DriveFilesFindRequest, DriveFilesFindResponse>(findRequest, "api/drive/files/find").mapMultiMError()
         }
 
         suspend fun show(showRequest: DriveFilesShowRequestByUrl): Result<DriveFilesShowResponse, MultiMError> {
-            return mapMultiMError(client.post(showRequest, "api/drive/files/show"))
+            return client.post<DriveFilesShowRequestByUrl, DriveFilesShowResponse>(showRequest, "api/drive/files/show").mapMultiMError()
         }
 
         suspend fun show(showRequest: DriveFilesShowRequestByFileId): Result<DriveFilesShowResponse, MultiMError> {

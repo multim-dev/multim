@@ -99,6 +99,7 @@ enum class ErrorType(val message: String) {
     HTTP("HTTP"),
     CONTENT_TRANSFORM("Content Transform"),
     ILLEGAL_ARGUMENT("Illegal Argument"),
+    NOT_IMPL("Not yet implement"),
     UNKNOWN("UNKNOWN")
 }
 
@@ -123,8 +124,8 @@ fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
     }
 }
 
-fun <T> mapMultiMError(result: Result<T, ThrowableError>): Result<T, MultiMError> {
-    return result.mapMultiMError()
-}
-
 typealias MultiMResult<T> = Result<T,MultiMError>
+
+fun TODO(throwable: Throwable? = runCatching { kotlin.TODO() }.exceptionOrNull()): Err<MultiMError> {
+    return Err(MultiMError("Not yet Implement.",throwable,ErrorType.NOT_IMPL))
+}
