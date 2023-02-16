@@ -1,9 +1,10 @@
 package dev.usbharu.multim.api
 
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Emoji
 
 interface EmojiApi {
-    operator fun get(name:String):Emoji
+    suspend fun get(name:String):MultiMResult<Emoji>
 
-    fun findByName(name:String):List<Emoji>
+    suspend fun findByName(name:String):MultiMResult<List<Emoji>>
 }
