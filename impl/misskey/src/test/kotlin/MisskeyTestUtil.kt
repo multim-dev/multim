@@ -1,3 +1,7 @@
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.getError
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import dev.usbharu.multim.misskey.v12.model.components.UserLite
 import io.ktor.client.*
@@ -11,6 +15,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.assertj.core.api.Fail
+import org.junit.jupiter.api.Assertions
 
 object MisskeyTestUtil {
 
@@ -73,5 +78,14 @@ object MisskeyTestUtil {
 
     fun createFakeNoteToString(id: String, userId: String, username: String, text: String?): String {
         return json.encodeToString(createFakeNote(id, userId, username, text))
+    }
+
+    fun assertIsOk(result: Result<*, *>){
+        Assertions.assertInstanceOf(Ok::class.java, result, "resultの型がOkではない")
+    }
+
+    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>){
+        Assertions.assertInstanceOf(Err::class.java, result, "resultの型がErrではない")
+        Assertions.assertInstanceOf(R::class.java, result.getError(), "Errorの型が違う")
     }
 }
