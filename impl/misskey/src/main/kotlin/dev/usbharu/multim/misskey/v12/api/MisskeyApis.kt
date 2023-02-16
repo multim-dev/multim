@@ -10,4 +10,5 @@ class MisskeyApis(misskeyApiClient: MisskeyApiClient) : PlatformApis(misskeyApiC
     val timeline = Timeline(misskeyApiClient)
     val following = Following(misskeyApiClient)
     val users = Users(misskeyApiClient)
+    val meta = Meta(misskeyApiClient)
 }
