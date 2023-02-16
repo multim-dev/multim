@@ -1,5 +1,6 @@
-package dev.usbharu.multim.api.common
+package dev.usbharu.multim
 
+import com.github.michaelbull.result.*
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -9,6 +10,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.assertj.core.api.Fail.fail
+import org.junit.jupiter.api.Assertions.assertInstanceOf
 
 
 object TestUtil {
@@ -62,5 +64,15 @@ object TestUtil {
                 respondBadRequest()
             }
         }
+    }
+
+
+    fun assertIsOk(result: Result<*,*>){
+        assertInstanceOf(Ok::class.java,result,"resultの型がOkではない")
+    }
+
+    inline fun <T, reified R : T> assertIsErr(result: Result<*,T>){
+        assertInstanceOf(Err::class.java,result,"resultの型がErrではない")
+        assertInstanceOf(R::class.java,result.getError(),"Errorの型が違う")
     }
 }
