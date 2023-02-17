@@ -42,6 +42,12 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    tasks{
+        val sourcesJar by creating(Jar::class) {
+            archiveClassifier.set("sources")
+            from(project.the<SourceSetContainer>()["main"].allSource)
+        }
+    }
 
 
     tasks.getByName("test", Test::class) {
@@ -83,5 +89,27 @@ subprojects {
         "testImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
         "testImplementation"("org.slf4j:slf4j-simple:2.0.4")
         "testImplementation"("io.github.artsok:rerunner-jupiter:2.1.6")
+    }
+
+    publishing{
+        repositories{
+            maven{
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/usbharu/multim")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications{
+            register<MavenPublication>("gpr") {
+                groupId = project.group.toString()
+                artifactId = "multim-${project.name}"
+                version = project.version.toString()
+                from(components["kotlin"])
+                artifact(tasks["sourcesJar"])
+            }
+        }
     }
 }
