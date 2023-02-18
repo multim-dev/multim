@@ -1,5 +1,6 @@
 package dev.usbharu.multim.factory
 
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.ServiceInfo
 import dev.usbharu.multim.api.PlatformApis
 import dev.usbharu.multim.model.wellknown.nodeinfo.NodeInfo
@@ -26,11 +27,13 @@ class ServiceInfoFactory(private val services: List<ServiceInfo>) : PlatformApiF
                         httpClient
                     )
                 )
+                Logger.info("Platform Api Factory","Service Info factory found service.")
                 return service.multiMApis(
                     platFormApis
                 ).apply { build(this, platFormApis) }
             }
         }
+        Logger.error("Platform Api Factory","Service Info factory cannot find service.")
         TODO("サービスが見つからなかった際のしょり")
     }
 }

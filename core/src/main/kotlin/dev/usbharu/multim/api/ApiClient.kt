@@ -3,8 +3,12 @@ package dev.usbharu.multim.api
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM
-import dev.usbharu.multim.error.*
+import dev.usbharu.multim.error.HttpClientClientError
+import dev.usbharu.multim.error.HttpClientServerError
+import dev.usbharu.multim.error.Ok
+import dev.usbharu.multim.error.ThrowableError
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -22,16 +26,28 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         path: String,
         baseUrl: String = this.baseUrl
     ): Result<R, ThrowableError> {
+        Logger.trace("Api Client", "Post empty $baseUrl$path")
         val post = try {
             client.post(baseUrl + path)
         } catch (e: ClientRequestException) {
+            Logger.warn(
+                "Api Client",
+                "FAILURE Client Request Exception at Post empty $baseUrl$path"
+            )
             return Err(HttpClientClientError(e))
         } catch (e: ServerResponseException) {
+            Logger.warn(
+                "Api Client",
+                "FAILURE Server Response Exception at Post empty $baseUrl$path"
+            )
             return Err(HttpClientServerError(e))
         }
         return runCatching<R> { post.body() }.fold(
             onSuccess = { Ok(it) },
-            onFailure = { Err(ThrowableError(it)) })
+            onFailure = {
+                Logger.warn("Api Client", "FAILURE Get body $baseUrl$path")
+                Err(ThrowableError(it))
+            })
     }
 
     suspend inline fun <reified T, reified R> post(
@@ -39,6 +55,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         path: String,
         baseUrl: String = this.baseUrl
     ): Result<R, ThrowableError> {
+        Logger.trace("Api Client", "Post with request body to $baseUrl$path ")
         val post =
             try {
                 client.post(baseUrl + path) {
@@ -52,7 +69,10 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             }
         return runCatching<R> { post.body() }.fold(
             onSuccess = { Ok(it) },
-            onFailure = { Err(ThrowableError(it)) })
+            onFailure = {
+                Logger.warn("Api Client", "FAILURE Get body $baseUrl$path ")
+                Err(ThrowableError(it))
+            })
     }
 
     suspend inline fun <reified T> postWithoutResponse(
@@ -60,28 +80,43 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         path: String,
         baseUrl: String = this.baseUrl
     ): Result<Unit, ThrowableError> {
+        Logger.trace("Api Client", "Post without response $baseUrl$path")
         return runCatching<Unit> {
             client.post(baseUrl + path) {
                 contentType(ContentType.Application.Json)
                 setBody(content)
             }
-        }.fold(onSuccess = Ok(), onFailure = ThrowableError())
+        }.fold(onSuccess = Ok(), onFailure = {
+            Logger.warn("Api Client", "FAILURE Post withou response $baseUrl$path")
+            Err(ThrowableError(it))
+        })
     }
 
     suspend fun get(
         path: String,
         block: HttpRequestBuilder.() -> Unit
     ): Result<HttpResponse, ThrowableError> {
+        Logger.trace("Api Client", "Get $baseUrl$path")
         return runCatching<HttpResponse> {
             client.get(
                 baseUrl + path,
                 block
             )
-        }.fold(onSuccess = { Ok(it) }, onFailure = { Err(ThrowableError(it)) })
+        }.fold(onSuccess = { Ok(it) }, onFailure = {
+            Logger.warn("Api Client", "FAILURE Get $baseUrl$path")
+            Err(ThrowableError(it))
+        })
     }
 }
 
 // todo なぜこれがここにあるのかわからないが、ここにあるのはおかしいので消す。
+@Deprecated(
+    "このAPIがここにあるのはおかしいので削除予定です。", ReplaceWith(
+        "MultiM.httpClientWithJson.config(config)",
+        "dev.usbharu.multim.MultiM"
+    )
+)
 fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient {
+    Logger.warn("DEPRECATED","Deprecated API calls. This API is deprecated.")
     return MultiM.httpClientWithJson.config(config)
 }
