@@ -2,6 +2,7 @@ package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Result
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.model.Status
@@ -29,6 +30,7 @@ interface TimelineApi {
 
 object NotImplTimelineApi : TimelineApi {
     override suspend fun availableTimelines(): Result<List<Timeline>, MultiMError> {
+        Logger.debug("Timeline Api","Not impl timeline api availableTimelines")
         return Err(MultiMError("availableTimelines not implements",null, ErrorType.NOT_IMPL))
     }
 
@@ -36,14 +38,17 @@ object NotImplTimelineApi : TimelineApi {
         timeline: Timeline,
         callback: (List<Status>) -> Unit
     ): Result<Unit, MultiMError> {
+        Logger.debug("Timeline Api","Not impl timeline api listen")
         return Err(MultiMError("timeline listen not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun connect(timeline: Timeline): Result<Unit, MultiMError> {
+        Logger.debug("Timeline Api","Not impl timeline api connect")
         return Err(MultiMError("timeline connect not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun disconnect(timeline: Timeline, force: Boolean): Result<Unit, MultiMError> {
+        Logger.debug("Timeline Api","Not impl timeline api disconnect")
         return Err(MultiMError("timeline disconnect not implements",null,ErrorType.NOT_IMPL))
     }
 }

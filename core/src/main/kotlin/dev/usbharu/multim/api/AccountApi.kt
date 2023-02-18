@@ -2,6 +2,7 @@ package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Result
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.model.*
@@ -31,18 +32,22 @@ object NotImplAccountApi : AccountApi {
         since: StatusId?,
         until: StatusId?
     ): Result<List<Status>, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. userTimeline.")
         return Err(MultiMError("userTimeline not implements", null, ErrorType.NOT_IMPL))
     }
 
     override suspend fun follow(account: Account): Result<Unit, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. follow.")
         return Err(MultiMError("follow not implements", null, ErrorType.NOT_IMPL))
     }
 
     override suspend fun unfollow(account: Account): Result<Unit, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. unfollow.")
         return Err(MultiMError("unfollow not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun profile(account: Account): Result<Profile, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. profile.")
         return Err(MultiMError("profile not implements",null,ErrorType.NOT_IMPL))
     }
 
@@ -50,6 +55,7 @@ object NotImplAccountApi : AccountApi {
         account: Account,
         includeRepost: Boolean
     ): Result<List<Status>, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. statuses.")
         return Err(MultiMError("statuses not implements",null,ErrorType.NOT_IMPL))
     }
 
@@ -57,18 +63,22 @@ object NotImplAccountApi : AccountApi {
         myself: Account,
         other: Account
     ): Result<Relation, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. relationships.")
         return Err(MultiMError("relationships not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun requestCancel(account: Account): Result<Unit, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. requestCancel.")
         return Err(MultiMError("requestCancel not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun requestAccept(account: Account): Result<Unit, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. requestAccept.")
         return Err(MultiMError("requestAccept not implements",null,ErrorType.NOT_IMPL))
     }
 
     override suspend fun requestReject(account: Account): Result<Unit, MultiMError> {
+        Logger.debug("Account Api","Not impl account api. requestReject.")
         return Err(MultiMError("requestReject not implements",null,ErrorType.NOT_IMPL))
     }
 }

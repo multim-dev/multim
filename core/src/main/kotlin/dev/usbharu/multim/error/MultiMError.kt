@@ -7,10 +7,10 @@ import io.ktor.client.plugins.*
 
 open class MultiMError(
     message: String,
-    val throwable: Throwable? = null,
+    val _throwable: Throwable? = null,
     val errorType: ErrorType
 ) :
-    Error("MultiM ${errorType.message} ERROR : $message")
+    ThrowableError(_throwable ?: Throwable(message),"MultiM ${errorType.message} ERROR : $message")
 
 class MultiMHttpError(val httpError: HttpError, throwable: Throwable? = httpError.throwable) :
     MultiMError(

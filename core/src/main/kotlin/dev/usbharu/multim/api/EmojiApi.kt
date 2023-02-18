@@ -1,6 +1,7 @@
 package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.error.MultiMResult
@@ -14,10 +15,12 @@ interface EmojiApi {
 
 object NotImplEmojiApi : EmojiApi {
     override suspend fun get(name: String): MultiMResult<Emoji> {
+        Logger.debug("Emoji Api","Not impl emoji api get $name")
         return Err(MultiMError("emoji get not implements",null, ErrorType.NOT_IMPL))
     }
 
     override suspend fun findByName(name: String): MultiMResult<List<Emoji>> {
+        Logger.debug("Emoji Api","Not impl emoji api findByName $name")
         return Err(MultiMError("emoji findByName not implements",null,ErrorType.NOT_IMPL))
     }
 }

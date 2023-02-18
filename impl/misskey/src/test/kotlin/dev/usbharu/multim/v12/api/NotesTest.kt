@@ -268,7 +268,7 @@ class NotesTestE2E {
         )
         val deleteNote = when (create) {
             is Ok -> create.value.createdNote.id
-            is Err -> fail(create.error.message, create.error.throwable)
+            is Err -> fail(create.error.message, create.error._throwable)
         }
         notes.delete(NotesDeleteRequest(deleteNote))
         assertInstanceOf(Err::class.java,notes.show(NotesShowRequest(deleteNote)))
@@ -319,7 +319,7 @@ class NotesTestE2E {
         val create =
             when (result) {
                 is Ok -> result.value
-                is Err -> fail(result.error.message, result.error.throwable)
+                is Err -> fail(result.error.message, result.error._throwable)
             }
         notes.Favorites().create(NotesFavoritesCreateRequest(create.createdNote.id))
         assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).get()?.isFavorited == true)

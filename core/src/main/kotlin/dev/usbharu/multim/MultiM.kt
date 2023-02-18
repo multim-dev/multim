@@ -1,18 +1,19 @@
 package dev.usbharu.multim
 
 import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dev.usbharu.multim.api.NodeinfoApi
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
 import dev.usbharu.multim.multi.MultiAccountApiBase
-import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
@@ -34,13 +35,33 @@ object MultiM {
         token: String,
         factory: PlatformApiFactory,
         httpClient: HttpClient = httpClientWithJson
-    ): Result<MultiMApis,MultiMError> {
+    ): Result<MultiMApis, MultiMError> {
+        dev.usbharu.multim.Logger.info("Create Client", "START Create client with url:$url.")
+        dev.usbharu.multim.Logger.debug(
+            "Create Client",
+            "Create client with url:$url token:${"*".repeat(token.length)} factory:${factory::class.java}."
+        )
+        val result = NodeinfoApi(httpClient).nodeinfo(url)
+            .map { nodeInfo -> factory.factory(nodeInfo, httpClient, token, url) }
+        result.onSuccess {
+            dev.usbharu.multim.Logger.info("Create Client", "SUCCESS Create Client with url:$url")
+        }
+        result.onFailure {
+            dev.usbharu.multim.Logger.error(
+                "Create Client",
+                "FAILURE Create Client with url:$url token:${"*".repeat(token.length)} factory:${factory::class.java}.",
+                it
+            )
 
-        return NodeinfoApi(httpClient).nodeinfo(url).map{ nodeInfo ->  factory.factory(nodeInfo,httpClient,token,url) }
+        }
+        return result
     }
 
     fun createMultiAccountClients(serviceInfoList: List<ServiceInfo> = listOf()): MultiAccountApiBase {
-        return MultiAccountApiBase(serviceInfoList)
+        dev.usbharu.multim.Logger.info("Create Client","START Create multi account client with ${serviceInfoList.size} services.")
+        val multiAccountApiBase = MultiAccountApiBase(serviceInfoList)
+        dev.usbharu.multim.Logger.info("Create Client","SUCCESS Create multi account client with ${serviceInfoList.size} services.")
+        return multiAccountApiBase
     }
 
     val json = Json {
@@ -48,7 +69,7 @@ object MultiM {
         ignoreUnknownKeys = true
     }
 
-    val httpClient = HttpClient(CIO){
+    val httpClient = HttpClient(CIO) {
         expectSuccess = true
     }
 
@@ -56,7 +77,7 @@ object MultiM {
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Napier.v(message,null,"HTTP Client")
+                    dev.usbharu.multim.Logger.debug("HTTP Client", message)
                 }
             }
             level = LogLevel.HEADERS
@@ -64,7 +85,7 @@ object MultiM {
     }
 
     val httpClientWithJson = httpClientWithLogger.config {
-        install(ContentNegotiation){
+        install(ContentNegotiation) {
             json(json)
         }
     }
