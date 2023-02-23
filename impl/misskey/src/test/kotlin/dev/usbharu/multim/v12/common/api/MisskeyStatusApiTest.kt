@@ -6,6 +6,7 @@ import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyStatusApi
+import dev.usbharu.multim.model.SingleTokenAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
@@ -19,7 +20,7 @@ class MisskeyStatusApiTest {
     val misskeyStatusApi = MisskeyStatusApi(
         MisskeyApis(
             MisskeyApiClient(
-                "",
+                SingleTokenAuth(""),
                 "http://localhost/",
                 MisskeyTestUtil.createMockHttpClient(
                     checkAuth = false, content =

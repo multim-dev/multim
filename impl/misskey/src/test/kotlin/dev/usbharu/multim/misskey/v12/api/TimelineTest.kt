@@ -10,6 +10,7 @@ import dev.usbharu.multim.misskey.v12.model.StreamRequest.ConnectRequest.Body.Ch
 import dev.usbharu.multim.misskey.v12.model.StreamRequest.DisconnectRequest
 import dev.usbharu.multim.misskey.v12.model.StreamResponse.ChannelResponse.ChannelBody.NoteBody
 import dev.usbharu.multim.misskey.v12.model.components.Note
+import dev.usbharu.multim.model.SingleTokenAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -23,7 +24,7 @@ class TimelineTestE2E {
 
 
     val client = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )

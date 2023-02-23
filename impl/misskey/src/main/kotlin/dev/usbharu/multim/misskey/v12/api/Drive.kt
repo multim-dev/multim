@@ -47,7 +47,7 @@ class Drive(val client: MisskeyApiClient) {
             return client.client.submitFormWithBinaryData(
                 client.baseUrl + "api/drive/files/create",
                 formData = formData {
-                    append("\"i\"", client.token)
+                    append("\"i\"", client.auth.token)
                     append("\"file\"", createRequest.file, Headers.build {
                         append(HttpHeaders.ContentDisposition, "filename=${createRequest.name}")
                     })

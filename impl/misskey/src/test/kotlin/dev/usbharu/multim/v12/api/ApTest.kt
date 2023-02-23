@@ -12,6 +12,7 @@ import dev.usbharu.multim.misskey.v12.api.Ap
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.ApShowRequest
 import dev.usbharu.multim.misskey.v12.model.ApShowResponse
+import dev.usbharu.multim.model.SingleTokenAuth
 import io.github.artsok.RepeatedIfExceptionsTest
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.Test
 class ApTest {
 
     val misskeyApiClient = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"), System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")), System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
@@ -49,7 +50,7 @@ class ApTest {
 }"""
 
         val misskeyApiClient = MisskeyApiClient(
-            "aaaaaaaa", "https://localhost", createMockHttpClient(typeUser)
+            SingleTokenAuth("aaaaaaaa"), "https://localhost", createMockHttpClient(typeUser)
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/IN7OFhht")).get()
         assertEquals(json.decodeFromString<ApShowResponse.TypeUser>(typeUser), show)
@@ -66,7 +67,7 @@ class ApTest {
         """.trimIndent()
 
         val misskeyApiClient = MisskeyApiClient(
-            "W7Xw8F", "https://localhost", createMockHttpClient(typeNote)
+            SingleTokenAuth("W7Xw8F"), "https://localhost", createMockHttpClient(typeNote)
         )
         val show = Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/C56WI")).get()
         assertEquals(json.decodeFromString<ApShowResponse.TypeNote>(typeNote), show)
@@ -76,7 +77,7 @@ class ApTest {
 class ApTestE2E {
 
     val misskeyApiClient = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"), System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")), System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 

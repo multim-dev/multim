@@ -3,14 +3,13 @@ package dev.usbharu.multim.misskey.v12.common.api
 import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.api.ApiClient
 import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
+import dev.usbharu.multim.model.Auth
+import dev.usbharu.multim.model.SingleTokenAuth
 import io.ktor.client.*
 import io.ktor.client.plugins.api.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
@@ -21,7 +20,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 
-class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
+class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
         install(WebSockets) {
             pingInterval = 20_000
@@ -32,7 +31,7 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
                 println("request type is :${content::class}")
                 if (content is MisskeyNeedAuth) {
                     println("injection token")
-                    content.i = token
+                    content.i = auth.token
                 }
                 request.headers.append(
                     "Content-Type", ContentType.Application.Json
@@ -53,7 +52,7 @@ class MisskeyApiClient(var token: String, baseUrl: String, client: HttpClient) :
         var commands = MutableStateFlow("a")
         fun connect() {
             val launch = coroutineScope.launch {
-                client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming?i=$token") {
+                client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming?i=${auth.token}") {
                     awaitAll(
                         coroutineScope.async {
                             commands.onEach { println("Sending :$it");outgoing.send(Frame.Text(it)) }

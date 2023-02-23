@@ -11,6 +11,7 @@ import dev.usbharu.multim.misskey.v12.api.Drive
 import dev.usbharu.multim.misskey.v12.api.Notes
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
+import dev.usbharu.multim.model.SingleTokenAuth
 import io.github.artsok.RepeatedIfExceptionsTest
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
@@ -33,7 +34,7 @@ class NotesTest {
     fun globalTimelineTest() = runTest {
         val notes = Notes(
             MisskeyApiClient(
-                "aaaa",
+                SingleTokenAuth("aaaa"),
                 "",
                 createMockHttpClient(
                     checkAuth = false,
@@ -50,7 +51,7 @@ class NotesTest {
     fun hybridTimelineTest() = runTest {
         val notes = Notes(
             MisskeyApiClient(
-                "aaaa",
+                SingleTokenAuth("aaaa"),
                 "",
                 createMockHttpClient(content = json.encodeToString(expectNoteArray))
             )
@@ -63,7 +64,7 @@ class NotesTest {
     fun localTimelineTest() = runTest {
         val notes = Notes(
             MisskeyApiClient(
-                "aaa",
+                SingleTokenAuth("aaa"),
                 "",
                 createMockHttpClient(
                     checkAuth = false,
@@ -80,7 +81,7 @@ class NotesTest {
         val expectedNote = createFakeNote("mLyakn", "7j1VB0L", "Ymhq", "8V7QrxD6")
         val notes = Notes(
             MisskeyApiClient(
-                "aaa",
+                SingleTokenAuth("aaa"),
                 "",
                 createMockHttpClient(
                     checkAuth = false,
@@ -97,7 +98,7 @@ class NotesTest {
         val note = createFakeNote("aT9o", "o00672o", "W2kwto", "gold")
         val notes = Notes(
             MisskeyApiClient(
-                "aaa",
+                SingleTokenAuth("aaa"),
                 "",
                 createMockHttpClient(content = json.encodeToString(NotesCreateResponse(note)))
             )
@@ -108,7 +109,7 @@ class NotesTest {
 
     @Test
     fun deleteTest() = runTest {
-        val notes = Notes(MisskeyApiClient("aaa", "", createMockHttpClient(content = "")))
+        val notes = Notes(MisskeyApiClient(SingleTokenAuth("aaa"), "", createMockHttpClient(content = "")))
         notes.delete(NotesDeleteRequest("Rw4g2CH"))
     }
 
@@ -186,7 +187,7 @@ class NotesTest {
 class NotesTestE2E {
 
     val client = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )

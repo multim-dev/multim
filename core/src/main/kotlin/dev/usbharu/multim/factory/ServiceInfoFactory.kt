@@ -3,6 +3,8 @@ package dev.usbharu.multim.factory
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.ServiceInfo
 import dev.usbharu.multim.api.PlatformApis
+import dev.usbharu.multim.model.Auth
+import dev.usbharu.multim.model.SingleTokenAuth
 import dev.usbharu.multim.model.wellknown.nodeinfo.NodeInfo
 import io.ktor.client.*
 
@@ -14,6 +16,16 @@ class ServiceInfoFactory(private val services: List<ServiceInfo>) : PlatformApiF
         baseUrl: String,
         build: MultiMApis.(PlatformApis) -> Unit
     ): MultiMApis {
+        return this.factory(nodeInfo, httpClient, SingleTokenAuth(token), baseUrl, build)
+    }
+
+    override fun factory(
+        nodeInfo: NodeInfo,
+        httpClient: HttpClient,
+        auth: Auth,
+        baseUrl: String,
+        build: MultiMApis.(PlatformApis) -> Unit
+    ): MultiMApis {
         for (service in services) {
 
             if (nodeInfo.getSoftwareName()
@@ -22,7 +34,7 @@ class ServiceInfoFactory(private val services: List<ServiceInfo>) : PlatformApiF
             ) {
                 val platFormApis = service.platFormApis(
                     service.apiClient(
-                        token,
+                        auth,
                         baseUrl,
                         httpClient
                     )

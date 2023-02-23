@@ -3,6 +3,7 @@ package dev.usbharu.multim
 import dev.usbharu.multim.api.ApiClient
 import dev.usbharu.multim.api.PlatformApis
 import dev.usbharu.multim.factory.MultiMApis
+import dev.usbharu.multim.model.Auth
 import io.ktor.client.*
 
 /**
@@ -16,7 +17,7 @@ import io.ktor.client.*
 abstract class ServiceInfo(
     val serviceNameMatchRegex: Regex,
     val versionMatchRegex: Regex,
-    val apiClient:(String,String,HttpClient)->ApiClient,
+    val apiClient:(Auth,String,HttpClient)->ApiClient,
     val platFormApis:(ApiClient)->PlatformApis,
     val multiMApis: (PlatformApis)->MultiMApis
 )

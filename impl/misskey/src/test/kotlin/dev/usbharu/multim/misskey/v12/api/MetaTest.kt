@@ -4,6 +4,7 @@ import MisskeyTestUtil.assertIsOk
 import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.MetaRequest
+import dev.usbharu.multim.model.SingleTokenAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
@@ -15,7 +16,7 @@ class MetaTest
 class MetaTestE2E{
 
     val misskeyApiClient = MisskeyApiClient(
-        System.getProperty("multim_misskey_token"),System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
