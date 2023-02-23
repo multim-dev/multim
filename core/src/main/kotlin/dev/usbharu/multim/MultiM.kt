@@ -8,6 +8,7 @@ import dev.usbharu.multim.api.NodeinfoApi
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
+import dev.usbharu.multim.model.Auth
 import dev.usbharu.multim.multi.MultiAccountApiBase
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -53,6 +54,25 @@ object MultiM {
                 it
             )
 
+        }
+        return result
+    }
+
+    suspend fun createClient(
+        url:String,
+        auth: Auth,
+        factory: PlatformApiFactory,
+        httpClient: HttpClient = httpClientWithJson
+    ) : Result<MultiMApis,MultiMError> {
+        dev.usbharu.multim.Logger.info("Create Client","START Create cient with url:$url.")
+        dev.usbharu.multim.Logger.debug("Create Client","Create client with url:$url auth:${auth::class.simpleName}")
+        val result = NodeinfoApi(httpClient).nodeinfo(url)
+            .map { nodeInfo -> factory.factory(nodeInfo, httpClient, auth, url) }
+        result.onSuccess {
+            dev.usbharu.multim.Logger.info("Create Client","SUCCESS Create Client with url:$url")
+        }
+        result.onFailure {
+            dev.usbharu.multim.Logger.error("Create Client","FAILURE Create Client with url:$url auth:${auth::class.simpleName}",it)
         }
         return result
     }
