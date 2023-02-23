@@ -18,7 +18,7 @@ class NodeInfoE2E{
                     isLenient = true
                 })
             }
-        }).nodeinfo("https://misskey-dev.usbharu.dev/")
+        }).nodeinfo(System.getProperty("multim_misskey_instance"))
         println(nodeinfo)
     }
 }

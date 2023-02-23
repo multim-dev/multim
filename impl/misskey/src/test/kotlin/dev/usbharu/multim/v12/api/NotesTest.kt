@@ -461,21 +461,23 @@ class NotesTestE2E {
 
     @Test
     fun watchingCreate() = runTest {
-        val state = notes.state(NotesStateRequest("9ad9fr34tu")).get()
+        val noteId = "9bk3hn1qd0"
+        val state = notes.state(NotesStateRequest(noteId)).get()
         if (state?.isWatching == true) {
-            notes.Watching().delete(NotesWatchingDeleteRequest("9ad9fr34tu"))
+            notes.Watching().delete(NotesWatchingDeleteRequest(noteId))
         }
-        notes.Watching().create(NotesWatchingCreateRequest("9ad9fr34tu")).get()
-        assertTrue(notes.state(NotesStateRequest("9ad9fr34tu")).get()?.isWatching == true)
+        notes.Watching().create(NotesWatchingCreateRequest(noteId)).get()
+        assertTrue(notes.state(NotesStateRequest(noteId)).get()?.isWatching == true)
     }
 
     @Test
     fun watchingDelete() = runTest {
-        val state = notes.state(NotesStateRequest("9ad9fr34tu")).get()
+        val noteId = "9bk3hn1qd0"
+        val state = notes.state(NotesStateRequest(noteId)).get()
         if (state?.isWatching == false) {
-            notes.Watching().create(NotesWatchingCreateRequest("9ad9fr34tu"))
+            notes.Watching().create(NotesWatchingCreateRequest(noteId))
         }
-        notes.Watching().delete(NotesWatchingDeleteRequest("9ad9fr34tu"))
-        assertFalse(notes.state(NotesStateRequest("9ad9fr34tu")).get()?.isWatching == true)
+        notes.Watching().delete(NotesWatchingDeleteRequest(noteId))
+        assertFalse(notes.state(NotesStateRequest(noteId)).get()?.isWatching == true)
     }
 }
