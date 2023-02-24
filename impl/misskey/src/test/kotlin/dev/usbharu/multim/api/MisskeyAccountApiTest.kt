@@ -200,12 +200,53 @@ class MisskeyAccountApiTest : AccountApiTest() {
         TODO("Not yet implemented")
     }
 
-    override fun relationships() {
-        TODO("Not yet implemented")
+    @Test
+    override fun relationships() = runTest {
+        val myself = MisskeyAccount(
+            "9bg1zu54y7",
+            "test",
+            "test",
+            false,
+            MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bg1zu54y7")
+        )
+        val account = MisskeyAccount(
+            "9bk3hbcjcy",
+            "test1",
+            "test1",
+            false,
+            MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bk3hbcjcy")
+        )
+        accountApi.relationships(myself,account).failOnError()
     }
 
-    override fun relationships_illegalAccount_returnErr() {
-        TODO("Not yet implemented")
+    @Test
+    override fun relationships_illegalAccount_returnErr() = runTest {
+        Napier.base(DebugAntilog())
+        val myself = MisskeyAccount(
+            "9bg1zu54y7",
+            "test",
+            "test",
+            false,
+            MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bg1zu54y7")
+        )
+        val illegalAccount = MisskeyAccount(
+            "Obrg",
+            "beard",
+            "leg",
+            false,
+            MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/TrT")
+        )
+        val relationships = accountApi.relationships(myself, illegalAccount)
+        relationships.onSuccess {
+
+        }
+        relationships.onFailure {
+            if (it is MultiMHttpError) {
+                fail("Misskey実装ではエラーが出ない")
+            }else {
+                fail("想定されたエラーではない")
+            }
+        }
     }
 
     override fun requestCancel() {
