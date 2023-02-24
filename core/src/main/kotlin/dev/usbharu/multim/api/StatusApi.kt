@@ -2,10 +2,14 @@ package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Result
+import com.goncalossilva.murmurhash.MurmurHash3
 import dev.usbharu.multim.Logger
+import dev.usbharu.multim.UniqueId
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.model.*
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 interface StatusApi {
     suspend fun post(status: StatusForPost): Result<Status,MultiMError>
@@ -30,6 +34,15 @@ interface StatusApi {
     suspend fun addToBookmarks(id: StatusId): Result<Unit,MultiMError>
     suspend fun removeFromBookmarks(id: StatusId): Result<Unit,MultiMError>
     suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts,MultiMError>
+
+    fun getUniqueId(status: Status):Int{
+        val localDateTime = status.createdAt.toLocalDateTime(TimeZone.UTC)
+        val date:String =
+            "${localDateTime.year}${localDateTime.monthNumber}${localDateTime.dayOfMonth}${localDateTime.hour}${localDateTime.minute}${localDateTime.second}"
+        return UniqueId.hashAlgorithm.hash32x86(
+            (status.content.text + status.account.accountName + date).encodeToByteArray()
+        ).toInt()
+    }
 }
 
 
