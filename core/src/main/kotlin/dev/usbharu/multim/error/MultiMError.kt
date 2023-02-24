@@ -10,7 +10,7 @@ open class MultiMError(
     val _throwable: Throwable? = null,
     val errorType: ErrorType
 ) :
-    ThrowableError(_throwable ?: Throwable(message),"MultiM ${errorType.message} ERROR : $message")
+    ThrowableError(_throwable ?: Throwable(message), "MultiM ${errorType.message} ERROR : $message")
 
 class MultiMHttpError(val httpError: HttpError, throwable: Throwable? = httpError.throwable) :
     MultiMError(
@@ -115,7 +115,9 @@ fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
                 is HttpClientClientError -> {
                     Err(MultiMHttpError(this.error.throwable as ClientRequestException))
                 }
-
+                is MultiMError -> {
+                    Err(this.error as MultiMError)
+                }
                 else -> {
                     Err(MultiMError(this.error.message, this.error.throwable, ErrorType.UNKNOWN))
                 }
@@ -124,8 +126,8 @@ fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
     }
 }
 
-typealias MultiMResult<T> = Result<T,MultiMError>
+typealias MultiMResult<T> = Result<T, MultiMError>
 
 fun TODO(throwable: Throwable? = runCatching { kotlin.TODO() }.exceptionOrNull()): Err<MultiMError> {
-    return Err(MultiMError("Not yet Implement.",throwable,ErrorType.NOT_IMPL))
+    return Err(MultiMError("Not yet Implement.", throwable, ErrorType.NOT_IMPL))
 }

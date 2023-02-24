@@ -67,6 +67,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             } catch (e: ServerResponseException) {
                 return Err(HttpClientServerError(e))
             }
+        Logger.warn(post.bodyAsText())
         return runCatching<R> { post.body() }.fold(
             onSuccess = { Ok(it) },
             onFailure = {
@@ -81,15 +82,18 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         baseUrl: String = this.baseUrl
     ): Result<Unit, ThrowableError> {
         Logger.trace("Api Client", "Post without response $baseUrl$path")
-        return runCatching<Unit> {
+        try {
             client.post(baseUrl + path) {
                 contentType(ContentType.Application.Json)
                 setBody(content)
             }
-        }.fold(onSuccess = Ok(), onFailure = {
-            Logger.warn("Api Client", "FAILURE Post withou response $baseUrl$path")
-            Err(ThrowableError(it))
-        })
+        } catch (e: ClientRequestException) {
+            return Err(HttpClientClientError(e))
+        } catch (e: ServerResponseException) {
+            return Err(HttpClientServerError(e))
+        }
+        return Ok(Unit)
+
     }
 
     suspend fun get(
