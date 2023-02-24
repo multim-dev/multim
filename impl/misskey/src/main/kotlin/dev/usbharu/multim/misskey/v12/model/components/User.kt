@@ -12,7 +12,7 @@ sealed class User
 object UserSerializer : JsonContentPolymorphicSerializer<User>(User::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<out User> =
         when {
-            "avatarId" in element.jsonObject -> UserDetailed.serializer()
+            "url" in element.jsonObject -> UserDetailed.serializer()
             else -> UserLite.serializer()
         }
 }
