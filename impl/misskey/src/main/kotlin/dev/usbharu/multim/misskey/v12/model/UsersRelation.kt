@@ -1,7 +1,9 @@
 package dev.usbharu.multim.misskey.v12.model
 
+import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
+
 @kotlinx.serialization.Serializable
-data class UsersRelationRequest(val userId: String)
+data class UsersRelationRequest(val userId: String) : MisskeyNeedAuth()
 
 @kotlinx.serialization.Serializable
 data class UsersRelationResponse(
