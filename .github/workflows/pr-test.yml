@@ -33,3 +33,5 @@ jobs:
       env:
         multim_misskey_token: ${{secrets.multim_misskey_token}}
         multim_misskey_instance: ${{secrets.multim_misskey_instance}}
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}

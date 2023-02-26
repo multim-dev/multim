@@ -1,8 +1,8 @@
 package dev.usbharu.multim
 
+import dev.usbharu.logger.Napier
 import dev.usbharu.multim.error.Error
 import dev.usbharu.multim.error.ThrowableError
-import io.github.aakira.napier.Napier
 
 object Logger {
 
