@@ -15,6 +15,16 @@ version = "1.0-SNAPSHOT"
 allprojects {
     repositories {
         mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/usbharu/kmp-logger")
+            credentials {
+                val props = Properties()
+                props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
+                username = props.getProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = props.getProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
     }
 }
 
@@ -78,7 +88,7 @@ subprojects {
         "implementation"("io.ktor:ktor-client-logging:$ktor_version")
         "implementation"("io.ktor:ktor-client-websockets:$ktor_version")
         "implementation"("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-        "implementation"("io.github.aakira:napier:2.6.1")
+        "implementation"("dev.usbharu:kmp-logger:1.1.0")
         "implementation"("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
 
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.9.0")
@@ -92,18 +102,19 @@ subprojects {
         "implementation"("com.goncalossilva:murmurhash:0.4.0")
     }
 
-    publishing{
-        repositories{
-            maven{
+    publishing {
+        repositories {
+            maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/usbharu/multim")
                 credentials {
-                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    username =
+                        project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
                     password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
                 }
             }
         }
-        publications{
+        publications {
             register<MavenPublication>("gpr") {
                 groupId = project.group.toString()
                 artifactId = "multim-${project.name}"
