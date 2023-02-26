@@ -20,7 +20,11 @@ allprojects {
             url = uri("https://maven.pkg.github.com/usbharu/kmp-logger")
             credentials {
                 val props = Properties()
-                props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
+                try {
+                    props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
+                } catch (e:Exception){
+                    println("local.properties not found")
+                }
                 username = props.getProperty("gpr.user") as String? ?: System.getenv("USERNAME")
                 password = props.getProperty("gpr.key") as String? ?: System.getenv("TOKEN")
             }
