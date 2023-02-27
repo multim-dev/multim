@@ -108,20 +108,30 @@ class Notes(val client: MisskeyApiClient) {
         ).mapMultiMError()
     }
 
-    suspend fun search(searchRequest: NotesSearchRequest): Result<NotesSearchResponse,MultiMError> {
-        return client.post<NotesSearchRequest, NotesSearchResponse>(searchRequest, "api/notes/search").mapMultiMError()
+    suspend fun search(searchRequest: NotesSearchRequest): Result<NotesSearchResponse, MultiMError> {
+        return client.post<NotesSearchRequest, NotesSearchResponse>(
+            searchRequest,
+            "api/notes/search"
+        ).mapMultiMError()
     }
 
-    suspend fun state(stateRequest: NotesStateRequest): Result<NotesStateResponse,MultiMError> {
-        return client.post<NotesStateRequest, NotesStateResponse>(stateRequest, "api/notes/state").mapMultiMError()
+    suspend fun state(stateRequest: NotesStateRequest): Result<NotesStateResponse, MultiMError> {
+        return client.post<NotesStateRequest, NotesStateResponse>(stateRequest, "api/notes/state")
+            .mapMultiMError()
     }
 
-    suspend fun timeline(timelineRequest: NotesTimelineRequest): Result<NotesTimelineResponse,MultiMError> {
-        return client.post<NotesTimelineRequest, NotesTimelineResponse>(timelineRequest, "api/notes/timeline").mapMultiMError()
+    suspend fun timeline(timelineRequest: NotesTimelineRequest): Result<NotesTimelineResponse, MultiMError> {
+        return client.post<NotesTimelineRequest, NotesTimelineResponse>(
+            timelineRequest,
+            "api/notes/timeline"
+        ).mapMultiMError()
     }
 
     suspend fun translate(translateRequest: NotesTranslateRequest): MultiMResult<NotesTranslateResponse> {
-        return client.post<NotesTranslateRequest, NotesTranslateResponse>(translateRequest, "api/notes/translate").mapMultiMError()
+        return client.post<NotesTranslateRequest, NotesTranslateResponse>(
+            translateRequest,
+            "api/notes/translate"
+        ).mapMultiMError()
     }
 
     suspend fun unrenote(unrenoteRequest: NotesUnrenoteRequest): Result<Unit, MultiMError> {
@@ -129,17 +139,26 @@ class Notes(val client: MisskeyApiClient) {
     }
 
     suspend fun userListTimeline(userListTimelineRequest: NotesUserListTimelineRequest): MultiMResult<NotesUserListTimelineResponse> {
-        return client.post<NotesUserListTimelineRequest, List<Note>>(userListTimelineRequest, "api/notes/user-list-timeline").mapMultiMError()
+        return client.post<NotesUserListTimelineRequest, List<Note>>(
+            userListTimelineRequest,
+            "api/notes/user-list-timeline"
+        ).mapMultiMError()
     }
 
 
     inner class Polls {
         suspend fun recommendation(pollsRecommendationRequest: PollsRecommendationRequest): MultiMResult<PollsRecommendationResponse> {
-            return client.post<PollsRecommendationRequest, List<Note>>(pollsRecommendationRequest, "api/notes/polls/recommendation").mapMultiMError()
+            return client.post<PollsRecommendationRequest, List<Note>>(
+                pollsRecommendationRequest,
+                "api/notes/polls/recommendation"
+            ).mapMultiMError()
         }
 
         suspend fun vote(voteRequest: NotesPollsVoteRequest): MultiMResult<NotesPollsVoteRequest> {
-            return client.post<NotesPollsVoteRequest, NotesPollsVoteRequest>(voteRequest, "api/notes/polls/vote").mapMultiMError()
+            return client.post<NotesPollsVoteRequest, NotesPollsVoteRequest>(
+                voteRequest,
+                "api/notes/polls/vote"
+            ).mapMultiMError()
         }
     }
 
@@ -161,31 +180,37 @@ class Notes(val client: MisskeyApiClient) {
 
     inner class Watching {
         suspend fun create(watchingCreateRequest: NotesWatchingCreateRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(watchingCreateRequest, "api/notes/watching/create").mapMultiMError()
+            return client.postWithoutResponse(watchingCreateRequest, "api/notes/watching/create")
+                .mapMultiMError()
         }
 
         suspend fun delete(watchingDeleteRequest: NotesWatchingDeleteRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(watchingDeleteRequest, "api/notes/watching/delete").mapMultiMError()
+            return client.postWithoutResponse(watchingDeleteRequest, "api/notes/watching/delete")
+                .mapMultiMError()
         }
     }
 
     inner class Favorites {
         suspend fun create(favoritesCreateRequest: NotesFavoritesCreateRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(favoritesCreateRequest, "api/notes/favorites/create").mapMultiMError()
+            return client.postWithoutResponse(favoritesCreateRequest, "api/notes/favorites/create")
+                .mapMultiMError()
         }
 
         suspend fun delete(favoritesDeleteRequest: NotesFavoritesDeleteRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(favoritesDeleteRequest, "api/notes/favorites/delete").mapMultiMError()
+            return client.postWithoutResponse(favoritesDeleteRequest, "api/notes/favorites/delete")
+                .mapMultiMError()
         }
     }
 
     inner class Reaction {
         suspend fun create(reactionCreateRequest: NotesReactionCreateRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(reactionCreateRequest, "api/notes/reactions/create").mapMultiMError()
+            return client.postWithoutResponse(reactionCreateRequest, "api/notes/reactions/create")
+                .mapMultiMError()
         }
 
         suspend fun delete(reactionDeleteRequest: NotesReactionDeleteRequest): Result<Unit, MultiMError> {
-            return client.postWithoutResponse(reactionDeleteRequest, "api/notes/reactions/delete").mapMultiMError()
+            return client.postWithoutResponse(reactionDeleteRequest, "api/notes/reactions/delete")
+                .mapMultiMError()
         }
     }
 }

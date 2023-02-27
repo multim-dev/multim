@@ -17,7 +17,7 @@ import io.ktor.client.*
 abstract class ServiceInfo(
     val serviceNameMatchRegex: Regex,
     val versionMatchRegex: Regex,
-    val apiClient:(Auth,String,HttpClient)->ApiClient,
-    val platFormApis:(ApiClient)->PlatformApis,
-    val multiMApis: (PlatformApis)->MultiMApis
+    val apiClient: (Auth, String, HttpClient) -> ApiClient,
+    val platFormApis: (ApiClient) -> PlatformApis,
+    val multiMApis: (PlatformApis) -> MultiMApis
 )

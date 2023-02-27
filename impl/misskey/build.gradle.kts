@@ -2,16 +2,16 @@ dependencies {
     implementation(project(":core"))
 }
 
-sourceSets{
-    test{
-        kotlin{
-            compileClasspath+=project(":core").sourceSets.test.get().output
-            runtimeClasspath+=project(":core").sourceSets.test.get().output
+sourceSets {
+    test {
+        kotlin {
+            compileClasspath += project(":core").sourceSets.test.get().output
+            runtimeClasspath += project(":core").sourceSets.test.get().output
         }
     }
 }
 
-kotlin{
+kotlin {
 
 }
 

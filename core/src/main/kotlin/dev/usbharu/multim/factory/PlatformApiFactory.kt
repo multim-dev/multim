@@ -20,6 +20,6 @@ interface PlatformApiFactory {
         httpClient: HttpClient,
         auth: Auth,
         baseUrl: String,
-        build:MultiMApis.(PlatformApis) -> Unit = {}
-    ):MultiMApis
+        build: MultiMApis.(PlatformApis) -> Unit = {}
+    ): MultiMApis
 }

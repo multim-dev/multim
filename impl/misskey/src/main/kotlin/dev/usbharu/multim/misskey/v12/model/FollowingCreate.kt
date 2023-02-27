@@ -6,6 +6,6 @@ import dev.usbharu.multim.misskey.v12.model.components.UserLite
 @kotlinx.serialization.Serializable
 data class FollowingCreateRequest(
     val userId: String
-):MisskeyNeedAuth()
+) : MisskeyNeedAuth()
 
 typealias FollowingCreateResponse = UserLite

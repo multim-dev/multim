@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFoldersRequest(
-    val limit:Int,
-    val sinceId:String,
-    val untilId:String,
-    val folderId:String? = null
+    val limit: Int,
+    val sinceId: String,
+    val untilId: String,
+    val folderId: String? = null
 )
 
 typealias DriveFoldersResponse = DriveFolder

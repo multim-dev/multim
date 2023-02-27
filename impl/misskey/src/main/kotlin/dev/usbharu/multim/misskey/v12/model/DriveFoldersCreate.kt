@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFoldersCreateRequest(
-    val name:String = "Untitled",
-    val parentId:String? = null
+    val name: String = "Untitled",
+    val parentId: String? = null
 )
 
 typealias DriveFoldersCreateResponse = DriveFolder

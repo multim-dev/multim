@@ -13,10 +13,11 @@ import org.junit.jupiter.api.Test
 class MetaTest
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MetaTestE2E{
+class MetaTestE2E {
 
     val misskeyApiClient = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")),System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),
+        System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 

@@ -7,7 +7,7 @@ import kotlinx.serialization.Transient
 @Serializable
 data class Note(
     val id: String,
-    val createdAt:Instant,
+    val createdAt: Instant,
     val text: String? = null,
     val cw: String? = null,
     val userId: String,
@@ -45,16 +45,16 @@ data class Note(
 
     @Serializable
     data class Poll(
-        val multiple:Boolean,
-        val expiresAt:Instant? = null,
-        val expiredAfter:Long? = null,
-        val choices:Set<Choice>? = setOf()
+        val multiple: Boolean,
+        val expiresAt: Instant? = null,
+        val expiredAfter: Long? = null,
+        val choices: Set<Choice>? = setOf()
     ) {
         @Serializable
         data class Choice(
-            val text:String,
-            val votes:Int = 0,
-            val isVoted:Boolean = false
+            val text: String,
+            val votes: Int = 0,
+            val isVoted: Boolean = false
         )
     }
 }

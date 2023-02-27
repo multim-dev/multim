@@ -20,15 +20,20 @@ class MisskeyTimelineApi(private val misskeyApis: MisskeyApis) : TimelineApi {
     override suspend fun availableTimelines(): Result<List<Timeline>, MultiMError> {
         fun uuid() = UUID.randomUUID().toString()
 
-        return Ok(listOf(
-            MisskeyTimeline(uuid(), "homeTimeline", Body.Channel.HOME_TIMELINE),
-            MisskeyTimeline(uuid(), "hybridTimeline", Body.Channel.HYBRID_TIMELINE),
-            MisskeyTimeline(uuid(), "localTimeline", Body.Channel.LOCAL_TIMELINE),
-            MisskeyTimeline(uuid(), "globalTimeline", Body.Channel.GLOBAL_TIMELINE)
-        ))
+        return Ok(
+            listOf(
+                MisskeyTimeline(uuid(), "homeTimeline", Body.Channel.HOME_TIMELINE),
+                MisskeyTimeline(uuid(), "hybridTimeline", Body.Channel.HYBRID_TIMELINE),
+                MisskeyTimeline(uuid(), "localTimeline", Body.Channel.LOCAL_TIMELINE),
+                MisskeyTimeline(uuid(), "globalTimeline", Body.Channel.GLOBAL_TIMELINE)
+            )
+        )
     }
 
-    override suspend fun listen(timeline: Timeline, callback: (List<Status>) -> Unit): Result<Unit, MultiMError> {
+    override suspend fun listen(
+        timeline: Timeline,
+        callback: (List<Status>) -> Unit
+    ): Result<Unit, MultiMError> {
         if (timeline is MisskeyTimeline) {
             misskeyApis.timeline.connectChannel(
                 ConnectRequest(

@@ -17,7 +17,7 @@ abstract class Status(
     val language: String? = null,
     val poll: Poll? = null,
     val files: Files? = null,
-    val createdAt:Instant = Clock.System.now()
+    val createdAt: Instant = Clock.System.now()
 )
 
 abstract class StatusForPost(

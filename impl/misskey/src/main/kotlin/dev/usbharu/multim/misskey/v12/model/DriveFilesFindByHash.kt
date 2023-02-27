@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFilesFindByHashRequest(
-    val md5:String
+    val md5: String
 )
 
 typealias DriveFilesFindByHashResponse = List<DriveFile>

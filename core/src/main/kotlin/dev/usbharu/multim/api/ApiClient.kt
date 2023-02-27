@@ -7,7 +7,6 @@ import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.error.HttpClientClientError
 import dev.usbharu.multim.error.HttpClientServerError
-import dev.usbharu.multim.error.Ok
 import dev.usbharu.multim.error.ThrowableError
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -19,7 +18,7 @@ import io.ktor.http.*
 abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
     fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
-        return createHttpClient(config)
+        return MultiM.httpClientWithJson.config(config)
     }
 
     suspend inline fun <reified R> postEmpty(
@@ -121,6 +120,6 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     )
 )
 fun createHttpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient {
-    Logger.warn("DEPRECATED","Deprecated API calls. This API is deprecated.")
+    Logger.warn("DEPRECATED", "Deprecated API calls. This API is deprecated.")
     return MultiM.httpClientWithJson.config(config)
 }

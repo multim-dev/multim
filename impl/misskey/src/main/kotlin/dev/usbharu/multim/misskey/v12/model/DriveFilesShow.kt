@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFilesShowRequestByFileId(
-    val fileId:String
+    val fileId: String
 )
 
 @Serializable
 data class DriveFilesShowRequestByUrl(
-    val url:String
+    val url: String
 )
 
 typealias DriveFilesShowResponse = DriveFile

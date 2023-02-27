@@ -4,12 +4,10 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.map
-import dev.usbharu.multim.Logger
 import dev.usbharu.multim.api.AccountApi
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.error.TODO
-import dev.usbharu.multim.error.mapMultiMError
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.*
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.NoteConverter.toStatus
@@ -46,7 +44,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
 
     override suspend fun follow(account: Account): Result<Unit, MultiMError> {
         return if (account is MisskeyAccount) {
-            misskeyApis.following.create(FollowingCreateRequest(account.id)).map {  }
+            misskeyApis.following.create(FollowingCreateRequest(account.id)).map { }
         } else {
             TODO()
         }
@@ -54,7 +52,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
 
     override suspend fun unfollow(account: Account): Result<Unit, MultiMError> {
         return if (account is MisskeyAccount) {
-            misskeyApis.following.delete(FollowingDeleteRequest(account.id)).map {  }
+            misskeyApis.following.delete(FollowingDeleteRequest(account.id)).map { }
         } else {
             // サーバーが認知していないアカウントのフォローを辞めることはできないのでfalse
             Err(MultiMError("Can not unfollow", null, ErrorType.API))

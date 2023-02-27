@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 
-class NodeInfoE2E{
+class NodeInfoE2E {
     @Test
     fun nodeinfo() = runTest {
         val nodeinfo = NodeinfoApi(HttpClient(CIO).config {

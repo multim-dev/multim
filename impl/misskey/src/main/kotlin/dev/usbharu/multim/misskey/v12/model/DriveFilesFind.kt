@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFilesFindRequest(
-    val name:String,
-    val folderId:String? = null
+    val name: String,
+    val folderId: String? = null
 ) : MisskeyNeedAuth()
 
 typealias DriveFilesFindResponse = List<DriveFile>

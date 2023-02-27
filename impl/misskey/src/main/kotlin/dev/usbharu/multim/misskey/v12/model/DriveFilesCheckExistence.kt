@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFilesCheckExistenceRequest(
-    val md5:String
+    val md5: String
 ) : MisskeyNeedAuth()
 
 typealias DriveFilesCheckExistenceResponse = Boolean

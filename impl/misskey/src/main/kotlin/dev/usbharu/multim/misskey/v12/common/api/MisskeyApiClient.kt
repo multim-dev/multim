@@ -3,7 +3,6 @@ package dev.usbharu.multim.misskey.v12.common.api
 import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.api.ApiClient
 import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
-import dev.usbharu.multim.model.Auth
 import dev.usbharu.multim.model.SingleTokenAuth
 import io.ktor.client.*
 import io.ktor.client.plugins.api.*

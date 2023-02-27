@@ -4,7 +4,6 @@ import com.github.michaelbull.result.*
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.ServiceInfo
-import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.factory.MultiMApis
@@ -14,7 +13,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
 
     val factory = ServiceInfoFactory(serviceList)
 
-    val httpClient = createHttpClient()
+    val httpClient = MultiM.httpClientWithJson.config({})
 
     val apiClientMap = mutableMapOf<Int, MultiMApis>()
 
@@ -32,7 +31,10 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
             if (mainClientHashCode == null) {
                 mainClientHashCode = hashCode
 
-                Logger.debug("Multi Account", "Main account is null! This account is set as the main account.")
+                Logger.debug(
+                    "Multi Account",
+                    "Main account is null! This account is set as the main account."
+                )
 
             }
             hashCode
@@ -51,16 +53,19 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
     }
 
     suspend fun addMainAccount(url: String, token: String): Result<Int, MultiMError> {
-        Logger.info("Multi Account","Add account url:$url token:${"*".repeat(token.length)} as main account.")
+        Logger.info(
+            "Multi Account",
+            "Add account url:$url token:${"*".repeat(token.length)} as main account."
+        )
         return addAccount(url, token).map { mainClientHashCode = it;it }
     }
 
     fun getImpl(hashCode: Int? = mainClientHashCode): Result<MultiMApis, MultiMError> {
-        Logger.debug("Multi Account","Get api client impl $hashCode")
+        Logger.debug("Multi Account", "Get api client impl $hashCode")
         if (hashCode == null) {
-            Logger.warn("Multi Account","HashCode is null! Use main account.")
+            Logger.warn("Multi Account", "HashCode is null! Use main account.")
             return apiClientMap[mainClientHashCode].toResultOr {
-                Logger.warn("Multi Account","Main account client not found!")
+                Logger.warn("Multi Account", "Main account client not found!")
                 MultiMError(
                     "Main Client not found : $mainClientHashCode",
                     null,
@@ -69,7 +74,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
             }
         }
         return apiClientMap[hashCode].toResultOr {
-            Logger.warn("Multi Account","Api client not found. $hashCode")
+            Logger.warn("Multi Account", "Api client not found. $hashCode")
             MultiMError("Api Client not found : $hashCode", null, ErrorType.ILLEGAL_ARGUMENT)
         }
     }

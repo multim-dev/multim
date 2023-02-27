@@ -1,6 +1,9 @@
 package dev.usbharu.multim
 
-import com.github.michaelbull.result.*
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.getError
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -22,7 +25,10 @@ object TestUtil {
         checkAuth: Boolean = true,
         respond: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = {
             if (checkAuth) {
-                if ("i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
+                if ("i" in json.parseToJsonElement(
+                        it.body.toByteArray().decodeToString()
+                    ).jsonObject
+                ) {
 
                 } else {
                     fail("No auth")
@@ -49,7 +55,7 @@ object TestUtil {
         }
     }
 
-        fun checkAuth(
+    fun checkAuth(
         respond: String,
         status: HttpStatusCode = HttpStatusCode.OK,
         headers: Headers = headersOf()
@@ -67,12 +73,12 @@ object TestUtil {
     }
 
 
-    fun assertIsOk(result: Result<*,*>){
-        assertInstanceOf(Ok::class.java,result,"resultの型がOkではない")
+    fun assertIsOk(result: Result<*, *>) {
+        assertInstanceOf(Ok::class.java, result, "resultの型がOkではない")
     }
 
-    inline fun <T, reified R : T> assertIsErr(result: Result<*,T>){
-        assertInstanceOf(Err::class.java,result,"resultの型がErrではない")
-        assertInstanceOf(R::class.java,result.getError(),"Errorの型が違う")
+    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>) {
+        assertInstanceOf(Err::class.java, result, "resultの型がErrではない")
+        assertInstanceOf(R::class.java, result.getError(), "Errorの型が違う")
     }
 }

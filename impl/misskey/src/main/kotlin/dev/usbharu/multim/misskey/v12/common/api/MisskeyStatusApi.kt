@@ -76,7 +76,8 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
     }
 
     override suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>, MultiMError> {
-        return id.fetchId().flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }.map { it.reactions.toReactions(it) }
+        return id.fetchId().flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }
+            .map { it.reactions.toReactions(it) }
     }
 
     override suspend fun repost(id: StatusId): Result<Status, MultiMError> {
@@ -91,7 +92,7 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
             Ok(Unit)
         } else {
             //サーバーが認知していない投稿の再投稿を消せるわけないので何もしない
-            Err(MultiMError("id is Not Misskey id",null,ErrorType.API))
+            Err(MultiMError("id is Not Misskey id", null, ErrorType.API))
         }
     }
 
@@ -117,7 +118,7 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
             Ok(Unit)
         } else {
             // サーバーが認知していない投稿のブックマークを消せるわけないので何もしない
-            Err(MultiMError("id is Not Misskey id",null,ErrorType.API))
+            Err(MultiMError("id is Not Misskey id", null, ErrorType.API))
         }
     }
 
@@ -137,8 +138,14 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         return misskeyApis.ap.show(ApShowRequest(getUrl())).flatMap {
             if (it is ApShowResponse.TypeNote) {
                 Ok(it.note.toStatus().id)
-            }else {
-                Err(MultiMError("The format of the Id($this ${this.getUrl()}) is different.",null,ErrorType.API))
+            } else {
+                Err(
+                    MultiMError(
+                        "The format of the Id($this ${this.getUrl()}) is different.",
+                        null,
+                        ErrorType.API
+                    )
+                )
             }
         }
     }

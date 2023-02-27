@@ -10,13 +10,13 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable(with = NodeinfoSerializer::class)
-sealed class NodeInfo{
-    abstract fun getSoftwareName():String
-    abstract fun getSoftwareVersion():String
+sealed class NodeInfo {
+    abstract fun getSoftwareName(): String
+    abstract fun getSoftwareVersion(): String
 }
 
 @Serializer(forClass = NodeInfo::class)
-object NodeinfoSerializer : JsonContentPolymorphicSerializer<NodeInfo>(NodeInfo::class){
+object NodeinfoSerializer : JsonContentPolymorphicSerializer<NodeInfo>(NodeInfo::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<out NodeInfo> =
         when (element.jsonObject["version"]?.jsonPrimitive?.content) {
             "2.0" -> V2_0.serializer()

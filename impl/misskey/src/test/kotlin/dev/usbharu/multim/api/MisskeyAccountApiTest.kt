@@ -63,13 +63,13 @@ class MisskeyAccountApiTest : AccountApiTest() {
             MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bk3hbcjcy")
         )
         if (accountApi.relationships(myself, account).failOnError().following) {
-           Logger.warn("すでにフォローされているのでフォローをいったん解除します。")
+            Logger.warn("すでにフォローされているのでフォローをいったん解除します。")
             accountApi.unfollow(account)
         }
         accountApi.follow(account).failOnError()
-        assertTrue(accountApi.relationships(myself, account).failOnError().following,"フォローされていない")
+        assertTrue(accountApi.relationships(myself, account).failOnError().following, "フォローされていない")
         accountApi.unfollow(account).failOnError()
-        assertFalse(accountApi.relationships(myself, account).failOnError().following,"フォローしたまま")
+        assertFalse(accountApi.relationships(myself, account).failOnError().following, "フォローしたまま")
     }
 
     @Test
@@ -95,9 +95,9 @@ class MisskeyAccountApiTest : AccountApiTest() {
         follow.onFailure {
             if (it is MultiMHttpError) {
 
-            }else {
-                Logger.error("Account Api Test","想定されたエラーではない",it)
-                fail("想定されたエラーではない",)
+            } else {
+                Logger.error("Account Api Test", "想定されたエラーではない", it)
+                fail("想定されたエラーではない")
             }
         }
     }
@@ -123,7 +123,7 @@ class MisskeyAccountApiTest : AccountApiTest() {
             accountApi.follow(account)
         }
         accountApi.unfollow(account).failOnError()
-        assertFalse(accountApi.relationships(myself, account).failOnError().following,"フォローされていない")
+        assertFalse(accountApi.relationships(myself, account).failOnError().following, "フォローされていない")
     }
 
     @Test
@@ -142,9 +142,9 @@ class MisskeyAccountApiTest : AccountApiTest() {
         unfollow.onFailure {
             if (it is MultiMHttpError) {
 
-            }else {
-                Logger.error("Account Api Test","想定されたエラーではない",it)
-                fail("想定されたエラーではない",)
+            } else {
+                Logger.error("Account Api Test", "想定されたエラーではない", it)
+                fail("想定されたエラーではない")
             }
         }
     }
@@ -159,7 +159,7 @@ class MisskeyAccountApiTest : AccountApiTest() {
             MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bg1zu54y7")
         )
         val profile = accountApi.profile(myself).failOnError()
-        assertEquals(myself,profile.account)
+        assertEquals(myself, profile.account)
     }
 
     @Test
@@ -178,7 +178,7 @@ class MisskeyAccountApiTest : AccountApiTest() {
         profile.onFailure {
             if (it is MultiMHttpError) {
 
-            }else {
+            } else {
                 fail("想定されたエラーではない")
             }
         }
@@ -212,7 +212,7 @@ class MisskeyAccountApiTest : AccountApiTest() {
             false,
             MisskeyAvatar("https://test-misskey-v12.usbharu.dev/identicon/9bk3hbcjcy")
         )
-        accountApi.relationships(myself,account).failOnError()
+        accountApi.relationships(myself, account).failOnError()
     }
 
     @Test
@@ -238,7 +238,7 @@ class MisskeyAccountApiTest : AccountApiTest() {
         relationships.onFailure {
             if (it is MultiMHttpError) {
                 fail("Misskey実装ではエラーが出ない")
-            }else {
+            } else {
                 fail("想定されたエラーではない")
             }
         }

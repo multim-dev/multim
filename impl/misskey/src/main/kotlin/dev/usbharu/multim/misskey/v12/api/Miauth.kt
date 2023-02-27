@@ -13,7 +13,7 @@ import java.util.*
 
 class Miauth(val client: MisskeyApiClient) {
 
-    suspend fun auth(): Result<String,MultiMError> {
+    suspend fun auth(): Result<String, MultiMError> {
 
         val body = client.get(client.baseUrl + "/miauth/" + UUID.randomUUID() + "/") {
             url {
@@ -25,8 +25,9 @@ class Miauth(val client: MisskeyApiClient) {
         return body.mapMultiMError()
     }
 
-    suspend fun check(params: MiauthCheckRequest): Result<MiauthCheckResponse,MultiMError> {
-        return client.postEmpty<MiauthCheckResponse>("", "/api/miauth/${params.sessionId}/check").mapMultiMError()
+    suspend fun check(params: MiauthCheckRequest): Result<MiauthCheckResponse, MultiMError> {
+        return client.postEmpty<MiauthCheckResponse>("", "/api/miauth/${params.sessionId}/check")
+            .mapMultiMError()
     }
 
 }

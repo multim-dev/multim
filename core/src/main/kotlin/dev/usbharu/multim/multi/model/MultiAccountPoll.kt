@@ -12,8 +12,7 @@ class MultiAccountPoll(override val innerData: Poll, override val hashCode: Int)
         innerData.expiredAt,
         innerData.votersCount,
         innerData.voted
-    ) {
-}
+    )
 
 class MultiAccountPollForPost(override val innerData: PollForPost, override val hashCode: Int) :
     MultiAccountData<PollForPost>,

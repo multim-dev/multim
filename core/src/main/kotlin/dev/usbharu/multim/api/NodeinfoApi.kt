@@ -68,10 +68,10 @@ class NodeinfoApi(private var httpClient: HttpClient) {
         return runCatching<NodeinfoList.NodeinfoLink> {
             nodeinfoList.links.minByOrNull { it.rel.substringAfterLast("/", "0").toFloat() }!!
         }.foldWithOk({
-            Logger.info("Nodeinfo Api","SUCCESS Get nodeinfo link")
+            Logger.info("Nodeinfo Api", "SUCCESS Get nodeinfo link")
             Ok(it)
         }) {
-            Logger.warn("Nodeinfo Api","FAILURE Get nodeinfo link")
+            Logger.warn("Nodeinfo Api", "FAILURE Get nodeinfo link")
             MultiMError(it.localizedMessage, it, ErrorType.API)
         }
     }

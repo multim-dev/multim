@@ -4,5 +4,4 @@ import dev.usbharu.multim.model.Timeline
 import dev.usbharu.multim.multi.MultiAccountData
 
 class MultiAccountTimeline(override val innerData: Timeline, override val hashCode: Int) :
-    MultiAccountData<Timeline>, Timeline(innerData.name) {
-}
+    MultiAccountData<Timeline>, Timeline(innerData.name)

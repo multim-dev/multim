@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveResponse(
-    val capacity:Long,
-    val usage:Long
+    val capacity: Long,
+    val usage: Long
 )

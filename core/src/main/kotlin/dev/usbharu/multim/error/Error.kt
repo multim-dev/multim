@@ -21,11 +21,14 @@ fun ThrowableError(): (Throwable) -> Err<ThrowableError> {
     return { Err(ThrowableError(it)) }
 }
 
-fun <T,R : Error> Error(error: (T) -> R): (T) -> Err<R> {
+fun <T, R : Error> Error(error: (T) -> R): (T) -> Err<R> {
     return { Err(error(it)) }
 }
 
-fun <A,B : Error> Result<A>.foldWithOk(onSuccess:(A)->Ok<A> = Ok(), onFailure:(Throwable)->B): MichaelbullResultResult<A,B> {
+fun <A, B : Error> Result<A>.foldWithOk(
+    onSuccess: (A) -> Ok<A> = Ok(),
+    onFailure: (Throwable) -> B
+): MichaelbullResultResult<A, B> {
     return fold(
         onSuccess = onSuccess,
         onFailure = Error(onFailure)

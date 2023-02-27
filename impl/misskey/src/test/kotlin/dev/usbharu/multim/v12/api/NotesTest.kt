@@ -109,7 +109,8 @@ class NotesTest {
 
     @Test
     fun deleteTest() = runTest {
-        val notes = Notes(MisskeyApiClient(SingleTokenAuth("aaa"), "", createMockHttpClient(content = "")))
+        val notes =
+            Notes(MisskeyApiClient(SingleTokenAuth("aaa"), "", createMockHttpClient(content = "")))
         notes.delete(NotesDeleteRequest("Rw4g2CH"))
     }
 
@@ -272,8 +273,8 @@ class NotesTestE2E {
             is Err -> fail(create.error.message, create.error._throwable)
         }
         notes.delete(NotesDeleteRequest(deleteNote))
-        assertInstanceOf(Err::class.java,notes.show(NotesShowRequest(deleteNote)))
-         //消せていたら失敗する
+        assertInstanceOf(Err::class.java, notes.show(NotesShowRequest(deleteNote)))
+        //消せていたら失敗する
 
     }
 

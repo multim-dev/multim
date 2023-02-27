@@ -5,5 +5,4 @@ import dev.usbharu.multim.multi.MultiAccountData
 
 class MultiAccountOption(override val innerData: Option, override val hashCode: Int) :
     MultiAccountData<Option>,
-    Option(innerData.title, innerData.votes, innerData.voted) {
-}
+    Option(innerData.title, innerData.votes, innerData.voted)

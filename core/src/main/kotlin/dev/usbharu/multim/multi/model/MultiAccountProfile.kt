@@ -13,5 +13,5 @@ class MultiAccountProfile(override val innerData: Profile, override val hashCode
         innerData.followersCount,
         innerData.fields
     ) {
-    constructor(innerData: Pair<Profile, Int>) : this(innerData.first,innerData.second)
+    constructor(innerData: Pair<Profile, Int>) : this(innerData.first, innerData.second)
 }

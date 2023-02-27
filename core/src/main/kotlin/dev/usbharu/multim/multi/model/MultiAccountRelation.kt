@@ -12,5 +12,4 @@ class MultiAccountRelation(override val innerData: Relation, override val hashCo
         innerData.follower,
         innerData.mute,
         innerData.block
-    ) {
-}
+    )

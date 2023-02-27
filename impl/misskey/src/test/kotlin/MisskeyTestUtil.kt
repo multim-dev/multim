@@ -28,7 +28,10 @@ object MisskeyTestUtil {
         checkAuth: Boolean = true,
         respond: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = {
             if (checkAuth) {
-                if ("i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
+                if ("i" in json.parseToJsonElement(
+                        it.body.toByteArray().decodeToString()
+                    ).jsonObject
+                ) {
 
                 } else {
                     Fail.fail("No auth")
@@ -76,15 +79,20 @@ object MisskeyTestUtil {
         )
     }
 
-    fun createFakeNoteToString(id: String, userId: String, username: String, text: String?): String {
+    fun createFakeNoteToString(
+        id: String,
+        userId: String,
+        username: String,
+        text: String?
+    ): String {
         return json.encodeToString(createFakeNote(id, userId, username, text))
     }
 
-    fun assertIsOk(result: Result<*, *>){
+    fun assertIsOk(result: Result<*, *>) {
         Assertions.assertInstanceOf(Ok::class.java, result, "resultの型がOkではない")
     }
 
-    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>){
+    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>) {
         Assertions.assertInstanceOf(Err::class.java, result, "resultの型がErrではない")
         Assertions.assertInstanceOf(R::class.java, result.getError(), "Errorの型が違う")
     }

@@ -5,5 +5,4 @@ import dev.usbharu.multim.multi.MultiAccountData
 
 class MultiAccountReaction(override val innerData: Reaction, override val hashCode: Int) :
     MultiAccountData<Reaction>,
-    Reaction(innerData.name, innerData.url) {
-}
+    Reaction(innerData.name, innerData.url)

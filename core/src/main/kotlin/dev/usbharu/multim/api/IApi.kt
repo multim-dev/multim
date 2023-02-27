@@ -16,6 +16,7 @@ interface IApi {
         Logger.debug("I Api", "Not impl i api. profile")
         return Err(MultiMError("profile not implements", null, ErrorType.NOT_IMPL))
     }
+
     val STATUSES: String
         get() = "i/statuses"
 

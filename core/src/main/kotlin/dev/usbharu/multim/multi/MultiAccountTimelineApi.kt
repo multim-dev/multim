@@ -13,12 +13,15 @@ import dev.usbharu.multim.multi.model.MultiAccountStatus
 class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBase) : TimelineApi {
 
     suspend fun availableTimelines(id: MultiAccountData<*>): Result<MultiAccountDataImpl<List<Timeline>>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api availableTimelines with MultiAccountData")
+        Logger.debug(
+            "Timeline Api",
+            "Multi account timeline api availableTimelines with MultiAccountData"
+        )
         return getImpl(id) { availableTimelines() }
     }
 
     suspend fun availableTimelines(hashCode: Int): Result<MultiAccountData<List<Timeline>>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api availableTimelines")
+        Logger.debug("Timeline Api", "Multi account timeline api availableTimelines")
         return multiAccountApiBase.getImpl(hashCode)
             .flatMap { it.timelineApi.availableTimelines() }
             .map { MultiAccountDataImpl(it, hashCode) }
@@ -29,12 +32,12 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         timeline: MultiAccountData<Timeline>,
         callback: MultiAccountData<(List<MultiAccountStatus>) -> Unit>
     ): Result<MultiAccountDataImpl<Unit>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api listen with MultiAccountData")
+        Logger.debug("Timeline Api", "Multi account timeline api listen with MultiAccountData")
         return getImpl(timeline) { listen(it, callback.innerData as (List<Status>) -> Unit) }
     }
 
     suspend fun connect(timeline: MultiAccountData<Timeline>): Result<MultiAccountDataImpl<Unit>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api connect with MultiAccountData")
+        Logger.debug("Timeline Api", "Multi account timeline api connect with MultiAccountData")
         return getImpl(timeline) { connect(it) }
     }
 
@@ -42,7 +45,7 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         timeline: MultiAccountData<Timeline>,
         force: Boolean = false
     ): Result<MultiAccountDataImpl<Unit>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api disconnect with MultiAccountData")
+        Logger.debug("Timeline Api", "Multi account timeline api disconnect with MultiAccountData")
         return getImpl(timeline) { disconnect(it, force) }
     }
 
@@ -69,13 +72,13 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
     }
 
     private fun <T> timelineApi(id: T): Result<TimelineApi, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api timelineApi with MultiAccountData")
+        Logger.debug("Timeline Api", "Multi account timeline api timelineApi with MultiAccountData")
         return multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode)
             .map { it.timelineApi }
     }
 
     override suspend fun availableTimelines(): Result<List<Timeline>, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api availableTimelines")
+        Logger.debug("Timeline Api", "Multi account timeline api availableTimelines")
         TODO("Not yet implemented")
     }
 
@@ -83,17 +86,17 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
         timeline: Timeline,
         callback: (List<Status>) -> Unit
     ): Result<Unit, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api listen")
+        Logger.debug("Timeline Api", "Multi account timeline api listen")
         return getImpl2(timeline) { listen(it, callback) }.map { it.first }
     }
 
     override suspend fun connect(timeline: Timeline): Result<Unit, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api connect")
+        Logger.debug("Timeline Api", "Multi account timeline api connect")
         return getImpl2(timeline) { connect(it) }.map { it.first }
     }
 
     override suspend fun disconnect(timeline: Timeline, force: Boolean): Result<Unit, MultiMError> {
-        Logger.debug("Timeline Api","Multi account timeline api disconnect")
+        Logger.debug("Timeline Api", "Multi account timeline api disconnect")
         return getImpl2(timeline) { disconnect(it, force) }.map { it.first }
     }
 

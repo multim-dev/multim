@@ -24,7 +24,14 @@ class MisskeyStatusApiTest {
                 "http://localhost/",
                 MisskeyTestUtil.createMockHttpClient(
                     checkAuth = false, content =
-                    Json.encodeToString(MisskeyTestUtil.createFakeNote("Fx0Z", "D93", "brqNq4v", "earn"))
+                    Json.encodeToString(
+                        MisskeyTestUtil.createFakeNote(
+                            "Fx0Z",
+                            "D93",
+                            "brqNq4v",
+                            "earn"
+                        )
+                    )
                 )
             )
         )
@@ -46,7 +53,8 @@ class MisskeyStatusApiTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun findByIdTest() = runTest {
-        val findById = misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost")).get()
+        val findById =
+            misskeyStatusApi.findById(MisskeyStatusId("9a65528e5z", "https://lcalhost")).get()
         println(findById?.content?.text)
     }
 }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFilesAttachedNotesRequest(
-    val fileId:String
+    val fileId: String
 ) : MisskeyNeedAuth()
 
 typealias DriveFilesAttachedNotesResponse = List<Note>

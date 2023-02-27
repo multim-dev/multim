@@ -39,13 +39,13 @@ class ServiceInfoFactory(private val services: List<ServiceInfo>) : PlatformApiF
                         httpClient
                     )
                 )
-                Logger.info("Platform Api Factory","Service Info factory found service.")
+                Logger.info("Platform Api Factory", "Service Info factory found service.")
                 return service.multiMApis(
                     platFormApis
                 ).apply { build(this, platFormApis) }
             }
         }
-        Logger.error("Platform Api Factory","Service Info factory cannot find service.")
+        Logger.error("Platform Api Factory", "Service Info factory cannot find service.")
         TODO("サービスが見つからなかった際のしょり")
     }
 }

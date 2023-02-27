@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFoldersUpdateRequest(
-    val folderId:String,
-    val name:String,
-    val parentId:String? = null
+    val folderId: String,
+    val name: String,
+    val parentId: String? = null
 )
 
 typealias DriveFoldersUpdateResponse = DriveFolder

@@ -4,10 +4,10 @@ import kotlinx.datetime.Instant
 
 abstract class Poll(
     val options: List<Option>,
-    val multiple:Boolean,
+    val multiple: Boolean,
     val expiredAt: Instant,
-    val votersCount:Int?,
-    val voted:Boolean
+    val votersCount: Int?,
+    val voted: Boolean
 )
 
 abstract class PollForPost(

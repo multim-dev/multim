@@ -2,7 +2,6 @@
 
 package dev.usbharu.multim.v12.api
 
-import MisskeyTestUtil.checkAuth
 import MisskeyTestUtil.createFakeNoteToString
 import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
@@ -14,9 +13,6 @@ import dev.usbharu.multim.misskey.v12.model.ApShowRequest
 import dev.usbharu.multim.misskey.v12.model.ApShowResponse
 import dev.usbharu.multim.model.SingleTokenAuth
 import io.github.artsok.RepeatedIfExceptionsTest
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -30,7 +26,8 @@ import org.junit.jupiter.api.Test
 class ApTest {
 
     val misskeyApiClient = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")), System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),
+        System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
@@ -77,23 +74,26 @@ class ApTest {
 class ApTestE2E {
 
     val misskeyApiClient = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")), System.getProperty("multim_misskey_instance"),
+        SingleTokenAuth(System.getProperty("multim_misskey_token")),
+        System.getProperty("multim_misskey_instance"),
         createHttpClient()
     )
 
     @RepeatedIfExceptionsTest(repeats = 4)
 //    @Test
     fun show_showUserRequest_respondTypeUser() = runBlocking {
-        val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
+        val show =
+            Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
         delay(1000)
-        assertInstanceOf(ApShowResponse.TypeUser::class.java,show)
+        assertInstanceOf(ApShowResponse.TypeUser::class.java, show)
     }
 
     @RepeatedIfExceptionsTest(repeats = 4)
 //    @Test
     fun show_showNoteRequest_respondTypeNote() = runBlocking {
-        val show = Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
+        val show =
+            Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
         delay(1000)
-        assertInstanceOf(ApShowResponse.TypeNote::class.java,show)
+        assertInstanceOf(ApShowResponse.TypeNote::class.java, show)
     }
 }

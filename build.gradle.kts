@@ -22,7 +22,7 @@ allprojects {
                 val props = Properties()
                 try {
                     props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
-                } catch (e:Exception){
+                } catch (e: Exception) {
                     println("local.properties not found")
                 }
                 username = props.getProperty("gpr.user") as String? ?: System.getenv("USERNAME")
@@ -56,7 +56,7 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
-    tasks{
+    tasks {
         val sourcesJar by creating(Jar::class) {
             archiveClassifier.set("sources")
             from(project.the<SourceSetContainer>()["main"].allSource)

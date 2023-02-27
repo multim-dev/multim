@@ -12,73 +12,79 @@ import dev.usbharu.multim.multi.model.MultiAccountStatus
 
 class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase) : StatusApi {
     suspend fun post(status: MultiAccountData<StatusForPost>): Result<MultiAccountData<Status>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api post with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api post with MultiAccountData")
         return getImpl(status) { post(it) }
     }
 
     suspend fun delete(id: MultiAccountData<StatusId>): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api delete with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api delete with MultiAccountData")
         return getImpl(id) { delete(it) }
     }
 
     suspend fun findById(id: MultiAccountData<StatusId>): Result<MultiAccountData<Status>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api findById with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api findById with MultiAccountData")
         return getImpl(id) { findById(it) }
     }
 
     suspend fun addReaction(
         id: MultiAccountData<StatusId>, reaction: MultiAccountData<Reaction>
     ): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api addReaction with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api addReaction with MultiAccountData")
         return getImpl(id) { addReaction(it, reaction.innerData) }
     }
 
     suspend fun removeReaction(
         id: MultiAccountData<StatusId>, reaction: MultiAccountData<Reaction>
     ): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api removeReaction with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api removeReaction with MultiAccountData")
         return getImpl(id) { removeReaction(it, reaction.innerData) }
     }
 
     suspend fun reactions(id: MultiAccountData<StatusId>): Result<MultiAccountData<Map<Reaction, Int>>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api reactions with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api reactions with MultiAccountData")
         return getImpl(id) { reactions(it) }
     }
 
     suspend fun replies(id: MultiAccountData<StatusId>): Result<MultiAccountData<List<Status>>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api replies with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api replies with MultiAccountData")
         return getImpl(id) { replies(it) }
     }
 
     suspend fun repost(id: MultiAccountData<StatusId>): Result<MultiAccountData<Status>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api repost with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api repost with MultiAccountData")
         return getImpl(id) { repost(it) }
     }
 
     suspend fun unRepost(id: MultiAccountData<StatusId>): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api unRepost with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api unRepost with MultiAccountData")
         return getImpl(id) { unRepost(it) }
     }
 
     suspend fun replyTo(
         id: MultiAccountData<StatusId>, status: MultiAccountData<StatusForPost>
     ): Result<MultiAccountData<Status>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api replyTo with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api replyTo with MultiAccountData")
         return getImpl(id) { replyTo(it, status.innerData) }
     }
 
     suspend fun addToBookmarks(id: MultiAccountData<StatusId>): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api addToBookmarks with MultiAccountData")
+        Logger.debug("Status Api", "Multi account status api addToBookmarks with MultiAccountData")
         return getImpl(id) { addToBookmarks(it) }
     }
 
     suspend fun removeFromBookmarks(id: MultiAccountData<StatusId>): Result<MultiAccountData<Unit>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api removeFromBookmarks with MultiAccountData")
+        Logger.debug(
+            "Status Api",
+            "Multi account status api removeFromBookmarks with MultiAccountData"
+        )
         return getImpl(id) { removeFromBookmarks(it) }
     }
 
     suspend fun getPreviousAndNext(id: MultiAccountData<StatusId>): Result<MultiAccountData<PreviousAndNextPosts>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api getPreviousAndNext with MultiAccountData")
+        Logger.debug(
+            "Status Api",
+            "Multi account status api getPreviousAndNext with MultiAccountData"
+        )
         return getImpl(id) { getPreviousAndNext(it) }
     }
 
@@ -107,7 +113,7 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
 
 
     override suspend fun post(status: StatusForPost): Result<Status, MultiMError> {
-        Logger.debug("Status Api","Multi account status api post")
+        Logger.debug("Status Api", "Multi account status api post")
         return getImpl2(status) { post(it) }.flatMap {
             it.first.map { iStatus ->
                 (iStatus to it.second).toMultiAccount()
@@ -117,29 +123,29 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     }
 
     override suspend fun delete(id: StatusId): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api delete")
+        Logger.debug("Status Api", "Multi account status api delete")
         return getImpl2(id) { delete(it) }.map { it.first }
     }
 
     override suspend fun findById(id: StatusId): Result<Status, MultiMError> {
-        Logger.debug("Status Api","Multi account status api findById")
+        Logger.debug("Status Api", "Multi account status api findById")
         return getImpl2(id) { findById(it) }.flatMap { it.first.map { iStatus -> (iStatus to it.second).toMultiAccount() } }
     }
 
     override suspend fun addReaction(id: StatusId, reaction: Reaction): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api addReaction")
+        Logger.debug("Status Api", "Multi account status api addReaction")
         return getImpl2(id) { addReaction(it, reaction) }.map { it.first }
     }
 
     override suspend fun removeReaction(
         id: StatusId, reaction: Reaction?
     ): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api removeReaction")
+        Logger.debug("Status Api", "Multi account status api removeReaction")
         return getImpl2(id) { removeReaction(it, reaction) }.map { it.first }
     }
 
     override suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api reactions")
+        Logger.debug("Status Api", "Multi account status api reactions")
         return getImpl2(id) { reactions(it) }.let {
             it.flatMap {
                 it.first.map { map ->
@@ -154,7 +160,7 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     }
 
     override suspend fun replies(id: StatusId): Result<List<Status>, MultiMError> {
-        Logger.debug("Status Api","Multi account status api replies")
+        Logger.debug("Status Api", "Multi account status api replies")
         return getImpl2(id) { replies(it) }.flatMap {
             it.first.map { statusList ->
                 statusList.map { status ->
@@ -167,17 +173,17 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     }
 
     override suspend fun repost(id: StatusId): Result<Status, MultiMError> {
-        Logger.debug("Status Api","Multi account status api repost")
+        Logger.debug("Status Api", "Multi account status api repost")
         return getImpl2(id) { repost(it) }.flatMap { it.first.map { iStatus -> (iStatus to it.second).toMultiAccount() } }
     }
 
     override suspend fun unRepost(id: StatusId): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api unRepost")
+        Logger.debug("Status Api", "Multi account status api unRepost")
         return getImpl2(id) { unRepost(it) }.map { it.first }
     }
 
     override suspend fun replyTo(id: StatusId, status: StatusForPost): Result<Status, MultiMError> {
-        Logger.debug("Status Api","Multi account status api replyTo")
+        Logger.debug("Status Api", "Multi account status api replyTo")
         return getImpl2(status) {
             replyTo(
                 id, it
@@ -186,18 +192,18 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     }
 
     override suspend fun addToBookmarks(id: StatusId): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api addToBookmarks")
+        Logger.debug("Status Api", "Multi account status api addToBookmarks")
         return getImpl2(id) { addToBookmarks(it) }.map { it.first }
     }
 
     override suspend fun removeFromBookmarks(id: StatusId): Result<Unit, MultiMError> {
-        Logger.debug("Status Api","Multi account status api removeFromBookmarks")
+        Logger.debug("Status Api", "Multi account status api removeFromBookmarks")
         return getImpl2(id) { removeFromBookmarks(it) }.map { it.first }
     }
 
     override suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts, MultiMError> {
-        Logger.debug("Status Api","Multi account status api getPreviousAndNext")
-        return getImpl2(id){getPreviousAndNext(it)}.flatMap { it.first }
+        Logger.debug("Status Api", "Multi account status api getPreviousAndNext")
+        return getImpl2(id) { getPreviousAndNext(it) }.flatMap { it.first }
     }
 
     private fun Pair<Status, Int>.toMultiAccount(): MultiAccountStatus {

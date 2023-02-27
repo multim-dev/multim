@@ -15,8 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.*
 
@@ -50,7 +49,8 @@ class TimelineTestE2E {
         }
         delay(1000)
         repeat(10) {
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、Streaming APIのテストで使用されます。#$uuid ")).get()?.createdNote?.let { it1 ->
+            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、Streaming APIのテストで使用されます。#$uuid "))
+                .get()?.createdNote?.let { it1 ->
                 createdNotes.add(
                     it1
                 )
@@ -58,7 +58,9 @@ class TimelineTestE2E {
         }
         delay(2000)
         timeline.disconnectChannel(DisconnectRequest(DisconnectRequest.Body(uuid)))
-        assertEquals(createdNotes.sortedBy { note -> note.createdAt },streamNotes.sortedBy { note -> note.createdAt })
+        assertEquals(
+            createdNotes.sortedBy { note -> note.createdAt },
+            streamNotes.sortedBy { note -> note.createdAt })
 
     }
 

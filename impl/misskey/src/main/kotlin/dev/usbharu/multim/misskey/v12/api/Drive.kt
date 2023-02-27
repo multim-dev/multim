@@ -61,15 +61,24 @@ class Drive(val client: MisskeyApiClient) {
         }
 
         suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest): Result<DriveFilesFindByHashResponse, MultiMError> {
-            return client.post<DriveFilesFindByHashRequest, DriveFilesFindByHashResponse>(findByHashRequest, "api/drive/files/find-by-hash").mapMultiMError()
+            return client.post<DriveFilesFindByHashRequest, DriveFilesFindByHashResponse>(
+                findByHashRequest,
+                "api/drive/files/find-by-hash"
+            ).mapMultiMError()
         }
 
         suspend fun find(findRequest: DriveFilesFindRequest): Result<DriveFilesFindResponse, MultiMError> {
-            return client.post<DriveFilesFindRequest, DriveFilesFindResponse>(findRequest, "api/drive/files/find").mapMultiMError()
+            return client.post<DriveFilesFindRequest, DriveFilesFindResponse>(
+                findRequest,
+                "api/drive/files/find"
+            ).mapMultiMError()
         }
 
         suspend fun show(showRequest: DriveFilesShowRequestByUrl): Result<DriveFilesShowResponse, MultiMError> {
-            return client.post<DriveFilesShowRequestByUrl, DriveFilesShowResponse>(showRequest, "api/drive/files/show").mapMultiMError()
+            return client.post<DriveFilesShowRequestByUrl, DriveFilesShowResponse>(
+                showRequest,
+                "api/drive/files/show"
+            ).mapMultiMError()
         }
 
         suspend fun show(showRequest: DriveFilesShowRequestByFileId): Result<DriveFilesShowResponse, MultiMError> {
@@ -107,8 +116,11 @@ class Drive(val client: MisskeyApiClient) {
                 .mapMultiMError()
         }
 
-        suspend fun find(foldersFindRequest: DriveFoldersFindRequest): Result<DriveFoldersFindResponse,MultiMError> {
-            return client.post<DriveFoldersFindRequest, DriveFoldersFindResponse>(foldersFindRequest, "api/drive/folders/find").mapMultiMError()
+        suspend fun find(foldersFindRequest: DriveFoldersFindRequest): Result<DriveFoldersFindResponse, MultiMError> {
+            return client.post<DriveFoldersFindRequest, DriveFoldersFindResponse>(
+                foldersFindRequest,
+                "api/drive/folders/find"
+            ).mapMultiMError()
         }
     }
 }

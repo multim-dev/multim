@@ -59,28 +59,41 @@ object MultiM {
     }
 
     suspend fun createClient(
-        url:String,
+        url: String,
         auth: Auth,
         factory: PlatformApiFactory,
         httpClient: HttpClient = httpClientWithJson
-    ) : Result<MultiMApis,MultiMError> {
-        dev.usbharu.multim.Logger.info("Create Client","START Create cient with url:$url.")
-        dev.usbharu.multim.Logger.debug("Create Client","Create client with url:$url auth:${auth::class.simpleName}")
+    ): Result<MultiMApis, MultiMError> {
+        dev.usbharu.multim.Logger.info("Create Client", "START Create cient with url:$url.")
+        dev.usbharu.multim.Logger.debug(
+            "Create Client",
+            "Create client with url:$url auth:${auth::class.simpleName}"
+        )
         val result = NodeinfoApi(httpClient).nodeinfo(url)
             .map { nodeInfo -> factory.factory(nodeInfo, httpClient, auth, url) }
         result.onSuccess {
-            dev.usbharu.multim.Logger.info("Create Client","SUCCESS Create Client with url:$url")
+            dev.usbharu.multim.Logger.info("Create Client", "SUCCESS Create Client with url:$url")
         }
         result.onFailure {
-            dev.usbharu.multim.Logger.error("Create Client","FAILURE Create Client with url:$url auth:${auth::class.simpleName}",it)
+            dev.usbharu.multim.Logger.error(
+                "Create Client",
+                "FAILURE Create Client with url:$url auth:${auth::class.simpleName}",
+                it
+            )
         }
         return result
     }
 
     fun createMultiAccountClients(serviceInfoList: List<ServiceInfo> = listOf()): MultiAccountApiBase {
-        dev.usbharu.multim.Logger.info("Create Client","START Create multi account client with ${serviceInfoList.size} services.")
+        dev.usbharu.multim.Logger.info(
+            "Create Client",
+            "START Create multi account client with ${serviceInfoList.size} services."
+        )
         val multiAccountApiBase = MultiAccountApiBase(serviceInfoList)
-        dev.usbharu.multim.Logger.info("Create Client","SUCCESS Create multi account client with ${serviceInfoList.size} services.")
+        dev.usbharu.multim.Logger.info(
+            "Create Client",
+            "SUCCESS Create multi account client with ${serviceInfoList.size} services."
+        )
         return multiAccountApiBase
     }
 

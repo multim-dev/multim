@@ -115,9 +115,11 @@ fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
                 is HttpClientClientError -> {
                     Err(MultiMHttpError(this.error.throwable as ClientRequestException))
                 }
+
                 is MultiMError -> {
                     Err(this.error as MultiMError)
                 }
+
                 else -> {
                     Err(MultiMError(this.error.message, this.error.throwable, ErrorType.UNKNOWN))
                 }

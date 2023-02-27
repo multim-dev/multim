@@ -1,7 +1,6 @@
 package dev.usbharu.multim.misskey.v12
 
 import dev.usbharu.multim.ServiceInfo
-import dev.usbharu.multim.api.NotImplIApi
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.api.MisskeyMultiMApis
 import dev.usbharu.multim.misskey.v12.common.api.*
@@ -15,8 +14,14 @@ object MisskeyV12Info : ServiceInfo(
     { apiClient -> MisskeyApis(apiClient as MisskeyApiClient) },
     {
         if (it is MisskeyApis) {
-            MisskeyMultiMApis(MisskeyStatusApi(it),MisskeyAccountApi(it),MisskeyTimelineApi(it),MisskeyEmojiApi(it),MisskeyIApi(it))
-        }else {
+            MisskeyMultiMApis(
+                MisskeyStatusApi(it),
+                MisskeyAccountApi(it),
+                MisskeyTimelineApi(it),
+                MisskeyEmojiApi(it),
+                MisskeyIApi(it)
+            )
+        } else {
             TODO()
         }
     }

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DriveFoldersShowRequest(
-    val folderId:String
+    val folderId: String
 )
 
 typealias DriveFoldersShowResponse = DriveFolder

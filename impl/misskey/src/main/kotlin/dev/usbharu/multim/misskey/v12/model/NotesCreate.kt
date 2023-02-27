@@ -49,10 +49,13 @@ data class NotesCreateRequest(
     enum class Visibility {
         @SerialName("public")
         PUBLIC,
+
         @SerialName("home")
         HOME,
+
         @SerialName("followers")
         FOLLOWERS,
+
         @SerialName("specified")
         SPECIFIED
     }
