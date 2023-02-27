@@ -3,7 +3,7 @@ package dev.usbharu.multim.cache
 import io.github.reactivecircus.cache4k.Cache
 import kotlin.ClassCastException
 
-class ImMemoryLRUCache(maxSize:Long) : CacheableApi {
+class InMemoryLRUCache(maxSize:Long) : CacheableApi {
     private val cache = Cache.Builder().maximumCacheSize(maxSize).build<String,Any>()
     private var enable: Boolean = true
     override fun purge() {
