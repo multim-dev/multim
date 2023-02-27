@@ -6,6 +6,7 @@ import dev.usbharu.multim.Logger
 import dev.usbharu.multim.UniqueId
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.*
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -129,6 +130,12 @@ interface StatusApi {
         return UniqueId.hashAlgorithm.hash32x86(
             (status.content.text + status.account.accountName + date).encodeToByteArray()
         ).toInt()
+    }
+    val AVAILABLE_REACTIONS:String
+        get() = "status/availableReactions"
+    suspend fun availableReactions(): MultiMResult<List<Reaction>> {
+        Logger.debug("Status Api", "Not impl status api availableReactions")
+        return Err(MultiMError("availableReactions not implements", null, ErrorType.NOT_IMPL))
     }
 }
 
