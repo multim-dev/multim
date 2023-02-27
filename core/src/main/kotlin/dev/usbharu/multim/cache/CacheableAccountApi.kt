@@ -23,15 +23,19 @@ class CacheableAccountApi(
             )
         ) { accountApi.userTimeline(account, since, until) }
     }
+
     override suspend fun profile(account: Account): Result<Profile, MultiMError> {
-        return cacheableApi.cacheOrGet(account) { accountApi.profile(account) }
+        return cacheableApi.cacheOrGet(PROFILE, account) { accountApi.profile(account) }
     }
 
     override suspend fun statuses(
         account: Account,
         includeRepost: Boolean
     ): Result<List<Status>, MultiMError> {
-        return cacheableApi.cacheOrGet(CacheableApi.generateKey(account) + includeRepost) {
+        return cacheableApi.cacheOrGet(
+            STATUSES,
+            CacheableApi.generateKey(account) + includeRepost
+        ) {
             accountApi.statuses(
                 account,
                 includeRepost
@@ -43,6 +47,11 @@ class CacheableAccountApi(
         myself: Account,
         other: Account
     ): Result<Relation, MultiMError> {
-        return cacheableApi.cacheOrGet(myself, other) { accountApi.relationships(myself, other) }
+        return cacheableApi.cacheOrGet(RELEATIONSHIPS, myself, other) {
+            accountApi.relationships(
+                myself,
+                other
+            )
+        }
     }
 }

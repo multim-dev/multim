@@ -16,13 +16,36 @@ interface AccountApi {
         until: StatusId? = null
     ): Result<List<Status>,MultiMError>
 
+    val FOLLOW: String
+        get() = "account/follow"
+
     suspend fun follow(account: Account): Result<Unit,MultiMError>
+
+    val UNFOLLOW: String
+        get() = "account/unfollow"
     suspend fun unfollow(account: Account): Result<Unit,MultiMError>
+
+    val PROFILE: String
+        get() = "account/profile"
     suspend fun profile(account: Account): Result<Profile,MultiMError>
+
+    val STATUSES:String
+        get() = "account/statuses"
     suspend fun statuses(account: Account, includeRepost: Boolean = false): Result<List<Status>,MultiMError>
+
+    val RELEATIONSHIPS:String
+        get() = "account/relationships"
     suspend fun relationships(myself: Account, other: Account): Result<Relation,MultiMError>
+
+    val REQUEST_CANCEL:String
+        get() = "account/requestCancel"
     suspend fun requestCancel(account: Account): Result<Unit,MultiMError>
+
+    val REQUEST_ACCEPT:String
+        get() = "account/requestAccept"
     suspend fun requestAccept(account: Account): Result<Unit,MultiMError>
+    val REQUEST_REJECT:String
+        get() = "account/requestReject"
     suspend fun requestReject(account: Account): Result<Unit,MultiMError>
 }
 

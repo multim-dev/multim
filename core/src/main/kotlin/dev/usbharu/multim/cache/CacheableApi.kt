@@ -26,23 +26,27 @@ interface CacheableApi {
         }
     }
 
-    fun <T> cache(key: String, value: T): T
+    fun <T> cache(method: String, key: String, value: T): T
 
-    fun <T> get(key: String): T?
-    suspend fun <T> cacheOrGet(key: String, block: suspend () -> T): T {
-        val get = get<T>(key)
+    fun <T> get(method: String, key: String): T?
+    suspend fun <T> cacheOrGet(method: String, key: String, block: suspend () -> T): T {
+        val get = get<T>(method, key)
         if (get != null) {
             return get
         }
-        return cache(key, block())
+        return cache(method, key, block())
     }
 
-    suspend fun <T> cacheOrGet(vararg objects: Cacheable?, block: suspend () -> T): T {
+    suspend fun <T> cacheOrGet(
+        method: String,
+        vararg objects: Cacheable?,
+        block: suspend () -> T
+    ): T {
         val key = generateKey(*objects)
-        val get = get<T>(key)
+        val get = get<T>(method, key)
         if (get != null) {
             return get
         }
-        return cache(key, block())
+        return cache(method, key, block())
     }
 }
