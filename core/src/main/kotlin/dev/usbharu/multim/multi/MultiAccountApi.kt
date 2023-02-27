@@ -1,17 +1,15 @@
 package dev.usbharu.multim.multi
 
-import dev.usbharu.multim.api.AccountApi
-import dev.usbharu.multim.api.EmojiApi
-import dev.usbharu.multim.api.StatusApi
-import dev.usbharu.multim.api.TimelineApi
+import dev.usbharu.multim.api.*
 import dev.usbharu.multim.factory.MultiMApis
 
-class MultiAccountApi(statusApi: StatusApi, accountApi: AccountApi, timelineApi: TimelineApi,emojiApi: EmojiApi) :
-    MultiMApis(statusApi, accountApi, timelineApi,emojiApi) {
+class MultiAccountApi(statusApi: StatusApi, accountApi: AccountApi, timelineApi: TimelineApi,emojiApi: EmojiApi,i:IApi) :
+    MultiMApis(statusApi, accountApi, timelineApi,emojiApi,i) {
     constructor(apiBase: MultiAccountApiBase) : this(
         MultiAccountStatusApi(apiBase),
         MultiAccountAccountApi(apiBase),
         MultiAccountTimelineApi(apiBase),
-        MultiAccountEmojiApi(apiBase)
+        MultiAccountEmojiApi(apiBase),
+        MultiAccountIApi(apiBase)
     )
 }
