@@ -6,6 +6,7 @@ import com.github.michaelbull.result.map
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.api.StatusApi
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.*
 import dev.usbharu.multim.multi.model.MultiAccountReaction
 import dev.usbharu.multim.multi.model.MultiAccountStatus
@@ -210,5 +211,16 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
         return MultiAccountStatus(first, second)
     }
 
+    suspend fun availableReactions(hashCode: Int): MultiMResult<List<Reaction>> {
+        Logger.debug("Status Api", "Multi account status api availableReactions")
+        return multiAccountApiBase.getImpl(hashCode).flatMap { it.statusApi.availableReactions() }
+    }
 
+    suspend fun availableReactions(hashCode: MultiAccountData<*>): MultiMResult<List<Reaction>> {
+        Logger.debug(
+            "Status Api",
+            "Multi account status api availableReactions with multiAccountData"
+        )
+        return getImpl2(hashCode) { availableReactions() }.flatMap { it.first }
+    }
 }
