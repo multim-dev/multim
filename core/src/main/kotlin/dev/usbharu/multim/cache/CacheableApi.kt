@@ -26,10 +26,10 @@ interface CacheableApi {
         }
     }
 
-    fun <T> cache(method: String, key: String, value: T): T
+    fun <T :Any> cache(method: String, key: String, value: T): T
 
     fun <T> get(method: String, key: String): T?
-    suspend fun <T> cacheOrGet(method: String, key: String, block: suspend () -> T): T {
+    suspend fun <T:Any> cacheOrGet(method: String, key: String, block: suspend () -> T): T {
         val get = get<T>(method, key)
         if (get != null) {
             return get
@@ -37,7 +37,7 @@ interface CacheableApi {
         return cache(method, key, block())
     }
 
-    suspend fun <T> cacheOrGet(
+    suspend fun <T:Any> cacheOrGet(
         method: String,
         vararg objects: Cacheable?,
         block: suspend () -> T

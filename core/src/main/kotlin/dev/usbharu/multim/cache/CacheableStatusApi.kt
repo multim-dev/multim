@@ -8,7 +8,7 @@ import dev.usbharu.multim.model.Reaction
 import dev.usbharu.multim.model.Status
 import dev.usbharu.multim.model.StatusId
 
-class CacheableStatusApi(val cacheableApi: CacheableApi, val statusApi: StatusApi) :
+class CacheableStatusApi(private val cacheableApi: CacheableApi,private val statusApi: StatusApi) :
     CacheableApi by cacheableApi, StatusApi by statusApi {
     override suspend fun findById(id: StatusId): Result<Status, MultiMError> {
         return cacheableApi.cacheOrGet(FIND_BY_ID, id) { statusApi.findById(id) }

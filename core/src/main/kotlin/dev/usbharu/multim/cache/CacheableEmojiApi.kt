@@ -4,7 +4,7 @@ import dev.usbharu.multim.api.EmojiApi
 import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Emoji
 
-class CacheableEmojiApi(val cacheableApi: CacheableApi, val emojiApi: EmojiApi) :
+class CacheableEmojiApi(private val cacheableApi: CacheableApi,private val emojiApi: EmojiApi) :
     CacheableApi by cacheableApi, EmojiApi by emojiApi {
     override suspend fun get(name: String): MultiMResult<Emoji> {
         return cacheableApi.cacheOrGet(GET, name) { emojiApi.get(name) }
