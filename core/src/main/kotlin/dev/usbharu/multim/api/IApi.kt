@@ -12,23 +12,18 @@ interface IApi {
     val PROFILE: String
         get() = "i/profile"
 
-    suspend fun profile(): MultiMResult<Profile>
-    val STATUSES: String
-        get() = "i/statuses"
-
-    suspend fun statuses(): MultiMResult<List<Status>>
-
-}
-
-object NotImplIApi : IApi {
-    override suspend fun profile(): MultiMResult<Profile> {
+    suspend fun profile(): MultiMResult<Profile> {
         Logger.debug("I Api", "Not impl i api. profile")
         return Err(MultiMError("profile not implements", null, ErrorType.NOT_IMPL))
     }
+    val STATUSES: String
+        get() = "i/statuses"
 
-    override suspend fun statuses(): MultiMResult<List<Status>> {
+    suspend fun statuses(): MultiMResult<List<Status>> {
         Logger.debug("I Api", "Not impl i api. statuses")
         return Err(MultiMError("profile not implements", null, ErrorType.NOT_IMPL))
     }
 
 }
+
+object NotImplIApi : IApi
