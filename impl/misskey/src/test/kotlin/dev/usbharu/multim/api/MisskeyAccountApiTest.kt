@@ -14,8 +14,6 @@ import dev.usbharu.multim.misskey.v12.common.MisskeyAvatar
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyAccountApi
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.model.SingleTokenAuth
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
@@ -98,7 +96,6 @@ class MisskeyAccountApiTest : AccountApiTest() {
             if (it is MultiMHttpError) {
 
             }else {
-                Napier.base(DebugAntilog())
                 Logger.error("Account Api Test","想定されたエラーではない",it)
                 fail("想定されたエラーではない",)
             }
@@ -146,7 +143,6 @@ class MisskeyAccountApiTest : AccountApiTest() {
             if (it is MultiMHttpError) {
 
             }else {
-                Napier.base(DebugAntilog())
                 Logger.error("Account Api Test","想定されたエラーではない",it)
                 fail("想定されたエラーではない",)
             }
@@ -221,7 +217,6 @@ class MisskeyAccountApiTest : AccountApiTest() {
 
     @Test
     override fun relationships_illegalAccount_returnErr() = runTest {
-        Napier.base(DebugAntilog())
         val myself = MisskeyAccount(
             "9bg1zu54y7",
             "test",
