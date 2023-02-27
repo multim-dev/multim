@@ -12,6 +12,7 @@ import dev.usbharu.multim.multi.model.MultiAccountStatus
 
 class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBase) : AccountApi {
 
+    @Deprecated("statusesに統合")
     override suspend fun userTimeline(
         account: Account,
         since: StatusId?,
@@ -61,13 +62,16 @@ class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBas
 
     override suspend fun statuses(
         account: Account,
-        includeRepost: Boolean
+        includeRepost: Boolean,
+        since: StatusId?,
+        until: StatusId?
     ): Result<List<Status>, MultiMError> {
         Logger.debug("Account Api", "Multi account account api statuses")
         return getImpl2(account) {
             statuses(
                 it,
-                includeRepost
+                includeRepost,
+                since, until
             )
         }.flatMap {
             it.first.map { statuses ->
