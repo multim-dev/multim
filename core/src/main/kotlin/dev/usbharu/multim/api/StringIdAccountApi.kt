@@ -9,7 +9,6 @@ import dev.usbharu.multim.model.Profile
 import dev.usbharu.multim.model.Status
 
 interface StringIdAccountApi : AccountApi {
-    @Deprecated("statusesに統合")
     suspend fun userTimeline(
         accountId: String,
         since: String? = null,
@@ -21,9 +20,7 @@ interface StringIdAccountApi : AccountApi {
 
     suspend fun statuses(
         accountId: String,
-        includeRepost: Boolean = false,
-        since:String? = null,
-        until:String? = null
+        includeRepost: Boolean = false
     ): MultiMResult<List<Status>> {
         Logger.debug("Account Api", "Not impl account api. statuses by id.")
         return Err(MultiMError("statuses by id not implements", null, ErrorType.NOT_IMPL))

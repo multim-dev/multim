@@ -19,7 +19,6 @@ import dev.usbharu.multim.misskey.v12.model.components.UserLite
 import dev.usbharu.multim.model.*
 
 class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
-    @Deprecated("statusesに統合")
     override suspend fun userTimeline(
         account: Account,
         since: StatusId?,
@@ -93,10 +92,8 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
 
     override suspend fun statuses(
         account: Account,
-        includeRepost: Boolean,
-        since: StatusId?,
-        until: StatusId?
-    ): Result<List<Status>, MultiMError> {
+        includeRepost: Boolean
+    ): Result<List<MisskeyStatus>, MultiMError> {
         return if (account is MisskeyAccount) {
             misskeyApis.users.notes(
                 UsersNotesRequest(

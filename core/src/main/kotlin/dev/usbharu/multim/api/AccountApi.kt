@@ -10,7 +10,6 @@ import dev.usbharu.multim.model.*
 //todo 成功したかをboolで返しているが、詳細がわからないのでしっかり返す。
 
 interface AccountApi {
-    @Deprecated("statusesに統合")
     suspend fun userTimeline(
         account: Account,
         since: StatusId? = null,
@@ -49,9 +48,7 @@ interface AccountApi {
 
     suspend fun statuses(
         account: Account,
-        includeRepost: Boolean = false,
-        since:StatusId? = null,
-        until:StatusId? = null,
+        includeRepost: Boolean = false
     ): Result<List<Status>, MultiMError> {
         Logger.debug("Account Api", "Not impl account api. statuses.")
         return Err(MultiMError("statuses not implements", null, ErrorType.NOT_IMPL))
