@@ -14,4 +14,7 @@ class MisskeyStatusId(val id: String, private val url: String) : StatusId() {
     override fun getUrl(): String {
         return url
     }
+
+    override val cacheKey: String
+        get() = id
 }

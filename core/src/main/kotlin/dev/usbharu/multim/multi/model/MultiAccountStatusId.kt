@@ -16,4 +16,7 @@ class MultiAccountStatusId(override val innerData: StatusId, override val hashCo
     override fun getUrl(): String {
         return innerData.getUrl()
     }
+
+    override val cacheKey: String
+        get() = innerData.cacheKey
 }
