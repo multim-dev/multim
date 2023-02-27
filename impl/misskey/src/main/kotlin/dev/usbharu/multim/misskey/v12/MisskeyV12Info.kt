@@ -15,7 +15,7 @@ object MisskeyV12Info : ServiceInfo(
     { apiClient -> MisskeyApis(apiClient as MisskeyApiClient) },
     {
         if (it is MisskeyApis) {
-            MisskeyMultiMApis(MisskeyStatusApi(it),MisskeyAccountApi(it),MisskeyTimelineApi(it),MisskeyEmojiApi(it),NotImplIApi)
+            MisskeyMultiMApis(MisskeyStatusApi(it),MisskeyAccountApi(it),MisskeyTimelineApi(it),MisskeyEmojiApi(it),MisskeyIApi(it))
         }else {
             TODO()
         }

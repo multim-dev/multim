@@ -11,4 +11,5 @@ class MisskeyApis(misskeyApiClient: MisskeyApiClient) : PlatformApis(misskeyApiC
     val following = Following(misskeyApiClient)
     val users = Users(misskeyApiClient)
     val meta = Meta(misskeyApiClient)
+    val i = I(misskeyApiClient)
 }
