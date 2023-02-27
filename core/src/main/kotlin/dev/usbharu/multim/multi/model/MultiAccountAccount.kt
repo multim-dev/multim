@@ -12,4 +12,7 @@ class MultiAccountAccount(
     innerData.accountName,
     innerData.isBot,
     innerData.avatar
-)
+) {
+    override val cacheKey: String
+        get() = innerData.cacheKey
+}

@@ -8,7 +8,12 @@ import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Emoji
 
 interface EmojiApi {
+    val GET:String
+        get() = "emoji/get"
     suspend fun get(name:String):MultiMResult<Emoji>
+
+    val FIND_BY_NAME:String
+        get() = "emoji/findByName"
 
     suspend fun findByName(name:String):MultiMResult<List<Emoji>>
 }

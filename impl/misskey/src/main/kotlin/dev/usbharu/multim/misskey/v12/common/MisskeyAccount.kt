@@ -9,4 +9,7 @@ class MisskeyAccount(
     accountName: String,
     isBot: Boolean? = false,
     avatar: Avatar
-) : Account(screenName, accountName, isBot, avatar)
+) : Account(screenName, accountName, isBot, avatar){
+    override val cacheKey: String
+        get() = accountName
+}

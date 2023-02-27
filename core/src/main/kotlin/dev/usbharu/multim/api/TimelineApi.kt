@@ -9,12 +9,20 @@ import dev.usbharu.multim.model.Status
 import dev.usbharu.multim.model.Timeline
 
 interface TimelineApi {
+    val AVAILABLE_TIMELINES:String
+        get() = "timeline/availableTimelines"
     suspend fun availableTimelines(): Result<List<Timeline>,MultiMError>
 
+    val LISTEN:String
+        get() = "timeline/listen"
     suspend fun listen(timeline: Timeline,callback: (List<Status>) -> Unit):Result<Unit,MultiMError>
 
+    val CONNECT:String
+        get() = "timeline/connect"
     // todo 返り値を詳細にする
     suspend fun connect(timeline: Timeline): Result<Unit,MultiMError>
+    val DISCONNECT:String
+        get() = "timeline/disconnect"
 
     /**
      * Disconnect

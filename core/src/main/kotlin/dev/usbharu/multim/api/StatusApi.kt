@@ -12,12 +12,22 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 interface StatusApi {
+    val POST:String
+        get() = "status/post"
     suspend fun post(status: StatusForPost): Result<Status,MultiMError>
+
+    val DELETE:String
+        get() = "status/delete"
     suspend fun delete(id: StatusId): Result<Unit,MultiMError>
+    val FIND_BY_ID:String
+        get() = "status/findById"
     suspend fun findById(id: StatusId): Result<Status,MultiMError>
+    val ADD_REACTION:String
+        get() = "status/addReaction"
     suspend fun addReaction(id: StatusId, reaction: Reaction): Result<Unit,MultiMError>
 
-
+    val REMOVE_REACTION:String
+        get() = "status/remvoeReaction"
     /**
      * Remove reaction
      *
@@ -26,13 +36,29 @@ interface StatusApi {
      * @return
      */
     suspend fun removeReaction(id: StatusId, reaction: Reaction?): Result<Unit,MultiMError>
+    val REACTIONS:String
+        get() = "status/reactions"
     suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>,MultiMError>
+    val REPLIES:String
+        get() = "status/replies"
     suspend fun replies(id: StatusId): Result<List<Status>,MultiMError>
+    val REPOST:String
+        get() = "status/repost"
     suspend fun repost(id: StatusId): Result<Status,MultiMError>
+    val UN_REPOST:String
+        get() = "status/unRepost"
     suspend fun unRepost(id: StatusId): Result<Unit,MultiMError>
+    val REPLY_TO:String
+        get() = "status/replyTo"
     suspend fun replyTo(id: StatusId, status: StatusForPost): Result<Status,MultiMError>
+    val ADD_TO_BOOKMARKS:String
+        get() = "status/addBookMarks"
     suspend fun addToBookmarks(id: StatusId): Result<Unit,MultiMError>
+    val REMOVE_FROM_BOOKMARKS:String
+        get() = "status/removeFromBookmarks"
     suspend fun removeFromBookmarks(id: StatusId): Result<Unit,MultiMError>
+    val GET_PREVIOUS_AND_NEXT:String
+        get() = "status/getPreviousAndNext"
     suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts,MultiMError>
 
     fun getUniqueId(status: Status):Int{
