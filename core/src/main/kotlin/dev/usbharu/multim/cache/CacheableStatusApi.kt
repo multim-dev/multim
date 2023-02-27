@@ -3,6 +3,7 @@ package dev.usbharu.multim.cache
 import com.github.michaelbull.result.Result
 import dev.usbharu.multim.api.StatusApi
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.PreviousAndNextPosts
 import dev.usbharu.multim.model.Reaction
 import dev.usbharu.multim.model.Status
@@ -24,8 +25,15 @@ class CacheableStatusApi(private val cacheableApi: CacheableApi, private val sta
 
     override suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts, MultiMError> {
         return cacheableApi.cacheOrGet(
-            GET_PREVIOUS_AND_NEXT,
-            id
+            GET_PREVIOUS_AND_NEXT, id
         ) { statusApi.getPreviousAndNext(id) }
+    }
+
+    override suspend fun availableReactions(): MultiMResult<List<Reaction>> {
+        return cacheableApi.cacheOrGet(
+            (AVAILABLE_REACTIONS)
+        ) {
+            statusApi.availableReactions()
+        }
     }
 }
