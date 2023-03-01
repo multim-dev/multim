@@ -17,7 +17,7 @@ allprojects {
         mavenCentral()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/usbharu/kmp-logger")
+            url = uri("https://maven.pkg.github.com/multim-dev/kmp-logger")
             credentials {
                 val props = Properties()
                 try {
@@ -111,7 +111,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/usbharu/multim")
+                url = uri("https://maven.pkg.github.com/multim-dev/multim")
                 credentials {
                     username =
                         project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
