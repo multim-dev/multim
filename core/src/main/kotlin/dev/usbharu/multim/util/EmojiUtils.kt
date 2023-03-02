@@ -1,7 +1,6 @@
 package dev.usbharu.multim.util
 
 import Emojis
-import dev.usbharu.multim.model.Emoji
 
 
 object EmojiUtils {
