@@ -1,8 +1,7 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import com.github.michaelbull.result.get
+import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.TestUtil.failOnError
-import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.NotesCreateRequest
 import dev.usbharu.multim.misskey.v12.model.StreamRequest.ConnectRequest
@@ -26,7 +25,7 @@ class TimelineTestE2E {
     val client = MisskeyApiClient(
         SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
-        createHttpClient()
+        MultiM.httpClientWithJson.config {}
     )
     val timeline = Timeline(client)
     val notes = Notes(client)

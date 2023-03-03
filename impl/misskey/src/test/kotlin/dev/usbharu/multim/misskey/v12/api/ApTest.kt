@@ -5,9 +5,8 @@ package dev.usbharu.multim.misskey.v12.api
 import MisskeyTestUtil.createFakeNoteToString
 import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
-import com.github.michaelbull.result.get
+import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.TestUtil.failOnError
-import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.ApShowRequest
 import dev.usbharu.multim.misskey.v12.model.ApShowResponse
@@ -28,7 +27,7 @@ class ApTest {
     val misskeyApiClient = MisskeyApiClient(
         SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
-        createHttpClient()
+        MultiM.httpClientWithJson.config {}
     )
 
     @Test
@@ -76,7 +75,7 @@ class ApTestE2E {
     val misskeyApiClient = MisskeyApiClient(
         SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
-        createHttpClient()
+        MultiM.httpClientWithJson.config {}
     )
 
     @RepeatedIfExceptionsTest(repeats = 4)

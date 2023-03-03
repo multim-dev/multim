@@ -1,8 +1,7 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import MisskeyTestUtil.assertIsOk
+import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.TestUtil.failOnError
-import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.MetaRequest
 import dev.usbharu.multim.model.SingleTokenAuth
@@ -19,7 +18,7 @@ class MetaTestE2E {
     val misskeyApiClient = MisskeyApiClient(
         SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
-        createHttpClient()
+        MultiM.httpClientWithJson.config {}
     )
 
     @Test
