@@ -1,4 +1,4 @@
-package dev.usbharu.multim.v12.common.api
+package dev.usbharu.multim.misskey.v12.common.api
 
 import MisskeyTestUtil
 import com.github.michaelbull.result.get

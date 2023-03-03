@@ -1,14 +1,12 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package dev.usbharu.multim.v12.api
+package dev.usbharu.multim.misskey.v12.api
 
 import MisskeyTestUtil.createFakeNote
 import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
 import com.github.michaelbull.result.*
 import dev.usbharu.multim.api.createHttpClient
-import dev.usbharu.multim.misskey.v12.api.Drive
-import dev.usbharu.multim.misskey.v12.api.Notes
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
 import dev.usbharu.multim.model.SingleTokenAuth
