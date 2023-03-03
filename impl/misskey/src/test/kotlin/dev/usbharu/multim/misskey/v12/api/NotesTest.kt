@@ -116,8 +116,7 @@ class NotesTest {
 
     @Test
     fun ldttest() {
-        val parse = Instant.parse("2023-01-17T06:58:08.000Z")
-        println(parse)
+        Instant.parse("2023-01-17T06:58:08.000Z")
     }
 
 
@@ -197,37 +196,32 @@ class NotesTestE2E {
 
     @Test
     fun globalTimeline() = runTest {
-        val globalTimeline = notes.globalTimeline(NotesGlobalTimelineRequest()).failOnError()
-        println(globalTimeline)
+        notes.globalTimeline(NotesGlobalTimelineRequest()).failOnError()
     }
 
     @Test
     fun hybridTimeline() = runTest {
-        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest()).failOnError()
-        println(hybridTimeline)
+        notes.hybridTimeline(NotesHybridTimelineRequest()).failOnError()
     }
 
     @Test
     fun localTimeline() = runTest {
-        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest()).failOnError()
-        println(localTimeline)
+        notes.localTimeline(NotesLocalTimelineRequest()).failOnError()
     }
 
     @Test
     fun show() = runTest {
-        val show = notes.show(NotesShowRequest("9bk3hn1qd0")).failOnError()
-        println(show)
+        notes.show(NotesShowRequest("9bk3hn1qd0")).failOnError()
     }
 
     @Test
     fun create() = runTest {
-        val created = notes.create(
+        notes.create(
             NotesCreateRequest(
                 visibility = NotesCreateRequest.Visibility.HOME,
                 text = "このノートはMultim のテストで作成されました。${this@NotesTestE2E::class} create Test"
             )
         ).failOnError()
-        println(created.createdNote)
     }
 
     @Test
@@ -280,26 +274,22 @@ class NotesTestE2E {
 
     @Test
     fun featured() = runTest {
-        val featured = notes.featured().failOnError()
-        println(featured)
+        notes.featured().failOnError()
     }
 
     @Test
     fun children() = runTest {
-        val children = notes.children(NotesChildrenRequest("9ad7btwst8")).failOnError()
-        println(children)
+        notes.children(NotesChildrenRequest("9ad7btwst8")).failOnError()
     }
 
     @Test
     fun conversation() = runTest {
-        val conversation = notes.conversation(NotesConversationRequest("9bk3hn1qd0")).failOnError()
-        println(conversation)
+        notes.conversation(NotesConversationRequest("9bk3hn1qd0")).failOnError()
     }
 
     @Test
     fun state() = runTest {
-        val state = notes.state(NotesStateRequest("9bk3hn1qd0")).failOnError()
-        println(state)
+        notes.state(NotesStateRequest("9bk3hn1qd0")).failOnError()
     }
 
     @Test
@@ -334,14 +324,12 @@ class NotesTestE2E {
 
     @Test
     fun mentions() = runTest {
-        val mentions = notes.mentions(NotesMentionsRequest())
-        println(mentions)
+        notes.mentions(NotesMentionsRequest()).failOnError()
     }
 
     @Test
     fun reactions() = runTest {
-        val reactions = notes.reactions(NotesReactionsRequest("9ack8wxw3c"))
-        println(reactions)
+        notes.reactions(NotesReactionsRequest("9ack8wxw3c")).failOnError()
     }
 
     @Test
@@ -354,7 +342,6 @@ class NotesTestE2E {
         val renotes = NotesRenoteRequest(create.createdNote.id)
             .let { notes.renotes(it) }.failOnError()
         assertEquals(listOf(notesCreateResponse.createdNote), renotes)
-        println(renotes)
     }
 
     @Test
@@ -390,7 +377,6 @@ class NotesTestE2E {
         val searchByTag = notes.searchByTag(NotesSearchByTagRequest(tag)).failOnError()
         org.assertj.core.api.Assertions.assertThat(searchByTag)?.isNotEmpty
         assertTrue(searchByTag.contains(tagedNote.createdNote))
-        println(searchByTag)
     }
 
     @Test
@@ -430,8 +416,7 @@ class NotesTestE2E {
 
     @Test
     fun timeline() = runTest {
-        val timeline = notes.timeline(NotesTimelineRequest())
-        println(timeline)
+        notes.timeline(NotesTimelineRequest()).failOnError()
     }
 
     @RepeatedIfExceptionsTest(repeats = 4)
@@ -456,8 +441,7 @@ class NotesTestE2E {
 
     @Test
     fun userListTimeline() = runTest {
-        val userListTimeline = notes.userListTimeline(NotesUserListTimelineRequest("9ady10e6z5"))
-        println(userListTimeline)
+        notes.userListTimeline(NotesUserListTimelineRequest("9bvi0taru4")).failOnError()
 
     }
 
