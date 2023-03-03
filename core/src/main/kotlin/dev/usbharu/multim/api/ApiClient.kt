@@ -66,7 +66,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             } catch (e: ServerResponseException) {
                 return Err(HttpClientServerError(e))
             }
-        Logger.warn(post.bodyAsText())
+//        Logger.warn(post.bodyAsText())
         return runCatching<R> { post.body() }.fold(
             onSuccess = { Ok(it) },
             onFailure = {

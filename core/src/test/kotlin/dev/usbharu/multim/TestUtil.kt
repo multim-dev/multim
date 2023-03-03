@@ -86,6 +86,6 @@ object TestUtil {
             return get
         }
         val error = this.getError()!!
-        fail("Return Error", error.throwable)
+        fail("Return Error ${error.message}", error.throwable)
     }
 }

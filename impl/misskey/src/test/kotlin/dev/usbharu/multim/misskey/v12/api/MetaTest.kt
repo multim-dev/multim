@@ -1,6 +1,7 @@
 package dev.usbharu.multim.misskey.v12.api
 
 import MisskeyTestUtil.assertIsOk
+import dev.usbharu.multim.TestUtil.failOnError
 import dev.usbharu.multim.api.createHttpClient
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.MetaRequest
@@ -23,8 +24,7 @@ class MetaTestE2E {
 
     @Test
     fun meta() = runTest {
-        val meta = Meta(misskeyApiClient).meta(MetaRequest())
+        val meta = Meta(misskeyApiClient).meta(MetaRequest()).failOnError()
         println(meta)
-        assertIsOk(meta)
     }
 }
