@@ -1,16 +1,11 @@
 package dev.usbharu.multim.api
 
-import com.github.michaelbull.result.onFailure
-import com.github.michaelbull.result.onSuccess
 import dev.usbharu.multim.TestUtil.failOnSuccess
-import dev.usbharu.multim.error.ErrorType
-import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Account
 import dev.usbharu.multim.model.Avatar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotImplAccountApiTest {
@@ -21,6 +16,7 @@ class NotImplAccountApiTest {
             get() = TODO("Not yet implemented")
 
     }
+
     @Test
     fun userTimeline() = runTest {
         @Suppress("DEPRECATION")
@@ -51,7 +47,7 @@ class NotImplAccountApiTest {
 
     @Test
     fun relationships() = runTest {
-        NotImplAccountApi.relationships(account,account).failOnSuccess()
+        NotImplAccountApi.relationships(account, account).failOnSuccess()
     }
 
 

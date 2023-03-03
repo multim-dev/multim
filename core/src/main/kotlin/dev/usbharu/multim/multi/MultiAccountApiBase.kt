@@ -13,7 +13,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
 
     val factory = ServiceInfoFactory(serviceList)
 
-    val httpClient = MultiM.httpClientWithJson.config({})
+    val httpClient = MultiM.httpClientWithJson.config {}
 
     val apiClientMap = mutableMapOf<Int, MultiMApis>()
 

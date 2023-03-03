@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotImplStatusApiTest {
 
-    val avatar = object : Avatar(""){}
-    private val account = object : Account("","",false,avatar){
+    val avatar = object : Avatar("") {}
+    private val account = object : Account("", "", false, avatar) {
         override val cacheKey: String
             get() = TODO("Not yet implemented")
     }
-    private val content = object : Content("F6k"){}
-    private val statusId = object : StatusId(){
+    private val content = object : Content("F6k") {}
+    private val statusId = object : StatusId() {
         override fun equals(other: Any?): Boolean {
             TODO("Not yet implemented")
         }
@@ -33,10 +33,10 @@ class NotImplStatusApiTest {
         override val cacheKey: String
             get() = TODO("Not yet implemented")
     }
-    private val statusForPost = object : StatusForPost(account,content) {
+    private val statusForPost = object : StatusForPost(account, content) {
 
     }
-    private val reaction = object : Reaction("",""){}
+    private val reaction = object : Reaction("", "") {}
 
     @Test
     fun post() = runTest {
@@ -55,12 +55,12 @@ class NotImplStatusApiTest {
 
     @Test
     fun addReaction() = runTest {
-        NotImplStatusApi.addReaction(statusId,reaction).failOnSuccess()
+        NotImplStatusApi.addReaction(statusId, reaction).failOnSuccess()
     }
 
     @Test
     fun removeReaction() = runTest {
-        NotImplStatusApi.removeReaction(statusId,reaction).failOnSuccess()
+        NotImplStatusApi.removeReaction(statusId, reaction).failOnSuccess()
     }
 
     @Test
@@ -85,7 +85,7 @@ class NotImplStatusApiTest {
 
     @Test
     fun replyTo() = runTest {
-        NotImplStatusApi.replyTo(statusId,statusForPost).failOnSuccess()
+        NotImplStatusApi.replyTo(statusId, statusForPost).failOnSuccess()
     }
 
     @Test

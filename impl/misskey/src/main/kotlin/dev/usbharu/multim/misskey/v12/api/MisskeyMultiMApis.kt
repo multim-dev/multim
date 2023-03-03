@@ -10,5 +10,4 @@ class MisskeyMultiMApis(
     emojiApi: EmojiApi,
     iApi: IApi
 ) :
-    MultiMApis(statusApi, accountApi, timelineApi, emojiApi, iApi) {
-}
+    MultiMApis(statusApi, accountApi, timelineApi, emojiApi, iApi)

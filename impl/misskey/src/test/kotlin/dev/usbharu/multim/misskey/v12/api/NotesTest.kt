@@ -400,12 +400,12 @@ class NotesTestE2E {
                 .failOnError()
         assertFalse(
             NotesStateRequest(create.createdNote.id)
-            .let { notes.state(it).failOnError().isMutedThread })
+                .let { notes.state(it).failOnError().isMutedThread })
         NotesThreadMutingCreateRequest(create.createdNote.id)
             .let { notes.ThreadMuting().create(it) }
         assertTrue(
             NotesStateRequest(create.createdNote.id)
-            .let { notes.state(it).failOnError().isMutedThread })
+                .let { notes.state(it).failOnError().isMutedThread })
     }
 
     @Test
@@ -420,12 +420,12 @@ class NotesTestE2E {
             .let { notes.ThreadMuting().create(it) }
         assertTrue(
             NotesStateRequest(create.createdNote.id)
-            .let { notes.state(it).failOnError().isMutedThread })
+                .let { notes.state(it).failOnError().isMutedThread })
         NotesThreadMutingDeleteRequest(create.createdNote.id)
             .let { notes.ThreadMuting().delete(it) }
         assertFalse(
             NotesStateRequest(create.createdNote.id)
-            .let { notes.state(it).failOnError().isMutedThread })
+                .let { notes.state(it).failOnError().isMutedThread })
     }
 
     @Test
@@ -441,7 +441,8 @@ class NotesTestE2E {
             notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))
                 .failOnError()
         delay(1000)
-        val renoted = notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
+        val renoted =
+            notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
         delay(1000)
         NotesUnrenoteRequest(create.createdNote.id).let { notes.unrenote(it) }
         delay(1000)

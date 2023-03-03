@@ -90,7 +90,7 @@ object TestUtil {
         fail("Return Error ${error.message}", error.throwable)
     }
 
-    fun MultiMResult<*>.failOnSuccess(){
+    fun MultiMResult<*>.failOnSuccess() {
         this.onSuccess { fail("成功してはいけない") }
         this.onFailure {
             if (it.errorType != ErrorType.NOT_IMPL) {
