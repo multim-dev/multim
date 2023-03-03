@@ -215,7 +215,7 @@ class NotesTestE2E {
 
     @Test
     fun show() = runTest {
-        val show = notes.show(NotesShowRequest("9ack8wxw3c")).failOnError()
+        val show = notes.show(NotesShowRequest("9bk3hn1qd0")).failOnError()
         println(show)
     }
 
@@ -292,13 +292,13 @@ class NotesTestE2E {
 
     @Test
     fun conversation() = runTest {
-        val conversation = notes.conversation(NotesConversationRequest("9ad7btwst8")).failOnError()
+        val conversation = notes.conversation(NotesConversationRequest("9bk3hn1qd0")).failOnError()
         println(conversation)
     }
 
     @Test
     fun state() = runTest {
-        val state = notes.state(NotesStateRequest("9ad7btwst8")).failOnError()
+        val state = notes.state(NotesStateRequest("9bk3hn1qd0")).failOnError()
         println(state)
     }
 
