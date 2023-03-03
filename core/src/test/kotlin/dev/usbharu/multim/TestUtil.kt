@@ -1,6 +1,7 @@
 package dev.usbharu.multim
 
 import com.github.michaelbull.result.*
+import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMResult
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
@@ -87,5 +88,14 @@ object TestUtil {
         }
         val error = this.getError()!!
         fail("Return Error ${error.message}", error.throwable)
+    }
+
+    fun MultiMResult<*>.failOnSuccess(){
+        this.onSuccess { fail("成功してはいけない") }
+        this.onFailure {
+            if (it.errorType != ErrorType.NOT_IMPL) {
+                fail("エラータイプが未実装ではない")
+            }
+        }
     }
 }
