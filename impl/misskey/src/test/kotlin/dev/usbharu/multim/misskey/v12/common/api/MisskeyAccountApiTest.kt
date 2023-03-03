@@ -1,4 +1,4 @@
-package dev.usbharu.multim.api
+package dev.usbharu.multim.misskey.v12.common.api
 
 import com.github.michaelbull.result.get
 import com.github.michaelbull.result.getError
@@ -6,13 +6,13 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM
+import dev.usbharu.multim.api.AccountApi
+import dev.usbharu.multim.api.AccountApiTest
 import dev.usbharu.multim.error.MultiMHttpError
 import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyAccount
 import dev.usbharu.multim.misskey.v12.common.MisskeyAvatar
-import dev.usbharu.multim.misskey.v12.common.api.MisskeyAccountApi
-import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.model.SingleTokenAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

@@ -1,4 +1,4 @@
-package dev.usbharu.multim.v12.api
+package dev.usbharu.multim.misskey.v12.api
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runTest

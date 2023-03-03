@@ -51,7 +51,7 @@ class CacheableAccountApi(
         myself: Account,
         other: Account
     ): Result<Relation, MultiMError> {
-        return cacheableApi.cacheOrGet(RELEATIONSHIPS, myself, other) {
+        return cacheableApi.cacheOrGet(RELATIONSHIPS, myself, other) {
             accountApi.relationships(
                 myself,
                 other

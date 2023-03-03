@@ -50,14 +50,14 @@ interface AccountApi {
     suspend fun statuses(
         account: Account,
         includeRepost: Boolean = false,
-        since:StatusId? = null,
-        until:StatusId? = null,
+        since: StatusId? = null,
+        until: StatusId? = null,
     ): Result<List<Status>, MultiMError> {
         Logger.debug("Account Api", "Not impl account api. statuses.")
         return Err(MultiMError("statuses not implements", null, ErrorType.NOT_IMPL))
     }
 
-    val RELEATIONSHIPS: String
+    val RELATIONSHIPS: String
         get() = "account/relationships"
 
     suspend fun relationships(myself: Account, other: Account): Result<Relation, MultiMError> {

@@ -131,8 +131,10 @@ interface StatusApi {
             (status.content.text + status.account.accountName + date).encodeToByteArray()
         ).toInt()
     }
-    val AVAILABLE_REACTIONS:String
+
+    val AVAILABLE_REACTIONS: String
         get() = "status/availableReactions"
+
     suspend fun availableReactions(): MultiMResult<List<Reaction>> {
         Logger.debug("Status Api", "Not impl status api availableReactions")
         return Err(MultiMError("availableReactions not implements", null, ErrorType.NOT_IMPL))

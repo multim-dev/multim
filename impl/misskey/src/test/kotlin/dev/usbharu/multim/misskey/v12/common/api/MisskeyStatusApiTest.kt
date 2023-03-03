@@ -1,11 +1,9 @@
-package dev.usbharu.multim.v12.common.api
+package dev.usbharu.multim.misskey.v12.common.api
 
 import MisskeyTestUtil
 import com.github.michaelbull.result.get
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.MisskeyStatusId
-import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
-import dev.usbharu.multim.misskey.v12.common.api.MisskeyStatusApi
 import dev.usbharu.multim.model.SingleTokenAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
