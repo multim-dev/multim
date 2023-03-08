@@ -61,7 +61,7 @@ object TestUtil {
     ): suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData {
         return { httpRequestData: HttpRequestData ->
             val decodeToString = httpRequestData.body.toByteArray().decodeToString()
-            println(decodeToString)
+            Logger.debug(decodeToString)
             if ("i" in json.parseToJsonElement(decodeToString).jsonObject) {
                 respond(respond, status, headers)
             } else {

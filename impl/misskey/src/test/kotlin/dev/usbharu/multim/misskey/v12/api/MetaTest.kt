@@ -24,6 +24,5 @@ class MetaTestE2E {
     @Test
     fun meta() = runTest {
         val meta = Meta(misskeyApiClient).meta(MetaRequest()).failOnError()
-        println(meta)
     }
 }

@@ -117,8 +117,7 @@ class NotesTest {
 
     @Test
     fun ldttest() {
-        val parse = Instant.parse("2023-01-17T06:58:08.000Z")
-        println(parse)
+        Instant.parse("2023-01-17T06:58:08.000Z")
     }
 
 
@@ -198,20 +197,17 @@ class NotesTestE2E {
 
     @Test
     fun globalTimeline() = runTest {
-        val globalTimeline = notes.globalTimeline(NotesGlobalTimelineRequest()).failOnError()
-        println(globalTimeline)
+        notes.globalTimeline(NotesGlobalTimelineRequest()).failOnError()
     }
 
     @Test
     fun hybridTimeline() = runTest {
-        val hybridTimeline = notes.hybridTimeline(NotesHybridTimelineRequest()).failOnError()
-        println(hybridTimeline)
+        notes.hybridTimeline(NotesHybridTimelineRequest()).failOnError()
     }
 
     @Test
     fun localTimeline() = runTest {
-        val localTimeline = notes.localTimeline(NotesLocalTimelineRequest()).failOnError()
-        println(localTimeline)
+        notes.localTimeline(NotesLocalTimelineRequest()).failOnError()
     }
 
     @Test
@@ -219,18 +215,17 @@ class NotesTestE2E {
         val show =
             notes.show(NotesShowRequest(notes.notes(NotesNotesRequest()).failOnError().first().id))
                 .failOnError()
-        println(show)
+
     }
 
     @Test
     fun create() = runTest {
-        val created = notes.create(
+        notes.create(
             NotesCreateRequest(
                 visibility = NotesCreateRequest.Visibility.HOME,
                 text = "このノートはMultim のテストで作成されました。${this@NotesTestE2E::class} create Test"
             )
         ).failOnError()
-        println(created.createdNote)
     }
 
     @Test
@@ -283,8 +278,7 @@ class NotesTestE2E {
 
     @Test
     fun featured() = runTest {
-        val featured = notes.featured().failOnError()
-        println(featured)
+        notes.featured().failOnError()
     }
 
     @Test
@@ -293,7 +287,6 @@ class NotesTestE2E {
             notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、子ノート取得のテストで使用されます。${this@NotesTestE2E::class} children"))
         val id = create.failOnError().createdNote.id
         val children = notes.children(NotesChildrenRequest(id)).failOnError()
-        println(children)
     }
 
     @Test
@@ -303,14 +296,12 @@ class NotesTestE2E {
                 .failOnError()
         val conversation =
             notes.conversation(NotesConversationRequest(create.createdNote.id)).failOnError()
-        println(conversation)
     }
 
     @Test
     fun state() = runTest {
         val create = notes.create(NotesCreateRequest(text="このノートはMultiMのテストで作成され、ノートの状態を取得するテストで使用されます。 ${this@NotesTestE2E::class} state")).failOnError()
         val state = notes.state(NotesStateRequest(create.createdNote.id)).failOnError()
-        println(state)
     }
 
     @Test
@@ -346,14 +337,12 @@ class NotesTestE2E {
     @Test
     fun mentions() = runTest {
         val mentions = notes.mentions(NotesMentionsRequest()).failOnError()
-        println(mentions)
     }
 
     @Test
     fun reactions() = runTest {
         val create = notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions")).failOnError()
         val reactions = notes.reactions(NotesReactionsRequest(create.createdNote.id))
-        println(reactions)
     }
 
     @Test
@@ -366,7 +355,6 @@ class NotesTestE2E {
         val renotes = NotesRenoteRequest(create.createdNote.id)
             .let { notes.renotes(it) }.failOnError()
         assertEquals(listOf(notesCreateResponse.createdNote), renotes)
-        println(renotes)
     }
 
     @Test
@@ -402,7 +390,6 @@ class NotesTestE2E {
         val searchByTag = notes.searchByTag(NotesSearchByTagRequest(tag)).failOnError()
         org.assertj.core.api.Assertions.assertThat(searchByTag)?.isNotEmpty
         assertTrue(searchByTag.contains(tagedNote.createdNote))
-        println(searchByTag)
     }
 
     @Test
@@ -443,7 +430,6 @@ class NotesTestE2E {
     @Test
     fun timeline() = runTest {
         val timeline = notes.timeline(NotesTimelineRequest()).failOnError()
-        println(timeline)
     }
 
     @RepeatedIfExceptionsTest(repeats = 4)
@@ -470,10 +456,7 @@ class NotesTestE2E {
     @Disabled("リスト操作系のAPIが未実装なため無効化")
     // TODO: リスト操作系のAPI追加後、リストを取得してテストするように
     fun userListTimeline() = runTest {
-
         val userListTimeline = notes.userListTimeline(NotesUserListTimelineRequest("9ady10e6z5"))
-        println(userListTimeline)
-
     }
 
     @Test

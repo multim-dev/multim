@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
+import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM.json
 import dev.usbharu.multim.api.ApiClient
 import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
@@ -27,9 +28,9 @@ class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpC
         }
         install(createClientPlugin("MisskeyAuthPlugin") {
             onRequest { request, content ->
-                println("request type is :${content::class}")
+                Logger.trace("Misskey Auth Plugin","request type is :${content::class}")
                 if (content is MisskeyNeedAuth) {
-                    println("injection token")
+                    Logger.trace("Misskey Auth Plugin","Injection token")
                     content.i = auth.token
                 }
                 request.headers.append(
@@ -54,7 +55,7 @@ class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpC
                 client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming?i=${auth.token}") {
                     awaitAll(
                         coroutineScope.async {
-                            commands.onEach { println("Sending :$it");outgoing.send(Frame.Text(it)) }
+                            commands.onEach { Logger.debug("Api Client Streaming","Sending :$it");outgoing.send(Frame.Text(it)) }
                                 .launchIn(coroutineScope)
                         },
                         coroutineScope.async {
@@ -68,7 +69,7 @@ class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpC
                         }
                     )
                 }
-                println("connected")
+                Logger.debug("Api Client Streaming","Connected")
 
             }
 //            launch.join()
