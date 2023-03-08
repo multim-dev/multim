@@ -2,11 +2,11 @@ package dev.usbharu.multim.misskey.v12.common.api
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.map
 import dev.usbharu.multim.api.AccountApi
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.error.TODO
 import dev.usbharu.multim.misskey.v12.api.MisskeyApis
 import dev.usbharu.multim.misskey.v12.common.*
@@ -24,7 +24,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         account: Account,
         since: StatusId?,
         until: StatusId?
-    ): Result<List<Status>, MultiMError> {
+    ): MultiMResult<List<Status>> {
         if (account is MisskeyAccount && since is MisskeyStatusId? && until is MisskeyStatusId?) {
             return misskeyApis.users.notes(
                 UsersNotesRequest(
@@ -43,7 +43,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         }
     }
 
-    override suspend fun follow(account: Account): Result<Unit, MultiMError> {
+    override suspend fun follow(account: Account): MultiMResult<Unit> {
         return if (account is MisskeyAccount) {
             misskeyApis.following.create(FollowingCreateRequest(account.id)).map { }
         } else {
@@ -51,7 +51,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         }
     }
 
-    override suspend fun unfollow(account: Account): Result<Unit, MultiMError> {
+    override suspend fun unfollow(account: Account): MultiMResult<Unit> {
         return if (account is MisskeyAccount) {
             misskeyApis.following.delete(FollowingDeleteRequest(account.id)).map { }
         } else {
@@ -60,7 +60,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         }
     }
 
-    override suspend fun profile(account: Account): Result<Profile, MultiMError> {
+    override suspend fun profile(account: Account): MultiMResult<Profile> {
         if (account is MisskeyAccount) {
             val show = misskeyApis.users.show(UsersShowRequest(account.id))
             return show.map {
@@ -96,7 +96,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         includeRepost: Boolean,
         since: StatusId?,
         until: StatusId?
-    ): Result<List<Status>, MultiMError> {
+    ): MultiMResult<List<Status>> {
         return if (account is MisskeyAccount) {
             misskeyApis.users.notes(
                 UsersNotesRequest(
@@ -112,7 +112,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
     override suspend fun relationships(
         myself: Account,
         other: Account
-    ): Result<Relation, MultiMError> {
+    ): MultiMResult<Relation> {
         if (myself is MisskeyAccount && other is MisskeyAccount) {
             return misskeyApis.users.relation(UsersRelationRequest(other.id))
                 .map { it.toRelation(myself, other) }
@@ -120,7 +120,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         return TODO()
     }
 
-    override suspend fun requestCancel(account: Account): Result<Unit, MultiMError> {
+    override suspend fun requestCancel(account: Account): MultiMResult<Unit> {
         if (account is MisskeyAccount) {
             misskeyApis.following.Requests().cancel(FollowingRequestsCancelRequest(account.id))
             return Ok(Unit)
@@ -128,7 +128,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         return TODO()
     }
 
-    override suspend fun requestAccept(account: Account): Result<Unit, MultiMError> {
+    override suspend fun requestAccept(account: Account): MultiMResult<Unit> {
         return if (account is MisskeyAccount) {
             misskeyApis.following.Requests().accept(FollowingRequestsAcceptRequest(account.id))
             Ok(Unit)
@@ -137,7 +137,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
         }
     }
 
-    override suspend fun requestReject(account: Account): Result<Unit, MultiMError> {
+    override suspend fun requestReject(account: Account): MultiMResult<Unit> {
         return if (account is MisskeyAccount) {
             misskeyApis.following.Requests().reject(FollowingRequestsRejectRequest(account.id))
             Ok(Unit)

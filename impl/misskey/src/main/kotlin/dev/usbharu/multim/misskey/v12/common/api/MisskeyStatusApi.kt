@@ -1,6 +1,9 @@
 package dev.usbharu.multim.misskey.v12.common.api
 
-import com.github.michaelbull.result.*
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.map
 import dev.usbharu.multim.api.StatusApi
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
@@ -22,14 +25,14 @@ import dev.usbharu.multim.model.*
  * @constructor Create empty Misskey status api
  */
 class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
-    override suspend fun post(status: StatusForPost): Result<Status, MultiMError> {
+    override suspend fun post(status: StatusForPost): MultiMResult<Status> {
 
         return misskeyApis.notes.create(NotesCreateRequest(text = status.content.text))
             .map { it.createdNote.toStatus() }
 
     }
 
-    override suspend fun delete(id: StatusId): Result<Unit, MultiMError> {
+    override suspend fun delete(id: StatusId): MultiMResult<Unit> {
         if (id is MisskeyStatusId) {
             misskeyApis.notes.delete(NotesDeleteRequest(id.id))
             return Ok(Unit)
@@ -37,13 +40,13 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         return TODO()
     }
 
-    override suspend fun findById(id: StatusId): Result<Status, MultiMError> {
+    override suspend fun findById(id: StatusId): MultiMResult<Status> {
         return id.fetchId()
             .flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }
             .map { it.toStatus() }
     }
 
-    override suspend fun addReaction(id: StatusId, reaction: Reaction): Result<Unit, MultiMError> {
+    override suspend fun addReaction(id: StatusId, reaction: Reaction): MultiMResult<Unit> {
         if (reaction is MisskeyReaction && id is MisskeyStatusId) {
             misskeyApis.notes.Reaction().create(
                 NotesReactionCreateRequest(
@@ -65,7 +68,7 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
     override suspend fun removeReaction(
         id: StatusId,
         reaction: Reaction?
-    ): Result<Unit, MultiMError> {
+    ): MultiMResult<Unit> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.Reaction().delete(NotesReactionDeleteRequest(id.id))
             Ok(Unit)
@@ -75,18 +78,18 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         }
     }
 
-    override suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>, MultiMError> {
+    override suspend fun reactions(id: StatusId): MultiMResult<Map<Reaction, Int>> {
         return id.fetchId().flatMap { misskeyApis.notes.show(NotesShowRequest(it.id)) }
             .map { it.reactions.toReactions(it) }
     }
 
-    override suspend fun repost(id: StatusId): Result<Status, MultiMError> {
+    override suspend fun repost(id: StatusId): MultiMResult<Status> {
         return id.fetchId()
             .flatMap { misskeyApis.notes.create(NotesCreateRequest(renoteId = it.id)) }
             .map { it.createdNote.toStatus() }
     }
 
-    override suspend fun unRepost(id: StatusId): Result<Unit, MultiMError> {
+    override suspend fun unRepost(id: StatusId): MultiMResult<Unit> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.unrenote(NotesUnrenoteRequest(id.id))
             Ok(Unit)
@@ -96,7 +99,7 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         }
     }
 
-    override suspend fun replyTo(id: StatusId, status: StatusForPost): Result<Status, MultiMError> {
+    override suspend fun replyTo(id: StatusId, status: StatusForPost): MultiMResult<Status> {
         return id.fetchId().flatMap {
             misskeyApis.notes.create(
                 NotesCreateRequest(
@@ -107,12 +110,12 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         }.map { it.createdNote.toStatus() }
     }
 
-    override suspend fun addToBookmarks(id: StatusId): Result<Unit, MultiMError> {
+    override suspend fun addToBookmarks(id: StatusId): MultiMResult<Unit> {
         return id.fetchId()
             .flatMap { misskeyApis.notes.Favorites().create(NotesFavoritesCreateRequest(it.id)) }
     }
 
-    override suspend fun removeFromBookmarks(id: StatusId): Result<Unit, MultiMError> {
+    override suspend fun removeFromBookmarks(id: StatusId): MultiMResult<Unit> {
         return if (id is MisskeyStatusId) {
             misskeyApis.notes.Favorites().delete(NotesFavoritesDeleteRequest(id.id))
             Ok(Unit)
@@ -122,11 +125,11 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
         }
     }
 
-    override suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts, MultiMError> {
+    override suspend fun getPreviousAndNext(id: StatusId): MultiMResult<PreviousAndNextPosts> {
         return TODO() //よくわからんのでとりあえず未実装 多分user-timelineからリノートを取り除いたらできる
     }
 
-    override suspend fun replies(id: StatusId): Result<List<Status>, MultiMError> {
+    override suspend fun replies(id: StatusId): MultiMResult<List<Status>> {
         return id.fetchId().flatMap { misskeyApis.notes.children(NotesChildrenRequest(it.id)) }
             .map { it.map { note -> note.toStatus() } }
     }
