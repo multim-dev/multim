@@ -5,30 +5,26 @@ package dev.usbharu.multim.misskey.v12.api
 import MisskeyTestUtil.createFakeNoteToString
 import MisskeyTestUtil.createMockHttpClient
 import MisskeyTestUtil.json
-import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.TestUtil.failOnError
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.ApShowRequest
 import dev.usbharu.multim.misskey.v12.model.ApShowResponse
-import dev.usbharu.multim.misskey.v12.model.NotesNotesRequest
+import dev.usbharu.multim.misskey.v12.model.components.Note
+import dev.usbharu.multim.misskey.v12.model.components.UserDetailedNotMe
+import dev.usbharu.multim.misskey.v12.model.components.UserLite
 import dev.usbharu.multim.model.SingleTokenAuth
-import io.github.artsok.RepeatedIfExceptionsTest
+import io.ktor.client.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ApTest {
-
-    val misskeyApiClient = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")),
-        System.getProperty("multim_misskey_instance"),
-        MultiM.httpClientWithJson.config {}
-    )
+    val baseUrl = "https://localhost/"
 
     @Test
     fun show_showUserMockRequest_respondTypeUser() = runTest {
@@ -55,6 +51,71 @@ class ApTest {
 
 
     @Test
+    fun show_userUrl_returnUser() = runTest {
+        val userDetailedNotMe = UserDetailedNotMe(
+            id = "Xqxv",
+            name = "fakeUser",
+            username = "fakeUserName",
+            host = "example.com",
+            avatarUrl = "https://example.com",
+            avatarBlurhash = "jvwxIWI",
+            avatarColor = null,
+            isAdmin = false,
+            isModerator = false,
+            isBot = false,
+            isCat = false,
+            emojis = emptyList(),
+            onlineStatus = "unknown",
+            url = "https://example.com",
+            uri = "https://example.com",
+            createdAt = Instant.parse("2023-03-07T20:33:58.868Z"),
+            updatedAt = Instant.parse("2023-03-07T20:33:58.868Z"),
+            lastFetchedAt = Instant.parse("2023-03-07T20:33:58.868Z"),
+            bannerUrl = null,
+            bannerBlurhash = null,
+            bannerColor = null,
+            isLocked = false,
+            isSilenced = false,
+            isSuspended = false,
+            description = "fake user deskription",
+            location = null,
+            birthday = null,
+            lang = null,
+            fields = emptyList(),
+            followersCount = 1,
+            followingCount = 1,
+            notesCount = 10,
+            pinnedNoteIds = emptyList(),
+            pinnedNotes = emptyList(),
+            pinnedPageId = null,
+            pinnedPage = null,
+            publicReactions = false,
+            twoFactorEnabled = false,
+            usePasswordLessLogin = false,
+            securityKeys = false,
+            isFollowing = true,
+            isFollowed = true,
+            hasPendingFollowRequestFromYou = false,
+            hasPendingFollowRequestToYou = false,
+            isBlocking = false,
+            isBlocked = false,
+            isMuted = false
+        )
+        val typeUser = ApShowResponse.TypeUser(userDetailedNotMe)
+
+        val apShowResponse = Ap(
+            apiClient(
+                createMockHttpClient(
+                    typeUser,
+                    false,
+                    baseUrl + "api/ap/show", ApShowResponse.serializer()
+                )
+            )
+        ).show(ApShowRequest("https://example.com")).failOnError()
+        assertEquals(typeUser, apShowResponse)
+    }
+
+    @Test
     fun show_showNoteRequestMock_respondTypeNote() = runTest {
         val typeNote = """
             {
@@ -70,44 +131,66 @@ class ApTest {
             Ap(misskeyApiClient).show(ApShowRequest("https://localhost/test/C56WI")).failOnError()
         assertEquals(json.decodeFromString<ApShowResponse.TypeNote>(typeNote), show)
     }
-}
 
-class ApTestE2E {
-
-    val misskeyApiClient = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")),
-        System.getProperty("multim_misskey_instance"),
-        MultiM.httpClientWithJson.config {}
-    )
-
-    @RepeatedIfExceptionsTest(repeats = 4)
-//    @Test
-    fun show_showUserRequest_respondTypeUser() = runBlocking {
-        val show =
-            Ap(misskeyApiClient).show(
-                ApShowRequest(
-                    System.getProperty("multim_misskey_instance") + "@" + I(
-                        misskeyApiClient
-                    ).i().failOnError().username
+    @Test
+    fun show_noteUrl_returnNote() = runTest {
+        val note = Note(
+            id = "rKiw2x4",
+            createdAt = Instant.parse("2023-03-07T20:33:58.868Z"),
+            text = "fake note",
+            cw = null,
+            userId = "A7pFuM",
+            user = UserLite(
+                id = "A7pFuM",
+                name = "fakeUser",
+                username = "fakeUsername",
+                host = "example.com",
+                avatarUrl = "https://exapmple.com",
+                avatarBlurhash = "CpIBR1B",
+                avatarColor = null,
+                isAdmin = false,
+                isModerator = false,
+                isBot = false,
+                isCat = false,
+                emojis = emptyList(),
+                onlineStatus = "online"
+            ),
+            replyId = null,
+            renoteId = null,
+            reply = null,
+            renote = null,
+            isHidden = false,
+            visibility = "public",
+            mentions = emptyList(),
+            visibleUserIds = emptyList(),
+            fileIds = emptyList(),
+            files = emptyList(),
+            tags = emptyList(),
+            poll = null,
+            channelId = null,
+            channel = null,
+            localOnly = false,
+            emojis = emptyList(),
+            reactions = emptyMap(),
+            renoteCount = 0, repliesCount = 0, uri = "https://example.com/asjfl"
+        )
+        val typeNote = ApShowResponse.TypeNote(note)
+        val apShowResponse =
+            Ap(
+                apiClient(
+                    createMockHttpClient(
+                        typeNote,
+                        true,
+                        baseUrl + "api/ap/show",
+                        ApShowResponse.serializer()
+                    )
                 )
-            )
-                .failOnError()
-        delay(1000)
-        assertInstanceOf(ApShowResponse.TypeUser::class.java, show)
+            ).show(ApShowRequest("https://example.com/test/afasfa")).failOnError()
+
+        assertEquals(typeNote, apShowResponse)
     }
 
-    @RepeatedIfExceptionsTest(repeats = 4)
-//    @Test
-    fun show_showNoteRequest_respondTypeNote() = runBlocking {
-        val show =
-            Ap(misskeyApiClient).show(
-                ApShowRequest(
-                    Notes(misskeyApiClient).notes(NotesNotesRequest()).failOnError().first().uri
-                        ?: fail()
-                )
-            )
-                .failOnError()
-        delay(1000)
-        assertInstanceOf(ApShowResponse.TypeNote::class.java, show)
+    private fun apiClient(httpClient: HttpClient): MisskeyApiClient {
+        return MisskeyApiClient(SingleTokenAuth("cdgj2h71"), baseUrl, httpClient)
     }
 }

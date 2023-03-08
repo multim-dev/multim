@@ -10,7 +10,9 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.datetime.Clock
+import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -20,6 +22,37 @@ import org.junit.jupiter.api.Assertions
 object MisskeyTestUtil {
 
     val json = Json { ignoreUnknownKeys = true;isLenient = true }
+
+    inline fun <reified T> createMockHttpClient(
+        content: T,
+        checkAuth: Boolean,
+        url: String? = null,
+        serializer:SerializationStrategy<T>,
+        statusCode: HttpStatusCode = HttpStatusCode.OK,
+    ): HttpClient {
+        return HttpClient(MockEngine {
+            if (checkAuth || "i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
+                //ok
+            } else {
+                Fail.fail("No auth.")
+            }
+            if (url == null || it.url.toStr() == url) {
+                //ok
+            }else {
+                Fail.fail("Illegal URL expected: $url actual: ${it.url.toStr()}")
+            }
+
+            respond(
+                content = json.encodeToString(serializer,content),
+                status = statusCode,
+                headers = headersOf(HttpHeaders.ContentType, "application/json")
+            )
+        }) {
+            install(ContentNegotiation) {
+                json(json)
+            }
+        }
+    }
 
     fun createMockHttpClient(
         content: String = "",
