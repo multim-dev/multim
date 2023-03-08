@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.*
@@ -215,7 +216,9 @@ class NotesTestE2E {
 
     @Test
     fun show() = runTest {
-        val show = notes.show(NotesShowRequest("9bk3hn1qd0")).failOnError()
+        val show =
+            notes.show(NotesShowRequest(notes.notes(NotesNotesRequest()).failOnError().first().id))
+                .failOnError()
         println(show)
     }
 
@@ -286,19 +289,27 @@ class NotesTestE2E {
 
     @Test
     fun children() = runTest {
-        val children = notes.children(NotesChildrenRequest("9ad7btwst8")).failOnError()
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、子ノート取得のテストで使用されます。${this@NotesTestE2E::class} children"))
+        val id = create.failOnError().createdNote.id
+        val children = notes.children(NotesChildrenRequest(id)).failOnError()
         println(children)
     }
 
     @Test
     fun conversation() = runTest {
-        val conversation = notes.conversation(NotesConversationRequest("9bk3hn1qd0")).failOnError()
+        val create =
+            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、関連ノート取得のテストで使用されます。 ${this@NotesTestE2E::class} conversation"))
+                .failOnError()
+        val conversation =
+            notes.conversation(NotesConversationRequest(create.createdNote.id)).failOnError()
         println(conversation)
     }
 
     @Test
     fun state() = runTest {
-        val state = notes.state(NotesStateRequest("9bk3hn1qd0")).failOnError()
+        val create = notes.create(NotesCreateRequest(text="このノートはMultiMのテストで作成され、ノートの状態を取得するテストで使用されます。 ${this@NotesTestE2E::class} state")).failOnError()
+        val state = notes.state(NotesStateRequest(create.createdNote.id)).failOnError()
         println(state)
     }
 
@@ -334,13 +345,14 @@ class NotesTestE2E {
 
     @Test
     fun mentions() = runTest {
-        val mentions = notes.mentions(NotesMentionsRequest())
+        val mentions = notes.mentions(NotesMentionsRequest()).failOnError()
         println(mentions)
     }
 
     @Test
     fun reactions() = runTest {
-        val reactions = notes.reactions(NotesReactionsRequest("9ack8wxw3c"))
+        val create = notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions")).failOnError()
+        val reactions = notes.reactions(NotesReactionsRequest(create.createdNote.id))
         println(reactions)
     }
 
@@ -430,7 +442,7 @@ class NotesTestE2E {
 
     @Test
     fun timeline() = runTest {
-        val timeline = notes.timeline(NotesTimelineRequest())
+        val timeline = notes.timeline(NotesTimelineRequest()).failOnError()
         println(timeline)
     }
 
@@ -455,14 +467,20 @@ class NotesTestE2E {
     }
 
     @Test
+    @Disabled("リスト操作系のAPIが未実装なため無効化")
+    // TODO: リスト操作系のAPI追加後、リストを取得してテストするように
     fun userListTimeline() = runTest {
+
         val userListTimeline = notes.userListTimeline(NotesUserListTimelineRequest("9ady10e6z5"))
         println(userListTimeline)
 
     }
 
     @Test
+    @Disabled("自分以外ということが確定しているノートを取得できない為無効化")
+    // TODO: 自分以外のノートを取得できるようになってからテストを追加
     fun watchingCreate() = runTest {
+
         val noteId = "9bk3hn1qd0"
         val state = notes.state(NotesStateRequest(noteId)).failOnError()
         if (state.isWatching) {
@@ -473,6 +491,7 @@ class NotesTestE2E {
     }
 
     @Test
+    @Disabled("自分以外ということが確定しているノートを取得できない為無効化")
     fun watchingDelete() = runTest {
         val noteId = "9bk3hn1qd0"
         val state = notes.state(NotesStateRequest(noteId)).failOnError()

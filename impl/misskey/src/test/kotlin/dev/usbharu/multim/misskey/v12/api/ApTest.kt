@@ -10,6 +10,7 @@ import dev.usbharu.multim.TestUtil.failOnError
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.ApShowRequest
 import dev.usbharu.multim.misskey.v12.model.ApShowResponse
+import dev.usbharu.multim.misskey.v12.model.NotesNotesRequest
 import dev.usbharu.multim.model.SingleTokenAuth
 import io.github.artsok.RepeatedIfExceptionsTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,8 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.decodeFromString
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 
@@ -84,7 +84,13 @@ class ApTestE2E {
 //    @Test
     fun show_showUserRequest_respondTypeUser() = runBlocking {
         val show =
-            Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin"))
+            Ap(misskeyApiClient).show(
+                ApShowRequest(
+                    System.getProperty("multim_misskey_instance") + "@" + I(
+                        misskeyApiClient
+                    ).i().failOnError().username
+                )
+            )
                 .failOnError()
         delay(1000)
         assertInstanceOf(ApShowResponse.TypeUser::class.java, show)
@@ -94,7 +100,12 @@ class ApTestE2E {
 //    @Test
     fun show_showNoteRequest_respondTypeNote() = runBlocking {
         val show =
-            Ap(misskeyApiClient).show(ApShowRequest("https://mstdn-dev.usbharu.dev/@testAdmin/109739544444885718"))
+            Ap(misskeyApiClient).show(
+                ApShowRequest(
+                    Notes(misskeyApiClient).notes(NotesNotesRequest()).failOnError().first().uri
+                        ?: fail()
+                )
+            )
                 .failOnError()
         delay(1000)
         assertInstanceOf(ApShowResponse.TypeNote::class.java, show)
