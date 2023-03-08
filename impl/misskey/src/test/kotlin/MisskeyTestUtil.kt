@@ -2,8 +2,10 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.getError
+import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import dev.usbharu.multim.misskey.v12.model.components.UserLite
+import dev.usbharu.multim.model.SingleTokenAuth
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -23,6 +25,12 @@ object MisskeyTestUtil {
 
     val json = Json { ignoreUnknownKeys = true;isLenient = true }
 
+    val baseUrl = "https://localhsot/"
+
+    internal fun apiClient(httpClient: HttpClient): MisskeyApiClient {
+        return MisskeyApiClient(SingleTokenAuth("cdgj2h71"), baseUrl, httpClient)
+    }
+
     inline fun <reified T> createMockHttpClient(
         content: T,
         checkAuth: Boolean,
@@ -31,7 +39,7 @@ object MisskeyTestUtil {
         statusCode: HttpStatusCode = HttpStatusCode.OK,
     ): HttpClient {
         return HttpClient(MockEngine {
-            if (checkAuth || "i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
+            if (!checkAuth || "i" in json.parseToJsonElement(it.body.toByteArray().decodeToString()).jsonObject) {
                 //ok
             } else {
                 Fail.fail("No auth.")
