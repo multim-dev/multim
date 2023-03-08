@@ -1,11 +1,10 @@
 package dev.usbharu.multim
 
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dev.usbharu.multim.api.NodeinfoApi
-import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.PlatformApiFactory
 import dev.usbharu.multim.model.Auth
@@ -36,7 +35,7 @@ object MultiM {
         token: String,
         factory: PlatformApiFactory,
         httpClient: HttpClient = httpClientWithJson
-    ): Result<MultiMApis, MultiMError> {
+    ): MultiMResult<MultiMApis> {
         dev.usbharu.multim.Logger.info("Create Client", "START Create client with url:$url.")
         dev.usbharu.multim.Logger.debug(
             "Create Client",
@@ -63,7 +62,7 @@ object MultiM {
         auth: Auth,
         factory: PlatformApiFactory,
         httpClient: HttpClient = httpClientWithJson
-    ): Result<MultiMApis, MultiMError> {
+    ): MultiMResult<MultiMApis> {
         dev.usbharu.multim.Logger.info("Create Client", "START Create cient with url:$url.")
         dev.usbharu.multim.Logger.debug(
             "Create Client",

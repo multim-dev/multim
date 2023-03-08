@@ -1,13 +1,21 @@
 package dev.usbharu.multim.multi
 
-import com.github.michaelbull.result.*
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
+import com.github.michaelbull.result.toResultOr
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM
 import dev.usbharu.multim.ServiceInfo
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.factory.MultiMApis
 import dev.usbharu.multim.factory.ServiceInfoFactory
+import kotlin.collections.List
+import kotlin.collections.get
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 
 class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
 
@@ -18,7 +26,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
     val apiClientMap = mutableMapOf<Int, MultiMApis>()
 
     var mainClientHashCode: Int? = null
-    suspend fun addAccount(url: String, token: String): Result<Int, MultiMError> {
+    suspend fun addAccount(url: String, token: String): MultiMResult<Int> {
         Logger.info("Multi Account", "START Add account url:$url token:${"*".repeat(token.length)}")
 
         val hashCode = (url + token).hashCode()
@@ -52,7 +60,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
         return result
     }
 
-    suspend fun addMainAccount(url: String, token: String): Result<Int, MultiMError> {
+    suspend fun addMainAccount(url: String, token: String): MultiMResult<Int> {
         Logger.info(
             "Multi Account",
             "Add account url:$url token:${"*".repeat(token.length)} as main account."
@@ -60,7 +68,7 @@ class MultiAccountApiBase(val serviceList: List<ServiceInfo>) {
         return addAccount(url, token).map { mainClientHashCode = it;it }
     }
 
-    fun getImpl(hashCode: Int? = mainClientHashCode): Result<MultiMApis, MultiMError> {
+    fun getImpl(hashCode: Int? = mainClientHashCode): MultiMResult<MultiMApis> {
         Logger.debug("Multi Account", "Get api client impl $hashCode")
         if (hashCode == null) {
             Logger.warn("Multi Account", "HashCode is null! Use main account.")

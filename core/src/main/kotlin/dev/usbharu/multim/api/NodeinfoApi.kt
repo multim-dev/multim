@@ -2,7 +2,6 @@ package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.MultiM.json
@@ -27,7 +26,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
         }
     }
 
-    suspend fun wellKnownNodeinfo(url: String): Result<NodeinfoList, MultiMError> {
+    suspend fun wellKnownNodeinfo(url: String): MultiMResult<NodeinfoList> {
         Logger.info("Nodeinfo Api", "START Get $url.well-known/nodeinfo")
         val get = try {
             httpClient.get("$url.well-known/nodeinfo")
@@ -63,7 +62,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
         }
     }
 
-    fun nodeinfoLink(nodeinfoList: NodeinfoList): Result<NodeinfoList.NodeinfoLink, MultiMError> {
+    fun nodeinfoLink(nodeinfoList: NodeinfoList): MultiMResult<NodeinfoList.NodeinfoLink> {
         Logger.info("Nodeinfo Api", "START Get nodeinfo link")
         return runCatching<NodeinfoList.NodeinfoLink> {
             nodeinfoList.links.minByOrNull { it.rel.substringAfterLast("/", "0").toFloat() }!!
@@ -78,7 +77,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
 
 
     // todo 強制で2.0のが返ってくるのでバージョンを識別する
-    suspend fun nodeinfo(nodeinfoLink: NodeinfoList.NodeinfoLink): Result<NodeInfo, MultiMError> {
+    suspend fun nodeinfo(nodeinfoLink: NodeinfoList.NodeinfoLink): MultiMResult<NodeInfo> {
 
         val get = try {
             httpClient.get(nodeinfoLink.href)
@@ -96,7 +95,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
         }
     }
 
-    suspend fun nodeinfo(url: String): Result<NodeInfo, MultiMError> {
+    suspend fun nodeinfo(url: String): MultiMResult<NodeInfo> {
         return wellKnownNodeinfo(url)
             .flatMap { nodeinfoLink(it) }
             .flatMap { nodeinfo(it) }

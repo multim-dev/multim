@@ -1,8 +1,7 @@
 package dev.usbharu.multim.cache
 
-import com.github.michaelbull.result.Result
 import dev.usbharu.multim.api.AccountApi
-import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.*
 
 class CacheableAccountApi(
@@ -15,7 +14,7 @@ class CacheableAccountApi(
         account: Account,
         since: StatusId?,
         until: StatusId?
-    ): Result<List<Status>, MultiMError> {
+    ): MultiMResult<List<Status>> {
         return cacheableApi.cacheOrGet(
             CacheableApi.generateKey(
                 account,
@@ -25,7 +24,7 @@ class CacheableAccountApi(
         ) { accountApi.userTimeline(account, since, until) }
     }
 
-    override suspend fun profile(account: Account): Result<Profile, MultiMError> {
+    override suspend fun profile(account: Account): MultiMResult<Profile> {
         return cacheableApi.cacheOrGet(PROFILE, account) { accountApi.profile(account) }
     }
 
@@ -34,7 +33,7 @@ class CacheableAccountApi(
         includeRepost: Boolean,
         since: StatusId?,
         until: StatusId?
-    ): Result<List<Status>, MultiMError> {
+    ): MultiMResult<List<Status>> {
         return cacheableApi.cacheOrGet(
             STATUSES,
             CacheableApi.generateKey(account) + includeRepost
@@ -50,7 +49,7 @@ class CacheableAccountApi(
     override suspend fun relationships(
         myself: Account,
         other: Account
-    ): Result<Relation, MultiMError> {
+    ): MultiMResult<Relation> {
         return cacheableApi.cacheOrGet(RELATIONSHIPS, myself, other) {
             accountApi.relationships(
                 myself,

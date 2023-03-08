@@ -1,11 +1,9 @@
 package dev.usbharu.multim.multi
 
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.api.EmojiApi
-import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Emoji
 
@@ -32,8 +30,8 @@ class MultiAccountEmojiApi(val multiAccountApiBase: MultiAccountApiBase) : Emoji
 
     private suspend fun <T, R> getImpl(
         apiData: MultiAccountData<T>,
-        callback: suspend EmojiApi.(T) -> Result<R, MultiMError>
-    ): Result<MultiAccountData<R>, MultiMError> {
+        callback: suspend EmojiApi.(T) -> MultiMResult<R>
+    ): MultiMResult<MultiAccountData<R>> {
         return emojiApi(apiData)
             .flatMap { callback(it, apiData.innerData) }
             .map { MultiAccountDataImpl(it, apiData.hashCode) }
@@ -42,7 +40,7 @@ class MultiAccountEmojiApi(val multiAccountApiBase: MultiAccountApiBase) : Emoji
     private suspend fun <T, R> getImpl2(
         apiData: T,
         callback: suspend EmojiApi.(T) -> R
-    ): Result<Pair<R, Int>, MultiMError> {
+    ): MultiMResult<Pair<R, Int>> {
         return emojiApi(apiData)
             .map { callback(it, apiData) }
             .map {
@@ -51,7 +49,7 @@ class MultiAccountEmojiApi(val multiAccountApiBase: MultiAccountApiBase) : Emoji
             }
     }
 
-    private fun <T> emojiApi(id: T): Result<EmojiApi, MultiMError> {
+    private fun <T> emojiApi(id: T): MultiMResult<EmojiApi> {
         return multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode)
             .map { it.emojiApi }
     }

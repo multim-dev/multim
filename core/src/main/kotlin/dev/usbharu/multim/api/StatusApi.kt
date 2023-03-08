@@ -1,7 +1,6 @@
 package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Result
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.UniqueId
 import dev.usbharu.multim.error.ErrorType
@@ -15,7 +14,7 @@ interface StatusApi {
     val POST: String
         get() = "status/post"
 
-    suspend fun post(status: StatusForPost): Result<Status, MultiMError> {
+    suspend fun post(status: StatusForPost): MultiMResult<Status> {
         Logger.debug("Status Api", "Not impl status api post")
         return Err(MultiMError("post not implements", null, ErrorType.NOT_IMPL))
     }
@@ -23,7 +22,7 @@ interface StatusApi {
     val DELETE: String
         get() = "status/delete"
 
-    suspend fun delete(id: StatusId): Result<Unit, MultiMError> {
+    suspend fun delete(id: StatusId): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api delete")
         return Err(MultiMError("delete not implements", null, ErrorType.NOT_IMPL))
     }
@@ -31,7 +30,7 @@ interface StatusApi {
     val FIND_BY_ID: String
         get() = "status/findById"
 
-    suspend fun findById(id: StatusId): Result<Status, MultiMError> {
+    suspend fun findById(id: StatusId): MultiMResult<Status> {
         Logger.debug("Status Api", "Not impl status api findById")
         return Err(MultiMError("findById not implements", null, ErrorType.NOT_IMPL))
     }
@@ -39,7 +38,7 @@ interface StatusApi {
     val ADD_REACTION: String
         get() = "status/addReaction"
 
-    suspend fun addReaction(id: StatusId, reaction: Reaction): Result<Unit, MultiMError> {
+    suspend fun addReaction(id: StatusId, reaction: Reaction): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api addReaction")
         return Err(MultiMError("addReaction not implements", null, ErrorType.NOT_IMPL))
     }
@@ -54,7 +53,7 @@ interface StatusApi {
      * @param reaction 実装によって挙動が変わります。nullでも
      * @return
      */
-    suspend fun removeReaction(id: StatusId, reaction: Reaction?): Result<Unit, MultiMError> {
+    suspend fun removeReaction(id: StatusId, reaction: Reaction?): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api removeReaction")
         return Err(MultiMError("removeReaction not implements", null, ErrorType.NOT_IMPL))
     }
@@ -62,7 +61,7 @@ interface StatusApi {
     val REACTIONS: String
         get() = "status/reactions"
 
-    suspend fun reactions(id: StatusId): Result<Map<Reaction, Int>, MultiMError> {
+    suspend fun reactions(id: StatusId): MultiMResult<Map<Reaction, Int>> {
         Logger.debug("Status Api", "Not impl status api reactions")
         return Err(MultiMError("reactions not implements", null, ErrorType.NOT_IMPL))
     }
@@ -70,7 +69,7 @@ interface StatusApi {
     val REPLIES: String
         get() = "status/replies"
 
-    suspend fun replies(id: StatusId): Result<List<Status>, MultiMError> {
+    suspend fun replies(id: StatusId): MultiMResult<List<Status>> {
         Logger.debug("Status Api", "Not impl status api replies")
         return Err(MultiMError("replies not implements", null, ErrorType.NOT_IMPL))
     }
@@ -78,7 +77,7 @@ interface StatusApi {
     val REPOST: String
         get() = "status/repost"
 
-    suspend fun repost(id: StatusId): Result<Status, MultiMError> {
+    suspend fun repost(id: StatusId): MultiMResult<Status> {
         Logger.debug("Status Api", "Not impl status api repost")
         return Err(MultiMError("repost not implements", null, ErrorType.NOT_IMPL))
     }
@@ -86,7 +85,7 @@ interface StatusApi {
     val UN_REPOST: String
         get() = "status/unRepost"
 
-    suspend fun unRepost(id: StatusId): Result<Unit, MultiMError> {
+    suspend fun unRepost(id: StatusId): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api unRepost")
         return Err(MultiMError("unRepost not implements", null, ErrorType.NOT_IMPL))
     }
@@ -94,7 +93,7 @@ interface StatusApi {
     val REPLY_TO: String
         get() = "status/replyTo"
 
-    suspend fun replyTo(id: StatusId, status: StatusForPost): Result<Status, MultiMError> {
+    suspend fun replyTo(id: StatusId, status: StatusForPost): MultiMResult<Status> {
         Logger.debug("Status Api", "Not impl status api replyTo")
         return Err(MultiMError("replyTo not implements", null, ErrorType.NOT_IMPL))
     }
@@ -102,7 +101,7 @@ interface StatusApi {
     val ADD_TO_BOOKMARKS: String
         get() = "status/addBookMarks"
 
-    suspend fun addToBookmarks(id: StatusId): Result<Unit, MultiMError> {
+    suspend fun addToBookmarks(id: StatusId): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api addToBookmarks")
         return Err(MultiMError("addToBookmarks not implements", null, ErrorType.NOT_IMPL))
     }
@@ -110,7 +109,7 @@ interface StatusApi {
     val REMOVE_FROM_BOOKMARKS: String
         get() = "status/removeFromBookmarks"
 
-    suspend fun removeFromBookmarks(id: StatusId): Result<Unit, MultiMError> {
+    suspend fun removeFromBookmarks(id: StatusId): MultiMResult<Unit> {
         Logger.debug("Status Api", "Not impl status api removeFromBookmarks")
         return Err(MultiMError("removeFromBookmarks not implements", null, ErrorType.NOT_IMPL))
     }
@@ -118,7 +117,7 @@ interface StatusApi {
     val GET_PREVIOUS_AND_NEXT: String
         get() = "status/getPreviousAndNext"
 
-    suspend fun getPreviousAndNext(id: StatusId): Result<PreviousAndNextPosts, MultiMError> {
+    suspend fun getPreviousAndNext(id: StatusId): MultiMResult<PreviousAndNextPosts> {
         Logger.debug("Status Api", "Not impl status api getPreviousAndNext")
         return Err(MultiMError("getPreviousAndNext not implements", null, ErrorType.NOT_IMPL))
     }
