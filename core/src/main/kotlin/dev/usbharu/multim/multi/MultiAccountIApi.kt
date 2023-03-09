@@ -1,11 +1,9 @@
 package dev.usbharu.multim.multi
 
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.api.IApi
-import dev.usbharu.multim.error.MultiMError
 import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Profile
 import dev.usbharu.multim.model.Status
@@ -41,8 +39,8 @@ class MultiAccountIApi(val multiAccountApiBase: MultiAccountApiBase) : IApi {
 
     private suspend fun <T, R> getImpl(
         apiData: MultiAccountData<T>,
-        callback: suspend IApi.(T) -> Result<R, MultiMError>
-    ): Result<MultiAccountDataImpl<R>, MultiMError> {
+        callback: suspend IApi.(T) -> MultiMResult<R>
+    ): MultiMResult<MultiAccountDataImpl<R>> {
         return iApi(apiData)
             .flatMap { callback(it, apiData.innerData) }
             .map { MultiAccountDataImpl(it, apiData.hashCode) }
@@ -52,7 +50,7 @@ class MultiAccountIApi(val multiAccountApiBase: MultiAccountApiBase) : IApi {
     private suspend fun <T, R> getImpl2(
         apiData: T,
         callback: suspend IApi.(T) -> R
-    ): Result<Pair<R, Int>, MultiMError> {
+    ): MultiMResult<Pair<R, Int>> {
         val timelineApi = iApi(apiData)
         return timelineApi.map {
             callback(it, apiData) to (
@@ -61,7 +59,7 @@ class MultiAccountIApi(val multiAccountApiBase: MultiAccountApiBase) : IApi {
         }
     }
 
-    private fun <T> iApi(id: T): Result<IApi, MultiMError> {
+    private fun <T> iApi(id: T): MultiMResult<IApi> {
         Logger.debug("I Api", "Multi account timeline api timelineApi with MultiAccountData")
         return multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode)
             .map { it.i }

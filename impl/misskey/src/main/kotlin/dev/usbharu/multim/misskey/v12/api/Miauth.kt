@@ -1,8 +1,7 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.map
-import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.error.mapMultiMError
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.MiauthCheckRequest
@@ -13,7 +12,7 @@ import java.util.*
 
 class Miauth(val client: MisskeyApiClient) {
 
-    suspend fun auth(): Result<String, MultiMError> {
+    suspend fun auth(): MultiMResult<String> {
 
         val body = client.get(client.baseUrl + "/miauth/" + UUID.randomUUID() + "/") {
             url {
@@ -25,7 +24,7 @@ class Miauth(val client: MisskeyApiClient) {
         return body.mapMultiMError()
     }
 
-    suspend fun check(params: MiauthCheckRequest): Result<MiauthCheckResponse, MultiMError> {
+    suspend fun check(params: MiauthCheckRequest): MultiMResult<MiauthCheckResponse> {
         return client.postEmpty<MiauthCheckResponse>("", "/api/miauth/${params.sessionId}/check")
             .mapMultiMError()
     }

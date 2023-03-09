@@ -1,10 +1,10 @@
 package dev.usbharu.multim.api
 
 import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Result
 import dev.usbharu.multim.Logger
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.*
 
 //todo 成功したかをboolで返しているが、詳細がわからないのでしっかり返す。
@@ -15,7 +15,7 @@ interface AccountApi {
         account: Account,
         since: StatusId? = null,
         until: StatusId? = null
-    ): Result<List<Status>, MultiMError> {
+    ): MultiMResult<List<Status>> {
         Logger.debug("Account Api", "Not impl account api. userTimeline.")
         return Err(MultiMError("userTimeline not implements", null, ErrorType.NOT_IMPL))
     }
@@ -23,7 +23,7 @@ interface AccountApi {
     val FOLLOW: String
         get() = "account/follow"
 
-    suspend fun follow(account: Account): Result<Unit, MultiMError> {
+    suspend fun follow(account: Account): MultiMResult<Unit> {
         Logger.debug("Account Api", "Not impl account api. follow.")
         return Err(MultiMError("follow not implements", null, ErrorType.NOT_IMPL))
     }
@@ -31,7 +31,7 @@ interface AccountApi {
     val UNFOLLOW: String
         get() = "account/unfollow"
 
-    suspend fun unfollow(account: Account): Result<Unit, MultiMError> {
+    suspend fun unfollow(account: Account): MultiMResult<Unit> {
         Logger.debug("Account Api", "Not impl account api. unfollow.")
         return Err(MultiMError("unfollow not implements", null, ErrorType.NOT_IMPL))
     }
@@ -39,7 +39,7 @@ interface AccountApi {
     val PROFILE: String
         get() = "account/profile"
 
-    suspend fun profile(account: Account): Result<Profile, MultiMError> {
+    suspend fun profile(account: Account): MultiMResult<Profile> {
         Logger.debug("Account Api", "Not impl account api. profile.")
         return Err(MultiMError("profile not implements", null, ErrorType.NOT_IMPL))
     }
@@ -50,17 +50,17 @@ interface AccountApi {
     suspend fun statuses(
         account: Account,
         includeRepost: Boolean = false,
-        since:StatusId? = null,
-        until:StatusId? = null,
-    ): Result<List<Status>, MultiMError> {
+        since: StatusId? = null,
+        until: StatusId? = null,
+    ): MultiMResult<List<Status>> {
         Logger.debug("Account Api", "Not impl account api. statuses.")
         return Err(MultiMError("statuses not implements", null, ErrorType.NOT_IMPL))
     }
 
-    val RELEATIONSHIPS: String
+    val RELATIONSHIPS: String
         get() = "account/relationships"
 
-    suspend fun relationships(myself: Account, other: Account): Result<Relation, MultiMError> {
+    suspend fun relationships(myself: Account, other: Account): MultiMResult<Relation> {
         Logger.debug("Account Api", "Not impl account api. relationships.")
         return Err(MultiMError("relationships not implements", null, ErrorType.NOT_IMPL))
     }
@@ -68,7 +68,7 @@ interface AccountApi {
     val REQUEST_CANCEL: String
         get() = "account/requestCancel"
 
-    suspend fun requestCancel(account: Account): Result<Unit, MultiMError> {
+    suspend fun requestCancel(account: Account): MultiMResult<Unit> {
         Logger.debug("Account Api", "Not impl account api. requestCancel.")
         return Err(MultiMError("requestCancel not implements", null, ErrorType.NOT_IMPL))
     }
@@ -76,7 +76,7 @@ interface AccountApi {
     val REQUEST_ACCEPT: String
         get() = "account/requestAccept"
 
-    suspend fun requestAccept(account: Account): Result<Unit, MultiMError> {
+    suspend fun requestAccept(account: Account): MultiMResult<Unit> {
         Logger.debug("Account Api", "Not impl account api. requestAccept.")
         return Err(MultiMError("requestAccept not implements", null, ErrorType.NOT_IMPL))
     }
@@ -84,7 +84,7 @@ interface AccountApi {
     val REQUEST_REJECT: String
         get() = "account/requestReject"
 
-    suspend fun requestReject(account: Account): Result<Unit, MultiMError> {
+    suspend fun requestReject(account: Account): MultiMResult<Unit> {
         Logger.debug("Account Api", "Not impl account api. requestReject.")
         return Err(MultiMError("requestReject not implements", null, ErrorType.NOT_IMPL))
     }

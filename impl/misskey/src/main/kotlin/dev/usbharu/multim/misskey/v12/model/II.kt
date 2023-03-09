@@ -5,6 +5,6 @@ import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
 import kotlinx.serialization.Serializable
 
 @Serializable
-class IIRequest() : MisskeyNeedAuth()
+class IIRequest : MisskeyNeedAuth()
 
 typealias IIResponse = MeDetailed

@@ -1,7 +1,6 @@
 package dev.usbharu.multim.misskey.v12.api
 
-import com.github.michaelbull.result.Result
-import dev.usbharu.multim.error.MultiMError
+import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.error.mapMultiMError
 import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
@@ -11,16 +10,16 @@ import io.ktor.http.*
 
 class Drive(val client: MisskeyApiClient) {
 
-    suspend fun drive(): Result<DriveResponse, MultiMError> {
+    suspend fun drive(): MultiMResult<DriveResponse> {
         return client.postEmpty<DriveResponse>("api/drive").mapMultiMError()
     }
 
-    suspend fun files(filesRequest: DriveFilesRequest): Result<DriveFilesResponse, MultiMError> {
+    suspend fun files(filesRequest: DriveFilesRequest): MultiMResult<DriveFilesResponse> {
         return client.post<DriveFilesRequest, DriveFilesResponse>(filesRequest, "api/drive/files")
             .mapMultiMError()
     }
 
-    suspend fun folders(foldersRequest: DriveFoldersRequest): Result<DriveFoldersResponse, MultiMError> {
+    suspend fun folders(foldersRequest: DriveFoldersRequest): MultiMResult<DriveFoldersResponse> {
         return client.post<DriveFoldersRequest, DriveFoldersResponse>(
             foldersRequest,
             "api/drive/folders"
@@ -28,14 +27,14 @@ class Drive(val client: MisskeyApiClient) {
     }
 
     inner class Files {
-        suspend fun attachedNotes(attachedNotesRequest: DriveFilesAttachedNotesRequest): Result<DriveFilesAttachedNotesResponse, MultiMError> {
+        suspend fun attachedNotes(attachedNotesRequest: DriveFilesAttachedNotesRequest): MultiMResult<DriveFilesAttachedNotesResponse> {
             return client.post<DriveFilesAttachedNotesRequest, DriveFilesAttachedNotesResponse>(
                 attachedNotesRequest,
                 "api/drive/files/attached-notes"
             ).mapMultiMError()
         }
 
-        suspend fun checkExistence(checkExistenceRequest: DriveFilesCheckExistenceRequest): Result<DriveFilesCheckExistenceResponse, MultiMError> {
+        suspend fun checkExistence(checkExistenceRequest: DriveFilesCheckExistenceRequest): MultiMResult<DriveFilesCheckExistenceResponse> {
             return client.post<DriveFilesCheckExistenceRequest, DriveFilesCheckExistenceResponse>(
                 checkExistenceRequest,
                 "api/drive/files/check-existence"
@@ -55,47 +54,47 @@ class Drive(val client: MisskeyApiClient) {
 //            return client.post(createRequest, "api/drive/files/create")
         }
 
-        suspend fun delete(deleteRequest: DriveFilesDeleteRequest): Result<Unit, MultiMError> {
+        suspend fun delete(deleteRequest: DriveFilesDeleteRequest): MultiMResult<Unit> {
             return client.postWithoutResponse(deleteRequest, "api/drive/files/delete")
                 .mapMultiMError()
         }
 
-        suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest): Result<DriveFilesFindByHashResponse, MultiMError> {
+        suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest): MultiMResult<DriveFilesFindByHashResponse> {
             return client.post<DriveFilesFindByHashRequest, DriveFilesFindByHashResponse>(
                 findByHashRequest,
                 "api/drive/files/find-by-hash"
             ).mapMultiMError()
         }
 
-        suspend fun find(findRequest: DriveFilesFindRequest): Result<DriveFilesFindResponse, MultiMError> {
+        suspend fun find(findRequest: DriveFilesFindRequest): MultiMResult<DriveFilesFindResponse> {
             return client.post<DriveFilesFindRequest, DriveFilesFindResponse>(
                 findRequest,
                 "api/drive/files/find"
             ).mapMultiMError()
         }
 
-        suspend fun show(showRequest: DriveFilesShowRequestByUrl): Result<DriveFilesShowResponse, MultiMError> {
+        suspend fun show(showRequest: DriveFilesShowRequestByUrl): MultiMResult<DriveFilesShowResponse> {
             return client.post<DriveFilesShowRequestByUrl, DriveFilesShowResponse>(
                 showRequest,
                 "api/drive/files/show"
             ).mapMultiMError()
         }
 
-        suspend fun show(showRequest: DriveFilesShowRequestByFileId): Result<DriveFilesShowResponse, MultiMError> {
+        suspend fun show(showRequest: DriveFilesShowRequestByFileId): MultiMResult<DriveFilesShowResponse> {
             return client.post<DriveFilesShowRequestByFileId, DriveFilesShowResponse>(
                 showRequest,
                 "api/drive/files/show"
             ).mapMultiMError()
         }
 
-        suspend fun update(updateRequest: DriveFilesUpdateRequest): Result<DriveFilesUpdateResponse, MultiMError> {
+        suspend fun update(updateRequest: DriveFilesUpdateRequest): MultiMResult<DriveFilesUpdateResponse> {
             return client.post<DriveFilesUpdateRequest, DriveFilesUpdateResponse>(
                 updateRequest,
                 "api/drive/files/update"
             ).mapMultiMError()
         }
 
-        suspend fun uploadFromUrl(uploadFromUrlRequest: DriveFilesUploadFromUrlRequest): Result<Unit, MultiMError> {
+        suspend fun uploadFromUrl(uploadFromUrlRequest: DriveFilesUploadFromUrlRequest): MultiMResult<Unit> {
             return client.postWithoutResponse(
                 uploadFromUrlRequest,
                 "api/drive/files/upload-from-url"
@@ -104,19 +103,19 @@ class Drive(val client: MisskeyApiClient) {
     }
 
     inner class Folders {
-        suspend fun create(foldersCreateRequest: DriveFoldersCreateRequest): Result<DriveFoldersCreateResponse, MultiMError> {
+        suspend fun create(foldersCreateRequest: DriveFoldersCreateRequest): MultiMResult<DriveFoldersCreateResponse> {
             return client.post<DriveFoldersCreateRequest, DriveFoldersCreateResponse>(
                 foldersCreateRequest,
                 "api/drive/folders/create"
             ).mapMultiMError()
         }
 
-        suspend fun delete(foldersDeleteRequest: DriveFoldersDeleteRequest): Result<Unit, MultiMError> {
+        suspend fun delete(foldersDeleteRequest: DriveFoldersDeleteRequest): MultiMResult<Unit> {
             return client.postWithoutResponse(foldersDeleteRequest, "api/drive/folders/delete")
                 .mapMultiMError()
         }
 
-        suspend fun find(foldersFindRequest: DriveFoldersFindRequest): Result<DriveFoldersFindResponse, MultiMError> {
+        suspend fun find(foldersFindRequest: DriveFoldersFindRequest): MultiMResult<DriveFoldersFindResponse> {
             return client.post<DriveFoldersFindRequest, DriveFoldersFindResponse>(
                 foldersFindRequest,
                 "api/drive/folders/find"

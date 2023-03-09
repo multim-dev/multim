@@ -66,7 +66,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             } catch (e: ServerResponseException) {
                 return Err(HttpClientServerError(e))
             }
-        Logger.warn(post.bodyAsText())
+//        Logger.warn(post.bodyAsText())
         return runCatching<R> { post.body() }.fold(
             onSuccess = { Ok(it) },
             onFailure = {
@@ -90,6 +90,8 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             return Err(HttpClientClientError(e))
         } catch (e: ServerResponseException) {
             return Err(HttpClientServerError(e))
+        } catch (e: Exception) {
+            return Err(ThrowableError(e))
         }
         return Ok(Unit)
 
@@ -100,15 +102,16 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
         block: HttpRequestBuilder.() -> Unit
     ): Result<HttpResponse, ThrowableError> {
         Logger.trace("Api Client", "Get $baseUrl$path")
-        return runCatching<HttpResponse> {
-            client.get(
-                baseUrl + path,
-                block
-            )
-        }.fold(onSuccess = { Ok(it) }, onFailure = {
+        return try {
+            Ok(client.get(baseUrl + path, block))
+        } catch (e: ClientRequestException) {
+            Err(HttpClientClientError(e))
+        } catch (e: ServerResponseException) {
+            Err(HttpClientServerError(e))
+        } catch (e: Exception) {
             Logger.warn("Api Client", "FAILURE Get $baseUrl$path")
-            Err(ThrowableError(it))
-        })
+            Err(ThrowableError(e))
+        }
     }
 }
 

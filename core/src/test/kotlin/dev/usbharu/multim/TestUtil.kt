@@ -1,9 +1,9 @@
 package dev.usbharu.multim
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.getError
+import com.github.michaelbull.result.*
+import dev.usbharu.multim.error.Error
+import dev.usbharu.multim.error.ErrorType
+import dev.usbharu.multim.error.MultiMResult
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -12,8 +12,8 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import org.assertj.core.api.Fail.fail
 import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.fail
 
 
 object TestUtil {
@@ -62,23 +62,44 @@ object TestUtil {
     ): suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData {
         return { httpRequestData: HttpRequestData ->
             val decodeToString = httpRequestData.body.toByteArray().decodeToString()
-            println(decodeToString)
+            Logger.debug(decodeToString)
             if ("i" in json.parseToJsonElement(decodeToString).jsonObject) {
                 respond(respond, status, headers)
             } else {
                 fail("Not authed")
-                respondBadRequest()
+//                respondBadRequest()
             }
         }
     }
 
 
-    fun assertIsOk(result: Result<*, *>) {
+    fun assertIsOk(result: Result<*, Error>) {
+        result.getError()?.let {
+            Logger.warn("Test Util", "エラーが発生しました", it)
+        }
         assertInstanceOf(Ok::class.java, result, "resultの型がOkではない")
     }
 
-    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>) {
+    inline fun <T : Error, reified R : T> assertIsErr(result: Result<*, T>) {
         assertInstanceOf(Err::class.java, result, "resultの型がErrではない")
         assertInstanceOf(R::class.java, result.getError(), "Errorの型が違う")
+    }
+
+    fun <T> MultiMResult<T>.failOnError(): T {
+        val get = this.get()
+        if (get != null) {
+            return get
+        }
+        val error = this.getError()!!
+        fail("Return Error ${error.message}", error.throwable)
+    }
+
+    fun MultiMResult<*>.failOnSuccess() {
+        this.onSuccess { fail("成功してはいけない") }
+        this.onFailure {
+            if (it.errorType != ErrorType.NOT_IMPL) {
+                fail("エラータイプが未実装ではない")
+            }
+        }
     }
 }

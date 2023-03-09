@@ -103,7 +103,7 @@ enum class ErrorType(val message: String) {
     UNKNOWN("UNKNOWN")
 }
 
-fun <T> Result<T, ThrowableError>.mapMultiMError(): Result<T, MultiMError> {
+fun <T> Result<T, ThrowableError>.mapMultiMError(): MultiMResult<T> {
     return when (this) {
         is Ok -> this
         is Err -> {
