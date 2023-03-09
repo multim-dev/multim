@@ -1,6 +1,7 @@
 package dev.usbharu.multim
 
 import com.github.michaelbull.result.*
+import dev.usbharu.multim.error.Error
 import dev.usbharu.multim.error.ErrorType
 import dev.usbharu.multim.error.MultiMResult
 import io.ktor.client.*
@@ -72,11 +73,14 @@ object TestUtil {
     }
 
 
-    fun assertIsOk(result: Result<*, *>) {
+    fun assertIsOk(result: Result<*, Error>) {
+        result.getError()?.let {
+            Logger.warn("Test Util", "エラーが発生しました", it)
+        }
         assertInstanceOf(Ok::class.java, result, "resultの型がOkではない")
     }
 
-    inline fun <T, reified R : T> assertIsErr(result: Result<*, T>) {
+    inline fun <T : Error, reified R : T> assertIsErr(result: Result<*, T>) {
         assertInstanceOf(Err::class.java, result, "resultの型がErrではない")
         assertInstanceOf(R::class.java, result.getError(), "Errorの型が違う")
     }

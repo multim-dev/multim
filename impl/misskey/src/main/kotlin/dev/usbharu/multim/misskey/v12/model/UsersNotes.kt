@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.model
 
+import dev.usbharu.multim.misskey.v12.model.components.MisskeyNeedAuth
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import kotlinx.serialization.Serializable
 
@@ -16,7 +17,7 @@ data class UsersNotesRequest(
     val withFile: Boolean? = false,
     val fileType: List<String> = emptyList(),
     val excludeNsfw: Boolean = false
-)
+) : MisskeyNeedAuth()
 
 
 typealias UsersNotesResponse = List<Note>

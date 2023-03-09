@@ -22,6 +22,7 @@ import kotlinx.serialization.encodeToString
 
 class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpClient) :
     ApiClient(baseUrl, client.config {
+        expectSuccess = true
         install(WebSockets) {
             pingInterval = 20_000
             contentConverter = KotlinxWebsocketSerializationConverter(json)

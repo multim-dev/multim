@@ -105,6 +105,7 @@ subprojects {
         "testImplementation"("org.slf4j:slf4j-simple:2.0.4")
         "testImplementation"("io.github.artsok:rerunner-jupiter:2.1.6")
         "implementation"("com.goncalossilva:murmurhash:0.4.0")
+        "testImplementation"("io.mockk:mockk:1.13.4")
     }
 
     publishing {
