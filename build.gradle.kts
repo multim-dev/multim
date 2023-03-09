@@ -14,17 +14,27 @@ version = "1.0-SNAPSHOT"
 
 allprojects {
     repositories {
+        val props = Properties()
+        try {
+            props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
+        } catch (e: Exception) {
+            println("local.properties not found")
+        }
         mavenCentral()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/multim-dev/kmp-logger")
             credentials {
-                val props = Properties()
-                try {
-                    props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
-                } catch (e: Exception) {
-                    println("local.properties not found")
-                }
+
+                username = props.getProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = props.getProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+        maven {
+            name = "GitHubPackages2"
+            url = uri("https://maven.pkg.github.com/multim-dev/emoji-kt")
+            credentials {
+
                 username = props.getProperty("gpr.user") as String? ?: System.getenv("USERNAME")
                 password = props.getProperty("gpr.key") as String? ?: System.getenv("TOKEN")
             }
@@ -93,6 +103,7 @@ subprojects {
         "implementation"("io.ktor:ktor-client-websockets:$ktor_version")
         "implementation"("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
         "implementation"("dev.usbharu:kmp-logger:1.1.0")
+        "implementation"("dev.usbharu:emoji-kt:1.1.0")
         "implementation"("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
         "implementation"("io.github.reactivecircus.cache4k:cache4k:0.9.0")
 

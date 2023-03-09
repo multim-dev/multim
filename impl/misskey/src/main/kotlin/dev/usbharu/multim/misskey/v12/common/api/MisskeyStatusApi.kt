@@ -16,6 +16,7 @@ import dev.usbharu.multim.misskey.v12.converter.misskey.v12.NoteConverter.toStat
 import dev.usbharu.multim.misskey.v12.converter.misskey.v12.ReactionConverter.toReactions
 import dev.usbharu.multim.misskey.v12.model.*
 import dev.usbharu.multim.model.*
+import dev.usbharu.multim.util.EmojiUtils
 
 
 /**
@@ -134,6 +135,19 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
             .map { it.map { note -> note.toStatus() } }
     }
 
+    override suspend fun availableReactions(): MultiMResult<List<Reaction>> {
+        return misskeyApis.meta.meta(MetaRequest())
+            .map { metaResponse ->
+                metaResponse.emojis
+            }
+            .map {
+                val mutableListOf = mutableListOf<Reaction>()
+                mutableListOf.addAll(EmojiUtils.getAllEmoji().map { MisskeyReaction(it.string, null) })
+                mutableListOf.addAll(it.map { MisskeyReaction(it.name, it.url) })
+                mutableListOf
+            }
+    }
+
     private suspend fun StatusId.fetchId(): MultiMResult<MisskeyStatusId> {
         if (this is MisskeyStatusId) {
             return Ok(this)
@@ -152,4 +166,6 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
             }
         }
     }
+
+
 }
