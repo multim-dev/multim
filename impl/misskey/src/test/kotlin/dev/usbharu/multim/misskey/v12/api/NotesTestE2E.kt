@@ -62,6 +62,17 @@ class NotesTestE2E {
     }
 
     @Test
+    fun createFollowOnly() = runTest {
+        val notesCreateResponse = notes.create(
+            NotesCreateRequest(
+                visibility = NotesCreateRequest.Visibility.FOLLOWERS,
+                text = "このノートはMultiMのテストで作成され、公開範囲 フォロワーのみ のテストに使用されます。 ${this@NotesTestE2E::class} create note with followers only"
+            )
+        ).failOnError()
+        Assertions.assertEquals("followers", notesCreateResponse.createdNote.visibility)
+    }
+
+    @Test
     fun createWithFile() = runTest {
         val encode: ByteArray = withContext(Dispatchers.IO) {
             NotesTestE2E::class.java.classLoader.getResourceAsStream("notes/create/files/note_with_file_test.jpg")!!
