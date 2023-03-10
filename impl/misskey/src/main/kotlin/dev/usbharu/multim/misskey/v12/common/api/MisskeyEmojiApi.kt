@@ -36,7 +36,7 @@ class MisskeyEmojiApi(val misskeyApis: MisskeyApis) : EmojiApi {
                     emoji.name.startsWith(name, true).or(emoji.name.endsWith(name, true))
                 }
             }.map {
-                it.map { MisskeyEmoji(it.name, it.url) }
+                it.map { emoji -> MisskeyEmoji(emoji.name, emoji.url) }
             }
     }
 }

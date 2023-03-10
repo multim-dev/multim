@@ -142,8 +142,9 @@ class MisskeyStatusApi(private val misskeyApis: MisskeyApis) : StatusApi {
             }
             .map {
                 val mutableListOf = mutableListOf<Reaction>()
-                mutableListOf.addAll(EmojiUtils.getAllEmoji().map { MisskeyReaction(it.string, null) })
-                mutableListOf.addAll(it.map { MisskeyReaction(it.name, it.url) })
+                mutableListOf.addAll(
+                    EmojiUtils.getAllEmoji().map { unicodeEmoji -> MisskeyReaction(unicodeEmoji.string, null) })
+                mutableListOf.addAll(it.map { emoji -> MisskeyReaction(emoji.name, emoji.url) })
                 mutableListOf
             }
     }

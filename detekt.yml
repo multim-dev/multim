@@ -16,3 +16,9 @@ style:
 #    TODOコメント無いとやりづらいので無効化
   ForbiddenComment:
     active: false
+  MagicNumber:
+    active: false
+
+naming:
+  MatchingDeclarationName:
+    active: false

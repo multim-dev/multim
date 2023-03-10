@@ -19,6 +19,6 @@ class MisskeyIApi(val misskeyApis: MisskeyApis) : IApi {
     override suspend fun statuses(): MultiMResult<List<Status>> {
         return misskeyApis.i.i().map { it.id }
             .flatMap { misskeyApis.users.notes(UsersNotesRequest(it)) }
-            .map { it.map { it.toStatus() } }
+            .map { it.map { note -> note.toStatus() } }
     }
 }

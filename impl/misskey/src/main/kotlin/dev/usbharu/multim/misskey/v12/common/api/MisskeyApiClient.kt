@@ -43,12 +43,12 @@ class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpC
 
     internal val streaming = Streaming()
 
-    internal inner class Streaming {
+    internal inner class Streaming(context: CoroutineDispatcher = Dispatchers.IO) {
 
         val callbackMutex = Mutex()
         val callbackList = mutableMapOf<String, Callback>()
 
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
+        val coroutineScope = CoroutineScope(context)
 
         var commands = MutableStateFlow("a")
         fun connect() {
@@ -56,7 +56,10 @@ class MisskeyApiClient(var auth: SingleTokenAuth, baseUrl: String, client: HttpC
                 client.wss("ws" + baseUrl.replaceFirst("http", "") + "streaming?i=${auth.token}") {
                     awaitAll(
                         coroutineScope.async {
-                            commands.onEach { Logger.debug("Api Client Streaming","Sending :$it");outgoing.send(Frame.Text(it)) }
+                            commands.onEach {
+                                Logger.debug("Api Client Streaming", "Sending :$it")
+                                outgoing.send(Frame.Text(it))
+                            }
                                 .launchIn(coroutineScope)
                         },
                         coroutineScope.async {

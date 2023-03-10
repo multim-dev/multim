@@ -8,16 +8,16 @@ import dev.usbharu.multim.model.Status
 object NoteConverter {
     fun Note.toStatus(): MisskeyStatus {
         return MisskeyStatus(
-            id = MisskeyStatusId(id, url ?: ""),
+            id = MisskeyStatusId(id, url.orEmpty()),
             account = MisskeyAccount(
                 id = user.id,
                 screenName = user.name ?: user.username,
                 accountName = user.username,
                 isBot = user.isBot,
-                avatar = MisskeyAvatar(avatarUrl = user.avatarUrl ?: "")
+                avatar = MisskeyAvatar(avatarUrl = user.avatarUrl.orEmpty())
             ),
-            content = MisskeyContent(text ?: ""),
-            files = files?.map { MisskeyFile(byteArrayOf(), it.type, it.url ?: "") }
+            content = MisskeyContent(text.orEmpty()),
+            files = files?.map { MisskeyFile(byteArrayOf(), it.type, it.url.orEmpty()) }
                 ?.let { MisskeyFiles(it) }
         )
     }

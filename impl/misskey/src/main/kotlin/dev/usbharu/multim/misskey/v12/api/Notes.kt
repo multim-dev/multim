@@ -6,23 +6,27 @@ import dev.usbharu.multim.misskey.v12.common.api.MisskeyApiClient
 import dev.usbharu.multim.misskey.v12.model.*
 import dev.usbharu.multim.misskey.v12.model.components.Note
 
+@Suppress("MemberNameEqualsClassName")
 class Notes(val client: MisskeyApiClient) {
 
-    suspend fun globalTimeline(globalTimelineRequest: NotesGlobalTimelineRequest = NotesGlobalTimelineRequest()): MultiMResult<NotesGlobalTimelineResponse> {
+    suspend fun globalTimeline(globalTimelineRequest: NotesGlobalTimelineRequest = NotesGlobalTimelineRequest())
+            : MultiMResult<NotesGlobalTimelineResponse> {
         return client.post<NotesGlobalTimelineRequest, NotesGlobalTimelineResponse>(
             globalTimelineRequest,
             "api/notes/global-timeline"
         ).mapMultiMError()
     }
 
-    suspend fun hybridTimeline(hybridTimelineRequest: NotesHybridTimelineRequest = NotesHybridTimelineRequest()): MultiMResult<NotesHybridTimelineResponse> {
+    suspend fun hybridTimeline(hybridTimelineRequest: NotesHybridTimelineRequest = NotesHybridTimelineRequest())
+            : MultiMResult<NotesHybridTimelineResponse> {
         return client.post<NotesHybridTimelineRequest, NotesHybridTimelineResponse>(
             hybridTimelineRequest,
             "api/notes/hybrid-timeline"
         ).mapMultiMError()
     }
 
-    suspend fun localTimeline(localTimelineRequest: NotesLocalTimelineRequest = NotesLocalTimelineRequest()): MultiMResult<NotesLocalTimelineResponse> {
+    suspend fun localTimeline(localTimelineRequest: NotesLocalTimelineRequest = NotesLocalTimelineRequest())
+            : MultiMResult<NotesLocalTimelineResponse> {
         return client.post<NotesLocalTimelineRequest, NotesLocalTimelineResponse>(
             localTimelineRequest,
             "api/notes/local-timeline"
@@ -45,7 +49,8 @@ class Notes(val client: MisskeyApiClient) {
         client.postWithoutResponse(deleteRequest, "api/notes/delete").mapMultiMError()
     }
 
-    suspend fun featured(featuredRequest: NotesFeaturedRequest = NotesFeaturedRequest()): MultiMResult<NotesFeaturedResponse> {
+    suspend fun featured(featuredRequest: NotesFeaturedRequest = NotesFeaturedRequest())
+            : MultiMResult<NotesFeaturedResponse> {
         return client.post<NotesFeaturedRequest, NotesFeaturedResponse>(
             featuredRequest,
             "api/notes/featured"
@@ -136,7 +141,8 @@ class Notes(val client: MisskeyApiClient) {
         return client.postWithoutResponse(unrenoteRequest, "api/notes/unrenote").mapMultiMError()
     }
 
-    suspend fun userListTimeline(userListTimelineRequest: NotesUserListTimelineRequest): MultiMResult<NotesUserListTimelineResponse> {
+    suspend fun userListTimeline(userListTimelineRequest: NotesUserListTimelineRequest)
+            : MultiMResult<NotesUserListTimelineResponse> {
         return client.post<NotesUserListTimelineRequest, List<Note>>(
             userListTimelineRequest,
             "api/notes/user-list-timeline"
@@ -145,7 +151,8 @@ class Notes(val client: MisskeyApiClient) {
 
 
     inner class Polls {
-        suspend fun recommendation(pollsRecommendationRequest: PollsRecommendationRequest): MultiMResult<PollsRecommendationResponse> {
+        suspend fun recommendation(pollsRecommendationRequest: PollsRecommendationRequest)
+                : MultiMResult<PollsRecommendationResponse> {
             return client.post<PollsRecommendationRequest, List<Note>>(
                 pollsRecommendationRequest,
                 "api/notes/polls/recommendation"

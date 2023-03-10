@@ -2,6 +2,7 @@ package dev.usbharu.multim.misskey.v12.common
 
 import dev.usbharu.multim.model.*
 
+@Suppress("LongParameterList")
 class MisskeyStatus(
     override val id: MisskeyStatusId,
     override val account: MisskeyAccount,

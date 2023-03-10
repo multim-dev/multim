@@ -20,7 +20,8 @@ class Following(val client: MisskeyApiClient) {
         ).mapMultiMError()
     }
 
-    suspend fun invalidate(followingInvalidateRequest: FollowingInvalidateRequest): MultiMResult<FollowingInvalidateResponse> {
+    suspend fun invalidate(followingInvalidateRequest: FollowingInvalidateRequest)
+    : MultiMResult<FollowingInvalidateResponse> {
         return client.post<FollowingInvalidateRequest, FollowingInvalidateResponse>(
             followingInvalidateRequest,
             "api/following/invalidate"

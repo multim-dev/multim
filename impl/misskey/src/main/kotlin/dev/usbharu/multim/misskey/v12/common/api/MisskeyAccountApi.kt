@@ -69,7 +69,7 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
                     is MeDetailed -> MisskeyProfile(
                         account,
                         account.isBot ?: false,
-                        MisskeyContent(it.description ?: ""),
+                        MisskeyContent(it.description.orEmpty()),
                         it.followingCount,
                         it.followersCount,
                     )
@@ -78,13 +78,13 @@ class MisskeyAccountApi(val misskeyApis: MisskeyApis) : AccountApi {
                         account,
                         account.isBot ?: false,
                         MisskeyContent(
-                            it.description ?: ""
+                            it.description.orEmpty()
                         ),
                         it.followingCount,
                         it.followersCount
                     )
 
-                    is UserLite -> throw IllegalStateException()
+                    is UserLite -> return Err(MultiMError("不正な返り値",IllegalStateException("不正な返り値"),ErrorType.API))
                 }
             }
         }

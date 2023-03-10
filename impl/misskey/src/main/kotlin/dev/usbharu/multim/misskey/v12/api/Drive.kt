@@ -9,7 +9,7 @@ import io.ktor.client.request.forms.*
 import io.ktor.http.*
 
 class Drive(val client: MisskeyApiClient) {
-
+    @Suppress("MemberNameEqualsClassName")
     suspend fun drive(): MultiMResult<DriveResponse> {
         return client.postEmpty<DriveResponse>("api/drive").mapMultiMError()
     }
@@ -27,14 +27,16 @@ class Drive(val client: MisskeyApiClient) {
     }
 
     inner class Files {
-        suspend fun attachedNotes(attachedNotesRequest: DriveFilesAttachedNotesRequest): MultiMResult<DriveFilesAttachedNotesResponse> {
+        suspend fun attachedNotes(attachedNotesRequest: DriveFilesAttachedNotesRequest)
+                : MultiMResult<DriveFilesAttachedNotesResponse> {
             return client.post<DriveFilesAttachedNotesRequest, DriveFilesAttachedNotesResponse>(
                 attachedNotesRequest,
                 "api/drive/files/attached-notes"
             ).mapMultiMError()
         }
 
-        suspend fun checkExistence(checkExistenceRequest: DriveFilesCheckExistenceRequest): MultiMResult<DriveFilesCheckExistenceResponse> {
+        suspend fun checkExistence(checkExistenceRequest: DriveFilesCheckExistenceRequest)
+                : MultiMResult<DriveFilesCheckExistenceResponse> {
             return client.post<DriveFilesCheckExistenceRequest, DriveFilesCheckExistenceResponse>(
                 checkExistenceRequest,
                 "api/drive/files/check-existence"
@@ -59,7 +61,8 @@ class Drive(val client: MisskeyApiClient) {
                 .mapMultiMError()
         }
 
-        suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest): MultiMResult<DriveFilesFindByHashResponse> {
+        suspend fun findByHash(findByHashRequest: DriveFilesFindByHashRequest)
+                : MultiMResult<DriveFilesFindByHashResponse> {
             return client.post<DriveFilesFindByHashRequest, DriveFilesFindByHashResponse>(
                 findByHashRequest,
                 "api/drive/files/find-by-hash"

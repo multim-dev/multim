@@ -4,7 +4,7 @@ import dev.usbharu.multim.model.StatusId
 
 class MisskeyStatusId(val id: String, private val url: String) : StatusId() {
     override fun equals(other: Any?): Boolean {
-        return true
+        return other?.equals(this) ?: false
     }
 
     override fun hashCode(): Int {
