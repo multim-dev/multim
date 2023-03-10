@@ -65,7 +65,7 @@ class NodeinfoApi(private var httpClient: HttpClient) {
     fun nodeinfoLink(nodeinfoList: NodeinfoList): MultiMResult<NodeinfoList.NodeinfoLink> {
         Logger.info("Nodeinfo Api", "START Get nodeinfo link")
         return runCatching<NodeinfoList.NodeinfoLink> {
-            nodeinfoList.links.minByOrNull { it.rel.substringAfterLast("/", "0").toFloat() }!!
+            nodeinfoList.links.minBy { it.rel.substringAfterLast("/", "0").toFloat() }
         }.foldWithOk({
             Logger.info("Nodeinfo Api", "SUCCESS Get nodeinfo link")
             Ok(it)

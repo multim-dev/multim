@@ -37,6 +37,7 @@ class MultiAccountEmojiApi(val multiAccountApiBase: MultiAccountApiBase) : Emoji
             .map { MultiAccountDataImpl(it, apiData.hashCode) }
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     private suspend fun <T, R> getImpl2(
         apiData: T,
         callback: suspend EmojiApi.(T) -> R

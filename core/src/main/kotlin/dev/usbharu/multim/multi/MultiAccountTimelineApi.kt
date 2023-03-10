@@ -57,6 +57,7 @@ class MultiAccountTimelineApi(private val multiAccountApiBase: MultiAccountApiBa
             .map { MultiAccountDataImpl(it, apiData.hashCode) }
     }
 
+    @Suppress("UnsafeCallOnNullableType")
 
     private suspend fun <T, R> getImpl2(
         apiData: T,

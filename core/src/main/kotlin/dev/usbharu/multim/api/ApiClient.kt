@@ -117,6 +117,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
      * @param baseUrl リクエストのbaseURL
      * @return 成功したらUnit
      */
+    @Suppress("TooGenericExceptionCaught")
     suspend inline fun <reified T> postWithoutResponse(
         content: T,
         path: String,
@@ -147,6 +148,7 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
      * @receiver HttpRequestBuilder
      * @return 生のレスポンス
      */
+    @Suppress("TooGenericExceptionCaught")
     suspend fun get(
         path: String,
         block: HttpRequestBuilder.() -> Unit

@@ -154,6 +154,7 @@ class MultiAccountAccountApi(private val multiAccountApiBase: MultiAccountApiBas
             .map { MultiAccountDataImpl(it, apiData.hashCode) }
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     private suspend fun <T, R> getImpl2(
         apiData: T,
         callback: suspend AccountApi.(T) -> R
