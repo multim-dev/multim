@@ -15,12 +15,35 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
+/**
+ * APIクライアントの基底クラス.
+ *baseUrl+pathにリクエストされます。
+ *
+ * @property baseUrl ベースURL
+ * @property client 使用するHTTP クライアント
+ * @constructor APIクライアントを作成する.
+ */
 abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
+    /**
+     * HTTPクライアントを作成する.
+     *
+     * @param config 設定
+     * @receiver
+     * @return
+     */
     fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
         return MultiM.httpClientWithJson.config(config)
     }
 
+    /**
+     * 空のリクエストでPOSTリクエストする.
+     *
+     * @param R レスポンスのクラス
+     * @param path リクエストするパス
+     * @param baseUrl リクエストのbaseURL
+     * @return レスポンス
+     */
     suspend inline fun <reified R> postEmpty(
         path: String,
         baseUrl: String = this.baseUrl
@@ -49,6 +72,16 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             })
     }
 
+    /**
+     * リクエストボディを指定してPOSTリクエストする.
+     *
+     * @param T リクエストするクラス
+     * @param R レスポンスのクラス
+     * @param content リクエストボディ
+     * @param path リクエストするパス
+     * @param baseUrl リクエストのbaseURL
+     * @return レスポンス
+     */
     suspend inline fun <reified T, reified R> post(
         content: T,
         path: String,
@@ -75,6 +108,15 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
             })
     }
 
+    /**
+     * 空のレスポンスを期待してPOSTリクエストする.
+     *
+     * @param T リクエストボディのクラス
+     * @param content リクエストボディ
+     * @param path リクエストするパス
+     * @param baseUrl リクエストのbaseURL
+     * @return 成功したらUnit
+     */
     suspend inline fun <reified T> postWithoutResponse(
         content: T,
         path: String,
@@ -97,6 +139,14 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
 
     }
 
+    /**
+     * GETリクエストする
+     *
+     * @param path
+     * @param block HttpRequestBuilderでリクエストを構成する.
+     * @receiver HttpRequestBuilder
+     * @return 生のレスポンス
+     */
     suspend fun get(
         path: String,
         block: HttpRequestBuilder.() -> Unit
@@ -115,7 +165,13 @@ abstract class ApiClient(var baseUrl: String, val client: HttpClient) {
     }
 }
 
-// todo なぜこれがここにあるのかわからないが、ここにあるのはおかしいので消す。
+/**
+ * HTTP クライアントを作成する.
+ *
+ * @param config 構成
+ * @receiver HttpClientConfig
+ * @return 作成されたHttpClient
+ */// todo なぜこれがここにあるのかわからないが、ここにあるのはおかしいので消す。
 @Deprecated(
     "このAPIがここにあるのはおかしいので削除予定です。", ReplaceWith(
         "MultiM.httpClientWithJson.config(config)",

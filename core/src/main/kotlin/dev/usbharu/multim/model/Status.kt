@@ -3,6 +3,7 @@ package dev.usbharu.multim.model
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
+@Suppress("LongParameterList")
 abstract class Status(
     open val id: StatusId,
     open val account: Account,

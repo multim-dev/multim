@@ -5,6 +5,8 @@ plugins {
     kotlin("jvm") version "1.8.0" apply false
     kotlin("plugin.serialization") version "1.8.0" apply false
     id("maven-publish")
+    id("org.jetbrains.dokka") version "1.8.10"
+    id("io.gitlab.arturbosch.detekt") version("1.22.0")
 }
 
 
@@ -47,6 +49,8 @@ subprojects {
         plugin("org.jetbrains.kotlin.jvm")
         plugin("org.jetbrains.kotlin.plugin.serialization")
         plugin("maven-publish")
+        plugin("org.jetbrains.dokka")
+        plugin("io.gitlab.arturbosch.detekt")
     }
 
     group = rootProject.group
@@ -140,5 +144,12 @@ subprojects {
                 artifact(tasks["sourcesJar"])
             }
         }
+    }
+
+    detekt {
+        parallel = true
+        buildUponDefaultConfig = true
+        basePath = rootDir.absolutePath
+        config = files("$rootDir/detekt.yml")
     }
 }

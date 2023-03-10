@@ -28,8 +28,9 @@ class InMemoryLRUCache(maxSize: Long) : CacheableApi {
         if (enable) {
             val any = cache.get(method + key)
             return try {
+                @Suppress("UNCHECKED_CAST")
                 any as T?
-            } catch (e: ClassCastException) {
+            } catch (ignore: ClassCastException) {
                 null
             }
         }

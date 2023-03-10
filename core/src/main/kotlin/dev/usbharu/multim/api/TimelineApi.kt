@@ -8,10 +8,20 @@ import dev.usbharu.multim.error.MultiMResult
 import dev.usbharu.multim.model.Status
 import dev.usbharu.multim.model.Timeline
 
+/**
+ * タイムライン操作のAPI
+ *
+ */
+@Suppress("PropertyName","VariableNaming")
 interface TimelineApi {
     val AVAILABLE_TIMELINES: String
         get() = "timeline/availableTimelines"
 
+    /**
+     * 利用可能なタイムライン一覧
+     *
+     * @return 利用可能なタイムラインのList
+     */
     suspend fun availableTimelines(): MultiMResult<List<Timeline>> {
         Logger.debug("Timeline Api", "Not impl timeline api availableTimelines")
         return Err(MultiMError("availableTimelines not implements", null, ErrorType.NOT_IMPL))
@@ -20,6 +30,15 @@ interface TimelineApi {
     val LISTEN: String
         get() = "timeline/listen"
 
+    /**
+     * タイムラインStreamをListenする.
+     * タイムラインが更新されるとcallbackが呼び出されます.
+     *
+     * @param timeline listenするタイムライン
+     * @param callback 更新されたときに呼び出されるcallback
+     * @receiver
+     * @return Listenに成功したらUnit
+     */
     suspend fun listen(
         timeline: Timeline,
         callback: (List<Status>) -> Unit
@@ -31,7 +50,13 @@ interface TimelineApi {
     val CONNECT: String
         get() = "timeline/connect"
 
-    // todo 返り値を詳細にする
+    /**
+     * タイムラインに接続する.
+     * 基本的にlistenでいい場合が多い.
+     *
+     * @param timeline 接続するタイムライン
+     * @return 成功したらUnit
+     */
     suspend fun connect(timeline: Timeline): MultiMResult<Unit> {
         Logger.debug("Timeline Api", "Not impl timeline api connect")
         return Err(MultiMError("timeline connect not implements", null, ErrorType.NOT_IMPL))
@@ -41,11 +66,11 @@ interface TimelineApi {
         get() = "timeline/disconnect"
 
     /**
-     * Disconnect
+     * タイムラインから切断する
      *
      * @param timeline 切断するタイムライン
-     * @param force 強制的に切断し、もし受信しても無視するように要求する。
-     * @return
+     * @param force 強制的に切断する. 実装依存
+     * @return 成功したらUnit
      */
     suspend fun disconnect(timeline: Timeline, force: Boolean = false): MultiMResult<Unit> {
         Logger.debug("Timeline Api", "Not impl timeline api disconnect")
@@ -55,4 +80,9 @@ interface TimelineApi {
 
 }
 
+/**
+ * 未実装API
+ *
+ * すべてのAPIが未実装なAPI
+ */
 object NotImplTimelineApi : TimelineApi

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class MetaTestE2E {
 
-    val misskeyApiClient = MisskeyApiClient(
+    private val misskeyApiClient = MisskeyApiClient(
         SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
         MultiM.httpClientWithJson.config {}
@@ -20,6 +20,6 @@ class MetaTestE2E {
 
     @Test
     fun meta() = runTest {
-        val meta = Meta(misskeyApiClient).meta(MetaRequest()).failOnError()
+        Meta(misskeyApiClient).meta(MetaRequest()).failOnError()
     }
 }

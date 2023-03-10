@@ -1,0 +1,18 @@
+complexity:
+  TooManyFunctions:
+    active: false
+#     ライブラリの特性上仕方ないので無効化
+
+style:
+#    インポートが長すぎるので無効化
+  WildcardImport:
+    active: false
+#    とりあえず無効化
+  UnnecessaryAbstractClass:
+    active: false
+#    アーリーリターン出来ないので無効化
+  ReturnCount:
+    active: false
+#    TODOコメント無いとやりづらいので無効化
+  ForbiddenComment:
+    active: false

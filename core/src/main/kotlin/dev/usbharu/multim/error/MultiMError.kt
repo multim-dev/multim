@@ -5,6 +5,7 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import io.ktor.client.plugins.*
 
+@Suppress("PropertyName","ConstructorParameterNaming")
 open class MultiMError(
     message: String,
     val _throwable: Throwable? = null,
@@ -86,9 +87,11 @@ sealed class HttpError(
     val errorName: String,
     val throwable: Throwable? = null
 ) {
+    @Suppress("ConstructorParameterNaming", "PropertyName")
     data class ClientError(val _code: Int, val _message: String, val _throwable: Throwable?) :
         HttpError(_code, _message, "Client", _throwable)
 
+    @Suppress("ConstructorParameterNaming", "PropertyName")
     data class ServerError(val _code: Int, val _message: String, val _throwable: Throwable?) :
         HttpError(_code, _message, "Server", _throwable)
 }
@@ -130,6 +133,7 @@ fun <T> Result<T, ThrowableError>.mapMultiMError(): MultiMResult<T> {
 
 typealias MultiMResult<T> = Result<T, MultiMError>
 
+@Suppress("FunctionName","FunctionNaming")
 fun TODO(throwable: Throwable? = runCatching { kotlin.TODO() }.exceptionOrNull()): Err<MultiMError> {
     return Err(MultiMError("Not yet Implement.", throwable, ErrorType.NOT_IMPL))
 }

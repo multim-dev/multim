@@ -1,9 +1,6 @@
 package dev.usbharu.multim.model.wellknown.nodeinfo
 
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
+import kotlinx.serialization.*
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -15,6 +12,7 @@ sealed class NodeInfo {
     abstract fun getSoftwareVersion(): String
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializer(forClass = NodeInfo::class)
 object NodeinfoSerializer : JsonContentPolymorphicSerializer<NodeInfo>(NodeInfo::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<out NodeInfo> =
@@ -26,6 +24,7 @@ object NodeinfoSerializer : JsonContentPolymorphicSerializer<NodeInfo>(NodeInfo:
 }
 
 
+@Suppress("ClassName","ClassNaming")
 @Serializable
 // todo seald classにして基底クラス同じにする。
 //  あとついでにversion分ける
@@ -219,6 +218,7 @@ data class V2_0(
     }
 }
 
+@Suppress("ClassName","ClassNaming")
 @Serializable
 data class V2_1(
     val version: String,

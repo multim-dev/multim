@@ -13,24 +13,24 @@ open class ThrowableError(
 
 class SimpleError(message: String) : Error(message)
 
-fun <R> Ok(): (R) -> Ok<R> {
+fun <R> ok(): (R) -> Ok<R> {
     return { Ok(it) }
 }
 
-fun ThrowableError(): (Throwable) -> Err<ThrowableError> {
+fun throwableError(): (Throwable) -> Err<ThrowableError> {
     return { Err(ThrowableError(it)) }
 }
 
-fun <T, R : Error> Error(error: (T) -> R): (T) -> Err<R> {
+fun <T, R : Error> error(error: (T) -> R): (T) -> Err<R> {
     return { Err(error(it)) }
 }
 
 fun <A, B : Error> Result<A>.foldWithOk(
-    onSuccess: (A) -> Ok<A> = Ok(),
+    onSuccess: (A) -> Ok<A> = ok(),
     onFailure: (Throwable) -> B
 ): MichaelbullResultResult<A, B> {
     return fold(
         onSuccess = onSuccess,
-        onFailure = Error(onFailure)
+        onFailure = error(onFailure)
     )
 }

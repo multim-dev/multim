@@ -73,16 +73,15 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
 
     suspend fun removeFromBookmarks(id: MultiAccountData<StatusId>): MultiMResult<MultiAccountData<Unit>> {
         Logger.debug(
-            "Status Api",
-            "Multi account status api removeFromBookmarks with MultiAccountData"
+            "Status Api", "Multi account status api removeFromBookmarks with MultiAccountData"
         )
         return getImpl(id) { removeFromBookmarks(it) }
     }
 
-    suspend fun getPreviousAndNext(id: MultiAccountData<StatusId>): MultiMResult<MultiAccountData<PreviousAndNextPosts>> {
+    suspend fun getPreviousAndNext(id: MultiAccountData<StatusId>)
+            : MultiMResult<MultiAccountData<PreviousAndNextPosts>> {
         Logger.debug(
-            "Status Api",
-            "Multi account status api getPreviousAndNext with MultiAccountData"
+            "Status Api", "Multi account status api getPreviousAndNext with MultiAccountData"
         )
         return getImpl(id) { getPreviousAndNext(it) }
     }
@@ -100,14 +99,12 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
         return statusApi(apiData).map {
             callback(
                 it, apiData
-            ) to ((apiData as? MultiAccountData<*>)?.hashCode
-                ?: multiAccountApiBase.mainClientHashCode!!)
+            ) to ((apiData as? MultiAccountData<*>)?.hashCode ?: multiAccountApiBase.mainClientHashCode!!)
         }
     }
 
     private fun <T> statusApi(id: T): MultiMResult<StatusApi> {
-        return multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode)
-            .map { it.statusApi }
+        return multiAccountApiBase.getImpl((id as? MultiAccountData<*>)?.hashCode).map { it.statusApi }
     }
 
 
@@ -128,7 +125,10 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
 
     override suspend fun findById(id: StatusId): MultiMResult<Status> {
         Logger.debug("Status Api", "Multi account status api findById")
-        return getImpl2(id) { findById(it) }.flatMap { it.first.map { iStatus -> (iStatus to it.second).toMultiAccount() } }
+        return getImpl2(id) { findById(it) }
+            .flatMap {
+                it.first.map { iStatus -> (iStatus to it.second).toMultiAccount() }
+            }
     }
 
     override suspend fun addReaction(id: StatusId, reaction: Reaction): MultiMResult<Unit> {
@@ -146,11 +146,11 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
     override suspend fun reactions(id: StatusId): MultiMResult<Map<Reaction, Int>> {
         Logger.debug("Status Api", "Multi account status api reactions")
         return getImpl2(id) { reactions(it) }.let {
-            it.flatMap {
-                it.first.map { map ->
+            it.flatMap { resultIntPair ->
+                resultIntPair.first.map { map ->
                     map.map { (key, value) ->
                         MultiAccountReaction(
-                            key, it.second
+                            key, resultIntPair.second
                         ) to value
                     }.toMap()
                 }
@@ -173,7 +173,12 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
 
     override suspend fun repost(id: StatusId): MultiMResult<Status> {
         Logger.debug("Status Api", "Multi account status api repost")
-        return getImpl2(id) { repost(it) }.flatMap { it.first.map { iStatus -> (iStatus to it.second).toMultiAccount() } }
+        return getImpl2(id) { repost(it) }
+            .flatMap {
+                it.first.map { iStatus ->
+                    (iStatus to it.second).toMultiAccount()
+                }
+            }
     }
 
     override suspend fun unRepost(id: StatusId): MultiMResult<Unit> {
@@ -216,8 +221,7 @@ class MultiAccountStatusApi(private val multiAccountApiBase: MultiAccountApiBase
 
     suspend fun availableReactions(hashCode: MultiAccountData<*>): MultiMResult<List<Reaction>> {
         Logger.debug(
-            "Status Api",
-            "Multi account status api availableReactions with multiAccountData"
+            "Status Api", "Multi account status api availableReactions with multiAccountData"
         )
         return getImpl2(hashCode) { availableReactions() }.flatMap { it.first }
     }

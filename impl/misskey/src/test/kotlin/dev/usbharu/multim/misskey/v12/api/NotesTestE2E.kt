@@ -20,11 +20,9 @@ import java.util.*
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesTestE2E {
 
-    private val client = MisskeyApiClient(
-        SingleTokenAuth(System.getProperty("multim_misskey_token")),
+    private val client = MisskeyApiClient(SingleTokenAuth(System.getProperty("multim_misskey_token")),
         System.getProperty("multim_misskey_instance"),
-        MultiM.httpClientWithJson.config {}
-    )
+        MultiM.httpClientWithJson.config {})
     private val notes = Notes(client)
     private val drive = Drive(client)
 
@@ -45,9 +43,7 @@ class NotesTestE2E {
 
     @Test
     fun show() = runTest {
-        val show =
-            notes.show(NotesShowRequest(notes.notes(NotesNotesRequest()).failOnError().first().id))
-                .failOnError()
+        notes.show(NotesShowRequest(notes.notes(NotesNotesRequest()).failOnError().first().id)).failOnError()
 
     }
 
@@ -66,7 +62,7 @@ class NotesTestE2E {
         val notesCreateResponse = notes.create(
             NotesCreateRequest(
                 visibility = NotesCreateRequest.Visibility.FOLLOWERS,
-                text = "このノートはMultiMのテストで作成され、公開範囲 フォロワーのみ のテストに使用されます。 ${this@NotesTestE2E::class} create note with followers only"
+                text = "このノートはMultiMのテストで作成され、公開範囲 フォロワーのみ のテストに使用されます。" + " ${this@NotesTestE2E::class} create note with followers only"
             )
         ).failOnError()
         Assertions.assertEquals("followers", notesCreateResponse.createdNote.visibility)
@@ -82,8 +78,7 @@ class NotesTestE2E {
         val driveFile = drive.Files().create(DriveFilesCreateRequest(file = encode))
         val createdNote = notes.create(
             NotesCreateRequest(
-                text = "このノートはMultiMのテストで作成され、ファイル添付のテストで使用されます。",
-                fileIds = setOf(driveFile.id)
+                text = "このノートはMultiMのテストで作成され、ファイル添付のテストで使用されます。", fileIds = setOf(driveFile.id)
             )
         ).failOnError()
 
@@ -127,51 +122,66 @@ class NotesTestE2E {
 
     @Test
     fun children() = runTest {
-        val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、子ノート取得のテストで使用されます。${this@NotesTestE2E::class} children"))
+        val create = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultiMのテストで作成され、"
+                        + "子ノート取得のテストで使用されます。${this@NotesTestE2E::class} children",
+            )
+        )
         val id = create.failOnError().createdNote.id
-        val children = notes.children(NotesChildrenRequest(id)).failOnError()
+        notes.children(NotesChildrenRequest(id)).failOnError()
     }
 
     @Test
     fun conversation() = runTest {
-        val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、関連ノート取得のテストで使用されます。 ${this@NotesTestE2E::class} conversation"))
-                .failOnError()
-        val conversation =
-            notes.conversation(NotesConversationRequest(create.createdNote.id)).failOnError()
+        val create = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultiMのテストで作成され、" +
+                        "関連ノート取得のテストで使用されます。 ${this@NotesTestE2E::class} conversation"
+            )
+        ).failOnError()
+        notes.conversation(NotesConversationRequest(create.createdNote.id)).failOnError()
     }
 
     @Test
     fun state() = runTest {
-        val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、ノートの状態を取得するテストで使用されます。 ${this@NotesTestE2E::class} state"))
-                .failOnError()
-        val state = notes.state(NotesStateRequest(create.createdNote.id)).failOnError()
+        val create = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultiMのテストで作成され、" +
+                        "ノートの状態を取得するテストで使用されます。 ${this@NotesTestE2E::class} state"
+            )
+        ).failOnError()
+        notes.state(NotesStateRequest(create.createdNote.id)).failOnError()
     }
 
     @Test
     fun favoritesCreate() = runTest {
-        val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、お気に入り登録のテストで使用されます。 ${this@NotesTestE2E::class} favorites create test"))
-                .failOnError()
-        NotesFavoritesCreateRequest(create.createdNote.id)
-            .let { notes.Favorites().create(it) }
-        Assertions.assertTrue(
-            NotesStateRequest(create.createdNote.id)
-                .let { notes.state(it).failOnError().isFavorited })
+        val create = notes.create(
+            NotesCreateRequest(
+                text = "このノートはMultim のテストで作成され、" +
+                        "お気に入り登録のテストで使用されます。 ${this@NotesTestE2E::class} favorites create test"
+            )
+        ).failOnError()
+        NotesFavoritesCreateRequest(create.createdNote.id).let { notes.Favorites().create(it) }
+        Assertions.assertTrue(NotesStateRequest(create.createdNote.id).let {
+            notes.state(it).failOnError().isFavorited
+        })
 //todo ネストがやばいことになってるのでnullが返ってきた時点で失敗にする
     }
 
     @Test
     fun favoritesDelete() = runTest {
         val result =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、お気に入り削除のテストで使用されます。 ${this@NotesTestE2E::class} favorites delete test"))
-        val create =
-            when (result) {
-                is Ok -> result.value
-                is Err -> Assertions.fail(result.error.message, result.error._throwable)
-            }
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultim のテストで作成され、" +
+                            "お気に入り削除のテストで使用されます。 ${this@NotesTestE2E::class} favorites delete test"
+                )
+            )
+        val create = when (result) {
+            is Ok -> result.value
+            is Err -> Assertions.fail(result.error.message, result.error._throwable)
+        }
         notes.Favorites().create(NotesFavoritesCreateRequest(create.createdNote.id))
         Assertions.assertTrue(notes.state(NotesStateRequest(create.createdNote.id)).failOnError().isFavorited)
         notes.Favorites().delete(NotesFavoritesDeleteRequest(create.createdNote.id))
@@ -188,7 +198,8 @@ class NotesTestE2E {
     @Test
     fun reactions() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions"))
+            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、" +
+                    "リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions"))
                 .failOnError()
         val reactions = notes.reactions(NotesReactionsRequest(create.createdNote.id))
     }
@@ -196,23 +207,24 @@ class NotesTestE2E {
     @Test
     fun renotes() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"))
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、" +
+                    "リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"))
                 .failOnError()
-        val notesCreateResponse =
-            notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
-        val renotes = NotesRenoteRequest(create.createdNote.id)
-            .let { notes.renotes(it) }.failOnError()
+        val notesCreateResponse = notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
+        val renotes = NotesRenoteRequest(create.createdNote.id).let { notes.renotes(it) }.failOnError()
         Assertions.assertEquals(listOf(notesCreateResponse.createdNote), renotes)
     }
 
     @Test
     fun replies() = runTest {
         val root =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test"))
+            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、" +
+                    "返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test"))
                 .failOnError()
         val reply1 = notes.create(
             NotesCreateRequest(
-                text = "返信1 このノートはMultimのテストで作成され、返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test",
+                text = "返信1 このノートはMultimのテストで作成され、返信取得のテストで使用されます。" +
+                        " ${this@NotesTestE2E::class} replies test",
                 replyId = root.createdNote.id
             )
         ).failOnError()
@@ -222,10 +234,8 @@ class NotesTestE2E {
                 replyId = root.createdNote.id
             )
         ).failOnError()
-        val replies = root.createdNote.id.let { NotesRepliesRequest(it) }
-            .let { notes.replies(it) }.failOnError()
-        Assertions.assertEquals(
-            listOf(reply1.createdNote, reply2.createdNote).sortedBy { note -> note.id },
+        val replies = root.createdNote.id.let { NotesRepliesRequest(it) }.let { notes.replies(it) }.failOnError()
+        Assertions.assertEquals(listOf(reply1.createdNote, reply2.createdNote).sortedBy { note -> note.id },
             replies.sortedBy { note -> note.id })
     }
 
@@ -233,7 +243,8 @@ class NotesTestE2E {
     fun searchByTag() = runTest {
         val tag = UUID.randomUUID().toString()
         val tagedNote =
-            notes.create(NotesCreateRequest(text = "#$tag このノートはMultimのテストで作成され、タグ検索のテストで使用されます。 ${this@NotesTestE2E::class} search by tag test"))
+            notes.create(NotesCreateRequest(text = "#$tag このノートはMultimのテストで作成され、" +
+                    "タグ検索のテストで使用されます。 ${this@NotesTestE2E::class} search by tag test"))
                 .failOnError()
         val searchByTag = notes.searchByTag(NotesSearchByTagRequest(tag)).failOnError()
         org.assertj.core.api.Assertions.assertThat(searchByTag)?.isNotEmpty
@@ -245,14 +256,13 @@ class NotesTestE2E {
         val create =
             notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、スレッドミュートのテストで使用されます。 ${this@NotesTestE2E::class} thread mute create test"))
                 .failOnError()
-        Assertions.assertFalse(
-            NotesStateRequest(create.createdNote.id)
-                .let { notes.state(it).failOnError().isMutedThread })
-        NotesThreadMutingCreateRequest(create.createdNote.id)
-            .let { notes.ThreadMuting().create(it) }
-        Assertions.assertTrue(
-            NotesStateRequest(create.createdNote.id)
-                .let { notes.state(it).failOnError().isMutedThread })
+        Assertions.assertFalse(NotesStateRequest(create.createdNote.id).let {
+            notes.state(it).failOnError().isMutedThread
+        })
+        NotesThreadMutingCreateRequest(create.createdNote.id).let { notes.ThreadMuting().create(it) }
+        Assertions.assertTrue(NotesStateRequest(create.createdNote.id).let {
+            notes.state(it).failOnError().isMutedThread
+        })
     }
 
     @Test
@@ -263,16 +273,14 @@ class NotesTestE2E {
         Assertions.assertFalse(
             notes.state(NotesStateRequest(create.createdNote.id)).failOnError().isMutedThread
         )
-        NotesThreadMutingCreateRequest(create.createdNote.id)
-            .let { notes.ThreadMuting().create(it) }
-        Assertions.assertTrue(
-            NotesStateRequest(create.createdNote.id)
-                .let { notes.state(it).failOnError().isMutedThread })
-        NotesThreadMutingDeleteRequest(create.createdNote.id)
-            .let { notes.ThreadMuting().delete(it) }
-        Assertions.assertFalse(
-            NotesStateRequest(create.createdNote.id)
-                .let { notes.state(it).failOnError().isMutedThread })
+        NotesThreadMutingCreateRequest(create.createdNote.id).let { notes.ThreadMuting().create(it) }
+        Assertions.assertTrue(NotesStateRequest(create.createdNote.id).let {
+            notes.state(it).failOnError().isMutedThread
+        })
+        NotesThreadMutingDeleteRequest(create.createdNote.id).let { notes.ThreadMuting().delete(it) }
+        Assertions.assertFalse(NotesStateRequest(create.createdNote.id).let {
+            notes.state(it).failOnError().isMutedThread
+        })
     }
 
     @Test
@@ -287,8 +295,7 @@ class NotesTestE2E {
             notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))
                 .failOnError()
         delay(1000)
-        val renoted =
-            notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
+        val renoted = notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
         delay(1000)
         NotesUnrenoteRequest(create.createdNote.id).let { notes.unrenote(it) }
         delay(1000)
