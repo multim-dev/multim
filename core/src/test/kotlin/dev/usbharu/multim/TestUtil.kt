@@ -29,7 +29,7 @@ object TestUtil {
                         it.body.toByteArray().decodeToString()
                     ).jsonObject
                 ) {
-
+                    //ok
                 } else {
                     fail("No auth")
                 }

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.resolve.multiplatform.onlyFromThisModule
 import java.util.*
 
 plugins {
@@ -152,5 +153,6 @@ subprojects {
         basePath = rootDir.absolutePath
         config = files("$rootDir/detekt.yml")
         autoCorrect = true
+
     }
 }

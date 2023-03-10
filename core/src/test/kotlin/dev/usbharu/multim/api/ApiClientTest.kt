@@ -14,7 +14,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-
+@Suppress("VariableNaming","PropertyName")
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class ApiClientTest {
 
