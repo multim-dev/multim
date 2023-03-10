@@ -32,8 +32,10 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
-        arguments: build
+        arguments: build -x detekt
       env:
+        multim_misskey_token: ${{secrets.multim_misskey_token}}
+        multim_misskey_instance: ${{secrets.multim_misskey_instance}}
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
