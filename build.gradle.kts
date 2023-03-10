@@ -151,5 +151,6 @@ subprojects {
         buildUponDefaultConfig = true
         basePath = rootDir.absolutePath
         config = files("$rootDir/detekt.yml")
+        autoCorrect = true
     }
 }
