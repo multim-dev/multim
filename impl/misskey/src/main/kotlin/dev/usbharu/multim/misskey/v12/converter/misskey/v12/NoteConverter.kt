@@ -24,6 +24,7 @@ object NoteConverter {
             repostCount = renoteCount,
             repliesCount = repliesCount,
             reposted = false,
+            createdAt = createdAt
         )
     }
 
