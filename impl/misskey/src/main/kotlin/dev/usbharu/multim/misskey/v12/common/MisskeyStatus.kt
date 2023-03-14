@@ -1,6 +1,8 @@
 package dev.usbharu.multim.misskey.v12.common
 
 import dev.usbharu.multim.model.*
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @Suppress("LongParameterList")
 class MisskeyStatus(
@@ -17,6 +19,7 @@ class MisskeyStatus(
     language: String? = null,
     poll: Poll? = null,
     files: Files? = null,
+    createdAt:Instant = Clock.System.now()
 ) : Status(
     id,
     account,
@@ -30,5 +33,6 @@ class MisskeyStatus(
     tags,
     language,
     poll,
-    files
+    files,
+    createdAt
 )
