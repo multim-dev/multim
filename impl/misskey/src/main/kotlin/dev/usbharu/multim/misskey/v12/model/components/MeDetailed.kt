@@ -79,6 +79,6 @@ class MeDetailed(
     val emailNotificationTypes: List<String>,
     val email: String? = null,
     val emailVerified: Boolean? = null,
-    val securityKeysList: List<SecurityKey>,
+    val securityKeysList: List<SecurityKey> = emptyList(),
 
     ) : UserDetailed()
