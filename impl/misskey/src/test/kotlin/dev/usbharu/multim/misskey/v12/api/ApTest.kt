@@ -50,6 +50,7 @@ class ApTest {
     }
 
 
+    @Suppress("LongMethod")
     @Test
     fun show_userUrl_returnUser() = runTest {
         val userDetailedNotMe = UserDetailedNotMe(

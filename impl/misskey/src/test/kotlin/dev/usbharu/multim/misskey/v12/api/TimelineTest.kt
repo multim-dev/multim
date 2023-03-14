@@ -18,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.*
-
+@Suppress("EmptyFunctionBlock")
 class TimelineTestE2E {
 
 

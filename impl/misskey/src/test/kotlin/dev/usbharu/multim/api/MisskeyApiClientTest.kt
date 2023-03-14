@@ -28,7 +28,11 @@ class MisskeyApiClientTest : ApiClientTest() {
                     }
 
                     post_request_returnOkWithEchoBody -> {
-                        respond(it.body.toByteArray().decodeToString(), HttpStatusCode.OK, headersOf(HttpHeaders.ContentType,"application/json"))
+                        respond(
+                            it.body.toByteArray().decodeToString(),
+                            HttpStatusCode.OK,
+                            headersOf(HttpHeaders.ContentType, "application/json")
+                        )
                     }
 
                     post_IllegalRequest_returnErr -> {

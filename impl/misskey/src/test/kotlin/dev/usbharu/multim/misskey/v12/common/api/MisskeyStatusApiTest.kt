@@ -43,9 +43,9 @@ class MisskeyStatusApiTest {
         data class Hoge(val a: String, val b: String)
 
         //language=JSON
-        val hoge: Hoge = Json(Json.Default) {
+        Json(Json.Default) {
             isLenient = true;ignoreUnknownKeys = true
-        }.decodeFromString("""{"a": "aaaa","b": "bbbb"}""")
+        }.decodeFromString<Hoge>("""{"a": "aaaa","b": "bbbb"}""")
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

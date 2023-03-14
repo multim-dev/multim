@@ -62,7 +62,8 @@ class NotesTestE2E {
         val notesCreateResponse = notes.create(
             NotesCreateRequest(
                 visibility = NotesCreateRequest.Visibility.FOLLOWERS,
-                text = "このノートはMultiMのテストで作成され、公開範囲 フォロワーのみ のテストに使用されます。" + " ${this@NotesTestE2E::class} create note with followers only"
+                text = "このノートはMultiMのテストで作成され、公開範囲 フォロワーのみ のテストに使用されます。" +
+                        " ${this@NotesTestE2E::class} create note with followers only"
             )
         ).failOnError()
         Assertions.assertEquals("followers", notesCreateResponse.createdNote.visibility)
@@ -198,8 +199,12 @@ class NotesTestE2E {
     @Test
     fun reactions() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultiMのテストで作成され、" +
-                    "リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultiMのテストで作成され、" +
+                            "リアクション取得のテストで使用されます。 ${this@NotesTestE2E::class} reactions"
+                )
+            )
                 .failOnError()
         val reactions = notes.reactions(NotesReactionsRequest(create.createdNote.id))
     }
@@ -207,8 +212,12 @@ class NotesTestE2E {
     @Test
     fun renotes() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、" +
-                    "リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultim のテストで作成され、" +
+                            "リノートのテストで使用されます。 ${this@NotesTestE2E::class}  renotes test"
+                )
+            )
                 .failOnError()
         val notesCreateResponse = notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()
         val renotes = NotesRenoteRequest(create.createdNote.id).let { notes.renotes(it) }.failOnError()
@@ -218,8 +227,12 @@ class NotesTestE2E {
     @Test
     fun replies() = runTest {
         val root =
-            notes.create(NotesCreateRequest(text = "このノートはMultim のテストで作成され、" +
-                    "返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultim のテストで作成され、" +
+                            "返信取得のテストで使用されます。 ${this@NotesTestE2E::class} replies test"
+                )
+            )
                 .failOnError()
         val reply1 = notes.create(
             NotesCreateRequest(
@@ -243,8 +256,12 @@ class NotesTestE2E {
     fun searchByTag() = runTest {
         val tag = UUID.randomUUID().toString()
         val tagedNote =
-            notes.create(NotesCreateRequest(text = "#$tag このノートはMultimのテストで作成され、" +
-                    "タグ検索のテストで使用されます。 ${this@NotesTestE2E::class} search by tag test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "#$tag このノートはMultimのテストで作成され、" +
+                            "タグ検索のテストで使用されます。 ${this@NotesTestE2E::class} search by tag test"
+                )
+            )
                 .failOnError()
         val searchByTag = notes.searchByTag(NotesSearchByTagRequest(tag)).failOnError()
         org.assertj.core.api.Assertions.assertThat(searchByTag)?.isNotEmpty
@@ -254,7 +271,12 @@ class NotesTestE2E {
     @Test
     fun threadMutingCreate() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、スレッドミュートのテストで使用されます。 ${this@NotesTestE2E::class} thread mute create test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultimのテストで作成され、スレッドミュートのテストで使用されます。 " +
+                            "${this@NotesTestE2E::class} thread mute create test"
+                )
+            )
                 .failOnError()
         Assertions.assertFalse(NotesStateRequest(create.createdNote.id).let {
             notes.state(it).failOnError().isMutedThread
@@ -268,7 +290,12 @@ class NotesTestE2E {
     @Test
     fun threadMutingDelete() = runTest {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、スレッドミュート解除のテストで使用されます。 ${this@NotesTestE2E::class} thread mute delete test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultimのテストで作成され、スレッドミュート解除のテストで使用されます。 " +
+                            "${this@NotesTestE2E::class} thread mute delete test"
+                )
+            )
                 .failOnError()
         Assertions.assertFalse(
             notes.state(NotesStateRequest(create.createdNote.id)).failOnError().isMutedThread
@@ -292,7 +319,12 @@ class NotesTestE2E {
 //    @Test
     fun unrenote() = runBlocking {
         val create =
-            notes.create(NotesCreateRequest(text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。 ${this@NotesTestE2E::class} unrenote test"))
+            notes.create(
+                NotesCreateRequest(
+                    text = "このノートはMultimのテストで作成され、リノート取り消しのテストで使用されます。" +
+                            " ${this@NotesTestE2E::class} unrenote test"
+                )
+            )
                 .failOnError()
         delay(1000)
         val renoted = notes.create(NotesCreateRequest(renoteId = create.createdNote.id)).failOnError()

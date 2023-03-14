@@ -116,7 +116,7 @@ class NotesTest {
         Instant.parse("2023-01-17T06:58:08.000Z")
     }
 
-
+@Suppress("MaxLineLength")
     private val expectNoteArray = listOf(
         createFakeNote(
             "4wT4lSP",
