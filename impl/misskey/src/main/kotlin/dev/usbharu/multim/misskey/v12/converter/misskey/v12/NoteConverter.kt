@@ -1,6 +1,7 @@
 package dev.usbharu.multim.misskey.v12.converter.misskey.v12
 
 import dev.usbharu.multim.misskey.v12.common.*
+import dev.usbharu.multim.misskey.v12.converter.misskey.v12.ReactionConverter.toReactions
 import dev.usbharu.multim.misskey.v12.model.components.Note
 import dev.usbharu.multim.misskey.v12.model.components.UserLite
 import dev.usbharu.multim.model.Status
@@ -18,7 +19,11 @@ object NoteConverter {
             ),
             content = MisskeyContent(text.orEmpty()),
             files = files?.map { MisskeyFile(byteArrayOf(), it.type, it.url.orEmpty()) }
-                ?.let { MisskeyFiles(it) }
+                ?.let { MisskeyFiles(it) },
+            reactions = reactions.toReactions(this),
+            repostCount = renoteCount,
+            repliesCount = repliesCount,
+            reposted = false,
         )
     }
 

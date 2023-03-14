@@ -1,5 +1,6 @@
 package dev.usbharu.multim.misskey.v12.model.components
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,8 +22,12 @@ data class UserLite(
 ) : User()
 
 enum class OnlineStatus(val string: String) {
+    @SerialName("unknown")
     UNKNOWN("unknown"),
+    @SerialName("online")
     ONLINE("online"),
+    @SerialName("active")
     ACTIVE("active"),
+    @SerialName("offline")
     OFFLINE("offline")
 }
