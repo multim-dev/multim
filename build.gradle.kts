@@ -107,8 +107,8 @@ subprojects {
         "implementation"("io.ktor:ktor-client-logging:$ktor_version")
         "implementation"("io.ktor:ktor-client-websockets:$ktor_version")
         "implementation"("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-        "implementation"("dev.usbharu:kmp-logger:1.1.0")
-        "implementation"("dev.usbharu:emoji-kt:1.1.0")
+        "implementation"("dev.usbharu:kmp-logger:1.1.1")
+        "implementation"("dev.usbharu:emoji-kt:1.1.1")
         "implementation"("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
         "implementation"("io.github.reactivecircus.cache4k:cache4k:0.9.0")
 
