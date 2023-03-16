@@ -21,11 +21,12 @@ import kotlinx.serialization.json.jsonObject
 import org.assertj.core.api.Fail
 import org.junit.jupiter.api.Assertions
 
+@Suppress("EmptyIfBlock")
 object MisskeyTestUtil {
 
     val json = Json { ignoreUnknownKeys = true;isLenient = true }
 
-    val baseUrl = "https://localhsot/"
+    const val baseUrl = "https://localhsot/"
 
     internal fun apiClient(httpClient: HttpClient): MisskeyApiClient {
         return MisskeyApiClient(SingleTokenAuth("cdgj2h71"), baseUrl, httpClient)

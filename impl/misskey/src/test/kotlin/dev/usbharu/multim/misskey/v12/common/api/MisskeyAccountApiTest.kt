@@ -19,7 +19,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
-
+@Suppress("EmptyIfBlock")
 @OptIn(ExperimentalCoroutinesApi::class)
 class MisskeyAccountApiTest : AccountApiTest() {
     override val accountApi: AccountApi

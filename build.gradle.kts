@@ -99,7 +99,7 @@ subprojects {
     val ktor_version = "2.2.2"
     dependencies {
         "implementation"("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-        "implementation"("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+        "api"("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
         "implementation"("io.ktor:ktor-client-core:$ktor_version")
         "implementation"("io.ktor:ktor-client-cio:$ktor_version")
         "implementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -109,7 +109,7 @@ subprojects {
         "implementation"("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
         "implementation"("dev.usbharu:kmp-logger:1.1.1")
         "implementation"("dev.usbharu:emoji-kt:1.1.1")
-        "implementation"("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
+        "api"("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
         "implementation"("io.github.reactivecircus.cache4k:cache4k:0.9.0")
 
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.9.0")
