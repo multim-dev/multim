@@ -86,11 +86,15 @@ subprojects {
             props.load(file("${project.rootProject.projectDir}/local.properties").inputStream())
             systemProperties("multim_misskey_token" to props["multim_misskey_token"])
             systemProperties("multim_misskey_instance" to props["multim_misskey_instance"])
+            systemProperties("multim_misskeyv13_token" to props["multim_misskeyv13_token"])
+            systemProperties("multim_misskeyv13_instance" to props["multim_misskeyv13_instance"])
 
         } catch (e: Exception) {
             println("local.properties not found")
             systemProperties("multim_misskey_token" to System.getenv("multim_misskey_token"))
             systemProperties("multim_misskey_instance" to System.getenv("multim_misskey_instance"))
+            systemProperties("multim_misskeyv13_token" to System.getenv("multim_misskeyv13_token"))
+            systemProperties("multim_misskeyv13_instance" to System.getenv("multim_misskeyv13_instance"))
         }
 
         useJUnitPlatform()
